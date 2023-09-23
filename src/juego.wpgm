@@ -1,8 +1,14 @@
 import wollok.game.*
-import pepita.*
+import ralph.*
 
 program juego {
 	game.title("Juego Base")
-	game.addVisual(pepita)
+	
+	game.width(100)
+	game.height(60)
+	game.cellSize(10)	
+  	game.boardGround("fondo/nivel-1.png")
+  	
+	game.addVisual(ralph)
 	game.start()
 }
