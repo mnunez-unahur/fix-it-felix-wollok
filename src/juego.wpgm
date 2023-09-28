@@ -1,13 +1,55 @@
 import wollok.game.*
 import ralph.*
+import animacion.*
 
 program juego {
-	game.title("Juego Base")
+	game.title("Fix It Felix Jr!")
 	
 	game.width(100)
 	game.height(60)
 	game.cellSize(10)	
   	game.boardGround("fondo/nivel-1.png")
+  	
+  	var animacion1 = new Animacion(nombre = "ralph-golpeando")
+  	animacion1.agregarFotograma("ralph/pega-1.png")
+  	animacion1.agregarFotograma("ralph/pega-2.png")
+  	animacion1.velocidad(4)
+
+  	var animacion2 = new Animacion(nombre = "ralph-caminando-izquierda")
+  	animacion2.agregarFotograma("ralph/camina-izquierda-1.png")
+  	animacion2.agregarFotograma("ralph/camina-izquierda-2.png")
+  	animacion2.velocidad(3)
+
+  	var animacion3 = new Animacion(nombre = "ralph-caminando-derecha")
+  	animacion3.agregarFotograma("ralph/camina-derecha-1.png")
+  	animacion3.agregarFotograma("ralph/camina-derecha-2.png")
+  	animacion3.velocidad(3)
+
+  	var animacion4 = new Animacion(nombre = "ralph-subiendo")
+  	animacion4.agregarFotograma("ralph/sube-1.png")
+  	animacion4.agregarFotograma("ralph/sube-2.png")
+  	animacion4.velocidad(3)
+
+  	var animacion5 = new Animacion(nombre = "ralph-gritando")
+  	animacion5.agregarFotograma("ralph/grita-1.png")
+  	animacion5.agregarFotograma("ralph/grita-2.png")
+  	animacion5.velocidad(5)
+
+
+  	ralph.animacionGolpeando(animacion1)
+  	ralph.animacionCaminandoIzquierda(animacion2)
+  	ralph.animacionCaminandoDerecha(animacion3)
+  	ralph.animacionSubiendo(animacion4)
+  	ralph.animacionGritando(animacion5)
+
+  	
+  	keyboard.down().onPressDo { ralph.golpear()  }
+  	keyboard.left().onPressDo { ralph.caminarIzquierda()  }
+  	keyboard.right().onPressDo { ralph.caminarDerecha()  }
+  	keyboard.up().onPressDo { ralph.subir()  }
+  	keyboard.space().onPressDo { ralph.gritar("I'M GONNA WRECK IT!")  }
+  	
+  	
   	
 	game.addVisual(ralph)
 	game.start()
