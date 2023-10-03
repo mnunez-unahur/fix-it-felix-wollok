@@ -5,11 +5,31 @@ object ralph {
 	const imagenBase = "ralph/pega-1.png"
 	var animacion
 	var text = ""
-	var property animacionGolpeando
-	var property animacionCaminandoIzquierda
-	var property animacionCaminandoDerecha
-	var property animacionSubiendo
-	var property animacionGritando
+	const  animacionGolpeando = new Animacion(nombre = "ralph-golpeando", 
+				  						velocidad=4,
+  										fotogramas=["ralph/pega-1.png", "ralph/pega-2.png"]
+  								)
+
+	const  animacionCaminandoIzquierda = new Animacion(nombre = "ralph-camina-izquierda", 
+				  						velocidad=4,
+  										fotogramas=["ralph/camina-izquierda-1.png", "ralph/camina-izquierda-2.png"]
+  								)
+
+
+	const  animacionCaminandoDerecha = new Animacion(nombre = "ralph-camina-derecha", 
+				  						velocidad=4,
+  										fotogramas=["ralph/camina-derecha-1.png", "ralph/camina-derecha-2.png"]
+  								)
+
+	const  animacionSubiendo = new Animacion(nombre = "ralph-sube", 
+				  						velocidad=4,
+  										fotogramas=["ralph/sube-1.png", "ralph/sube-2.png"]
+  								)
+
+	const  animacionGritando = new Animacion(nombre = "ralph-grita", 
+				  						velocidad=4,
+  										fotogramas=["ralph/grita-1.png", "ralph/grita-2.png"]
+  								)
 
 	method position() = new Position(x=53, y=47)
 	
