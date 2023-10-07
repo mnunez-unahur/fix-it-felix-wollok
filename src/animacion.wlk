@@ -8,6 +8,7 @@ class Animacion {
 	//velocidad en fotogramas por segundo
 	var property velocidad = 0
 	var fotogramaActual = 0
+	var animando = false
 	
 	method agregarFotograma(img) {
 		fotogramas.add(img)
@@ -32,14 +33,17 @@ class Animacion {
 	
 	// Inicia la animación
 	method iniciar() {
-		self.resetear()
 		if(velocidad != 0) {
+			animando = true
 			game.onTick(1000 / velocidad, self.nombreAnimacion(), { self.siguiente() })				
 		}
 	}
 	
 	method detener() {
-		game.removeTickEvent(self.nombreAnimacion())
+		if(animando) {
+			animando = false
+			game.removeTickEvent(self.nombreAnimacion())			
+		}
 	}
 	
 	

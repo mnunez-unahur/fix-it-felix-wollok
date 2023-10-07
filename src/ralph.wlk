@@ -1,28 +1,54 @@
 import wollok.game.*
+import personaje.*
 import animacion.*
-
-object ralph {
-	const imagenBase = "ralph/pega-1.png"
-	var animacion
-	var text = ""
+/*
+ * posiciones donde se detiene ralph
+ * 25
+ * 34
+ * 43
+ * 52
+ * 61
+ */
+ 
+ 
+object ralph inherits Personaje(nombre="ralph",
+								animacion=new Animacion(nombre = "ralph-parado", 
+				  										velocidad=0,
+  														fotogramas=["ralph/parado.png"]
+  														), 
+  								position=new Position(y=47, x=43)) {
+  									
+  									
+	const limiteIzquierdo = 25
+	const limiteDerecho = 61
+	const fila = 47
+	const distanciaEntreVentana = 9
+	var caminandoALaIzquierda = true
+	
+	const  animacionParado = new Animacion(nombre = "ralph-parado", 
+				  						velocidad=0,
+  										fotogramas=["ralph/parado.png"]
+  								)
+  
+  
 	const  animacionGolpeando = new Animacion(nombre = "ralph-golpeando", 
-				  						velocidad=4,
+				  						velocidad=6,
   										fotogramas=["ralph/pega-1.png", "ralph/pega-2.png"]
   								)
 
 	const  animacionCaminandoIzquierda = new Animacion(nombre = "ralph-camina-izquierda", 
-				  						velocidad=4,
+				  						velocidad=5,
   										fotogramas=["ralph/camina-izquierda-1.png", "ralph/camina-izquierda-2.png"]
   								)
 
 
 	const  animacionCaminandoDerecha = new Animacion(nombre = "ralph-camina-derecha", 
-				  						velocidad=4,
+				  						velocidad=5,
   										fotogramas=["ralph/camina-derecha-1.png", "ralph/camina-derecha-2.png"]
   								)
 
 	const  animacionSubiendo = new Animacion(nombre = "ralph-sube", 
-				  						velocidad=4,
+				  						velocidad=2,
   										fotogramas=["ralph/sube-1.png", "ralph/sube-2.png"]
   								)
 
@@ -31,57 +57,79 @@ object ralph {
   										fotogramas=["ralph/grita-1.png", "ralph/grita-2.png"]
   								)
 
-	method position() = new Position(x=53, y=47)
-	
-	method text() = text
-	
-	method image() = if(animacion != null) animacion.image() else imagenBase
 	
 	method golpear() {
-		text = ""
-		if(animacion != null) {
-			animacion.detener()
-		}
-		animacion = animacionGolpeando
-		animacion.iniciar()
+		self.detenerMovimiento()
+		self.callar()
+		self.animar(animacionGolpeando)
 	}
-	
+
+/*	
 	method caminarIzquierda() {
-		text = ""
-		if(animacion != null) {
-			animacion.detener()
-		}
-		animacion = animacionCaminandoIzquierda
-		animacion.iniciar()
+		self.detenerMovimiento()
+		self.callar()
+		caminandoALaIzquierda = true
+		self.animar(animacionCaminandoIzquierda)
+		self.moverAPosicionyHacerAccion(limiteIzquierdo, fila, 20, {self.quedarseParado()})
 	}
 
 	method caminarDerecha() {
-		text = ""
-		if(animacion != null) {
-			animacion.detener()
-		}
-		animacion = animacionCaminandoDerecha
-		animacion.iniciar()
+		self.detenerMovimiento()
+		self.callar()
+		caminandoALaIzquierda = false
+		self.animar(animacionCaminandoDerecha)
+		self.moverAPosicionyHacerAccion(limiteDerecho, fila, 20, {self.quedarseParado()})
+	}
+*/
+	
+	// mueve a la posicion x especificada y ejecuta una accion al llegar
+	method caminarAPosicionXyEjecutar(x, accion) {
+		self.detenerMovimiento()
+		self.callar()
+		const nuevaAnimacion = if(x < position.x()) animacionCaminandoIzquierda else  animacionCaminandoDerecha
+		self.animar(nuevaAnimacion)
+		self.moverAPosicionyHacerAccion(x, fila, 20, accion)		
+	}
+	
+	method quedarseParado() {
+		self.detenerMovimiento()
+		self.callar()
+		self.animar(animacionParado)
 	}
 	
 	method subir() {
-		text = ""
-		if(animacion != null) {
-			animacion.detener()
-		}
-		animacion = animacionSubiendo
-		animacion.iniciar()
+		self.detenerMovimiento()
+		self.callar()
+		self.animar(animacionSubiendo)
+		self.moverAPosicionyHacerAccion(position.x(), 61, 20, {self.quedarseParado()})
 	}
 
 	method gritar(texto) {
-		if(animacion != null) {
-			animacion.detener()
-		}
-		
-		animacion = animacionGritando
-		animacion.iniciar()
-		text = texto
+		self.detenerMovimiento()
+		self.animar(animacionGritando)
+		self.hablar(texto)
 	}
+	
+	// este método hace que cada vez que llega a una ventana
+	// Ralph decida que hacer:
+	// - protestar
+	// - golpear el piso
+	// - seguir caminando
+	method hacerRutina() {
+		if(0.randomUpTo(2) < 1) 
+			self.golpear() 
+		else 
+			self.gritar("")
+		game.schedule(1500, { 
+			caminandoALaIzquierda = (not caminandoALaIzquierda and position.x() >= 61) or (caminandoALaIzquierda and position.x()>25)
+			const direccion = if(caminandoALaIzquierda) -1 else 1
+			const nuevaPosicionX = position.x() + distanciaEntreVentana * direccion
+			self.caminarAPosicionXyEjecutar(nuevaPosicionX, {self.hacerRutina()})
+			
+		})
+	}
+	
+	
 
 
 }
