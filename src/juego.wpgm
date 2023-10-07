@@ -11,12 +11,13 @@ program juego {
   	game.boardGround("fondo/nivel-1.png")
   	
  	
-  	keyboard.down().onPressDo { ralph.golpear()  }
-  	keyboard.left().onPressDo { ralph.caminarIzquierda()  }
-  	keyboard.right().onPressDo { ralph.caminarDerecha()  }
-  	keyboard.up().onPressDo { ralph.subir()  }
-  	keyboard.space().onPressDo { ralph.gritar("I'M GONNA WRECK IT!")  }
+//  	keyboard.down().onPressDo { ralph.golpear()  }
+//  	keyboard.left().onPressDo { ralph.caminarIzquierda()  }
+//  	keyboard.right().onPressDo { ralph.caminarDerecha()  }
+//  	keyboard.up().onPressDo { ralph.subir()  }
+  	keyboard.space().onPressDo { ralph.hacerRutina()  }
   	
 	game.addVisual(ralph)
 	game.start()
+	
 }
