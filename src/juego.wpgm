@@ -59,6 +59,8 @@ program fixItFelix {
 		)
 	game.addVisual(ventanaPrueba)
 	
+	
+	
 	keyboard.space().onPressDo({ ventanaPrueba.reparar() })
 	keyboard.backspace().onPressDo({ ventanaPrueba.romper() })
 	
