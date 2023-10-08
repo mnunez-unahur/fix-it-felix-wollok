@@ -19,8 +19,8 @@ object ralph inherits Personaje(nombre="ralph",
   								position=new Position(y=47, x=43)) {
   									
   									
-	const limiteIzquierdo = 25
-	const limiteDerecho = 61
+//	const limiteIzquierdo = 25
+//	const limiteDerecho = 61
 	const fila = 47
 	const distanciaEntreVentana = 9
 	var caminandoALaIzquierda = true
@@ -57,30 +57,11 @@ object ralph inherits Personaje(nombre="ralph",
   										fotogramas=["ralph/grita-1.png", "ralph/grita-2.png"]
   								)
 
-	
 	method golpear() {
 		self.detenerMovimiento()
 		self.callar()
 		self.animar(animacionGolpeando)
 	}
-
-/*	
-	method caminarIzquierda() {
-		self.detenerMovimiento()
-		self.callar()
-		caminandoALaIzquierda = true
-		self.animar(animacionCaminandoIzquierda)
-		self.moverAPosicionyHacerAccion(limiteIzquierdo, fila, 20, {self.quedarseParado()})
-	}
-
-	method caminarDerecha() {
-		self.detenerMovimiento()
-		self.callar()
-		caminandoALaIzquierda = false
-		self.animar(animacionCaminandoDerecha)
-		self.moverAPosicionyHacerAccion(limiteDerecho, fila, 20, {self.quedarseParado()})
-	}
-*/
 	
 	// mueve a la posicion x especificada y ejecuta una accion al llegar
 	method caminarAPosicionXyEjecutar(x, accion) {
@@ -114,12 +95,13 @@ object ralph inherits Personaje(nombre="ralph",
 	// Ralph decida que hacer:
 	// - protestar
 	// - golpear el piso
-	// - seguir caminando
+	// TODO: mejorar mecanismo de decisión
 	method hacerRutina() {
 		if(0.randomUpTo(2) < 1) 
 			self.golpear() 
 		else 
 			self.gritar("")
+			
 		game.schedule(1500, { 
 			caminandoALaIzquierda = (not caminandoALaIzquierda and position.x() >= 61) or (caminandoALaIzquierda and position.x()>25)
 			const direccion = if(caminandoALaIzquierda) -1 else 1
