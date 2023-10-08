@@ -13,8 +13,7 @@ program fixItFelix {
   	game.boardGround("fondo/nivel-1.png")
  	
 
-  	keyboard.any().onPressDo { juego.iniciar()  }
-  	
+ 	
 	game.addVisual(ralph)
 	
 	// agrego las ventanas para probar
@@ -55,12 +54,13 @@ program fixItFelix {
 		)
 	)
 
-	game.addVisual(
-		new Ventana(
+	const ventanaPrueba = new Ventana(
 			position = new Position(x = 30, y = 2)
 		)
-	)
+	game.addVisual(ventanaPrueba)
 	
+	keyboard.space().onPressDo({ ventanaPrueba.reparar() })
+	keyboard.backspace().onPressDo({ ventanaPrueba.romper() })
 	
 	juego.iniciar()
 	

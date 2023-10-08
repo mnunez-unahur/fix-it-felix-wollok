@@ -46,5 +46,9 @@ class Animacion {
 		}
 	}
 	
+	method irAFotograma(numeroFotograma) {
+		fotogramaActual = numeroFotograma
+	}
+	
 	
 }
