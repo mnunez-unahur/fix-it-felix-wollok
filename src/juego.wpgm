@@ -9,61 +9,11 @@ program fixItFelix {
 	
 	game.width(100)
 	game.height(60)
-	game.cellSize(10)	
-  	game.boardGround("fondo/nivel-1.png")
+	game.cellSize(10)
+	
+	keyboard.space().onPressDo({ juego.siguienteNivel() })
  	
-
- 	
-	game.addVisual(ralph)
-	
-	// agrego las ventanas para probar
-	game.addVisual(
-		new Ventana(
-			position = new Position(x = 30, y = 32)
-		)
-	)
-
-	game.addVisual(
-		new Ventana(
-			position = new Position(x = 39, y = 32)
-		)
-	)
-
-	game.addVisual(
-		new Ventana(
-			position = new Position(x = 48, y = 32)
-		)
-	)
-
-	game.addVisual(
-		new Ventana(
-			position = new Position(x = 57, y = 32)
-		)
-	)
-
-	game.addVisual(
-		new Ventana(
-			position = new Position(x = 66, y = 32)
-		)
-	)
-
-
-	game.addVisual(
-		new Ventana(
-			position = new Position(x = 30, y = 16)
-		)
-	)
-
-	const ventanaPrueba = new Ventana(
-			position = new Position(x = 30, y = 2)
-		)
-	game.addVisual(ventanaPrueba)
-	
-	
-	
-	keyboard.space().onPressDo({ ventanaPrueba.reparar() })
-	keyboard.backspace().onPressDo({ ventanaPrueba.romper() })
-	
+ 	juego.preparar()
 	juego.iniciar()
 	
 }
