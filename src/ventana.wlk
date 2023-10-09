@@ -21,4 +21,5 @@ class Ventana {
 		animacion.resetear()
 		salud = 0
 	}
+
 }

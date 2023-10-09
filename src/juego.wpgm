@@ -4,6 +4,7 @@ import animacion.*
 import ventana.*
 import juego.*
 
+
 program fixItFelix {
 	game.title("Fix It Felix Jr!")
 	
@@ -12,9 +13,9 @@ program fixItFelix {
 	game.cellSize(10)	
   	game.boardGround("fondo/nivel-1.png")
  	
-
- 	
 	game.addVisual(ralph)
+	
+	
 	
 	// agrego las ventanas para probar
 	game.addVisual(
