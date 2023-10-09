@@ -12,6 +12,7 @@ object juego {
 //		 	console.println("pausa")			
 //		})
 		game.start()	
+		
 	}
 	
 	

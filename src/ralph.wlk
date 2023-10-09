@@ -1,7 +1,7 @@
 import wollok.game.*
 import personaje.*
 import animacion.*
-import Ladrillo.*
+import Elementos.*
 /*
  * posiciones donde se detiene ralph
  * 25

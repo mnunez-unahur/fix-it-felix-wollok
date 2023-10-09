@@ -1,20 +1,20 @@
 import wollok.game.*
 import ralph.*
 import animacion.*
-import ventana.*
 import juego.*
+import Elementos.*
 
 
 program fixItFelix {
-	game.title("Fix It Felix Jr!")
 	
+	game.title("Fix It Felix Jr!")
 	game.width(100)
 	game.height(60)
 	game.cellSize(10)	
   	game.boardGround("fondo/nivel-1.png")
- 	
 	game.addVisual(ralph)
-	
+	game.addVisual(vida)
+	game.addVisual(score)
 	
 	
 	// agrego las ventanas para probar
@@ -66,5 +66,4 @@ program fixItFelix {
 	keyboard.backspace().onPressDo({ ventanaPrueba.romper() })
 	
 	juego.iniciar()
-	
 }
