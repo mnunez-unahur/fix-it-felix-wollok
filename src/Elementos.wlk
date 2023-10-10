@@ -37,6 +37,7 @@ class Ladrillo {
 
 	method desplazarse(){
 		//agregar la colision game.onCollideDo(self,{algo => algo.teChocoElLadrillo()})
+		posicion = posicion.right(5)
 		game.onTick(80,"ladrillo",{self.moverseAbajo()})
 		
 	}
@@ -67,7 +68,7 @@ class Vida {
 	method position() = posicion
 	
 }											
-object vida inherits Vida (posicion=new Position(y=55, x=80),vidasActuales=3){
+object vida inherits Vida (posicion=new Position(y=55, x=80),vidasActuales=3){ //prueba
 	
 }
 class Score{ // ver como hacer que sume el puntaje y con que criterio
@@ -77,6 +78,6 @@ class Score{ // ver como hacer que sume el puntaje y con que criterio
 	method image()="fondo/score.png"
 	method position() = posicion
 }
-object score inherits Score (posicion=new Position(y=55, x=05),puntajeActual=0){
+object score inherits Score (posicion=new Position(y=55, x=05),puntajeActual=0){ //prueba
 								
 }

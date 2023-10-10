@@ -1,5 +1,7 @@
 import wollok.game.*
 import ralph.*
+import animacion.*
+import Elementos.*
 
 object juego {
 	var gameOver = false
