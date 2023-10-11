@@ -7,8 +7,7 @@ class Ventana {
 	var property position
 	var salud = 0
 	
-	const  animacion = new Animacion(nombre = "ventana", 
-				  						velocidad=0,
+	const  animacion = new Animacion(	velocidad=0,
   										fotogramas=["ventana/1/rota-2.png", "ventana/1/rota-1.png", "ventana/1/sana.png"]
   								)	
 
