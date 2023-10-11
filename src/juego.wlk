@@ -1,6 +1,5 @@
 import wollok.game.*
 import ralph.*
-import ventana.*
 import animacion.*
 import Elementos.*
 
