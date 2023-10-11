@@ -14,31 +14,23 @@ object juego {
 	method stageActual() = stages.get(stage)
 
 	method preparar() {
-		const stage1 = new Stage(fondo = new Edificio(image="fondo/nivel-1.png"))
+		const stage1 = new Stage(fondo = new Edificio(image="niveles/edificio-1.png"))
 		stage1.agregarMultiplesVentanas([
 			[1,1], [2,1], [4,1], [5,1],
 			[1,2], [2,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
-		const stage2 = new Stage(fondo = new Edificio(image="fondo/nivel-2.png"))
+		const stage2 = new Stage(fondo = new Edificio(image="niveles/edificio-2.png"))
 		stage2.agregarMultiplesVentanas([
 			[1,1], [2,1], [3,1], [4,1], [5,1],
 			[1,2], [2,2], [3,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
-//		const stage3 = new Stage(fondo = new Edificio(image="fondo/nivel-2.png"))
-//		stage3.agregarMultiplesVentanas([
-//			[1,1], [2,1], [3,1], [4,1], [5,1],
-//			[1,2], [2,2], [3,2], [4,2], [5,2],
-//			[1,3], [2,3], [3,3], [4,3], [5,3]
-//		])
-	
-	  	game.boardGround("fondo/fondo.png")
+	  	game.boardGround("fondo.png")
 		stages.add(stage1)
 		stages.add(stage2)
-//		stages.add(stage3)
 		
 		keyboard.space().onPressDo({ self.siguienteNivel() })
 		
@@ -50,23 +42,24 @@ object juego {
 		self.mostrarImagenesIniciales()
 		game.schedule(2000,{self.iniciarNivel()})
 		game.start()
-	}	
+	}
+	
 	method iniciarNivel(){
-		game.schedule(1000,{game.removeVisual(imagen33);self.stageActual().iniciar();})	
+		game.schedule(5000,{game.removeVisual(imagen33);self.stageActual().iniciar();})	
 		
 	}
+	
 	method mostrarImagenesIniciales(){
 		inicio.mostrar()
 		keyboard.enter().onPressDo({game.removeVisual(inicio);imagen33.mostrar()})
 	}
+	
 	method configurarVisual(){
 		game.title("Fix It Felix Jr!")
 		game.width(100)
 		game.height(60)
 		game.cellSize(10)
 	}
-
-		
 	
 	method siguienteNivel() {
 		self.stageActual().finalizar()
@@ -75,7 +68,6 @@ object juego {
 		
 		//TODO: cuando se finaliza el ultimo nivel se termina el juego	
 	}
-	
 }
 
 // representa una celda del tablero
