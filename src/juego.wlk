@@ -11,40 +11,39 @@ object juego {
 	var property vidas = 3
 	var property dificultad = 1
 	
+	method stageActual() = stages.get(stage)
+
 	method preparar() {
-		const stage1 = new Stage(fondo = "fondo/nivel-1.png")
+		const stage1 = new Stage(fondo = new Edificio(image="fondo/nivel-1.png"))
 		stage1.agregarMultiplesVentanas([
 			[1,1], [2,1], [4,1], [5,1],
 			[1,2], [2,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
-		const stage2 = new Stage(fondo = "fondo/nivel-2.png")
+		const stage2 = new Stage(fondo = new Edificio(image="fondo/nivel-2.png"))
 		stage2.agregarMultiplesVentanas([
 			[1,1], [2,1], [3,1], [4,1], [5,1],
 			[1,2], [2,2], [3,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
-		const stage3 = new Stage(fondo = "fondo/nivel-2.png")
-		stage3.agregarMultiplesVentanas([
-			[1,1], [2,1], [3,1], [4,1], [5,1],
-			[1,2], [2,2], [3,2], [4,2], [5,2],
-			[1,3], [2,3], [3,3], [4,3], [5,3]
-		])
+//		const stage3 = new Stage(fondo = new Edificio(image="fondo/nivel-2.png"))
+//		stage3.agregarMultiplesVentanas([
+//			[1,1], [2,1], [3,1], [4,1], [5,1],
+//			[1,2], [2,2], [3,2], [4,2], [5,2],
+//			[1,3], [2,3], [3,3], [4,3], [5,3]
+//		])
 	
-	  	game.boardGround("fondo/nivel-1.png")
+	  	game.boardGround("fondo/fondo.png")
 		stages.add(stage1)
-		stages.add(stage1)
-		stages.add(stage1)
+		stages.add(stage2)
+//		stages.add(stage3)
 		
-		game.addVisual(ralph)
 		keyboard.space().onPressDo({ self.siguienteNivel() })
 		
 	}
 	
-
-	method stageActual() = stages.get(stage)
 	method iniciar() {
 		self.configurarVisual()
 		self.preparar()
@@ -53,7 +52,7 @@ object juego {
 		game.start()
 	}	
 	method iniciarNivel(){
-		game.schedule(5000,{game.removeVisual(imagen33);self.stageActual().iniciar();})	
+		game.schedule(1000,{game.removeVisual(imagen33);self.stageActual().iniciar();})	
 		
 	}
 	method mostrarImagenesIniciales(){
@@ -173,7 +172,19 @@ class Stage {
 		tablero.celdaEn(x, y).agregarVentana()
 		
 	}
-	method mostrar(){ game.addVisual(fondo) 
+	method mostrar(){ 
+		game.addVisual(fondo)
+		game.addVisual(ralph)
+	  	tablero.mostrar()
+	}
+	
+	method ocultar() {
+		game.removeVisual(fondo)
+		ralph.detenerAnimacion()
+		game.removeVisual(ralph)
+		
+	}
+	
 	
 	// agrega múltiples ventanas en las coordinadas indicadas
 	// lista es una lista de coordenadas [[x,y], [x,y]...]
@@ -182,13 +193,12 @@ class Stage {
 	}
 	
 	method iniciar() {
-	  	tablero.mostrar()
+	  	self.mostrar()
 		ralph.hacerRutina()
 	}
 	
 	method finalizar() {
-//		self.ocultar()
-//		ralph.quedarseParado()
+		self.ocultar()
 	}
 	
 }
