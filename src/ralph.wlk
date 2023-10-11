@@ -61,7 +61,6 @@ object ralph inherits Personaje(nombre="ralph",
 
 	method golpear() {
 		self.detenerMovimiento()
-		self.callar()
 		self.animar(animacionGolpeando)
 		self.ladrilloSeCae()
 		
@@ -78,7 +77,6 @@ object ralph inherits Personaje(nombre="ralph",
 	// mueve a la posicion x especificada y ejecuta una accion al llegar
 	method caminarAPosicionXyEjecutar(x, accion) {
 		self.detenerMovimiento()
-		self.callar()
 		const nuevaAnimacion = if(x < position.x()) animacionCaminandoIzquierda else  animacionCaminandoDerecha
 		self.animar(nuevaAnimacion)
 		self.moverAPosicionyHacerAccion(x, fila, 20, accion)		
@@ -86,13 +84,11 @@ object ralph inherits Personaje(nombre="ralph",
 	
 	method quedarseParado() {
 		self.detenerMovimiento()
-		self.callar()
 		self.animar(animacionParado)
 	}
 	
 	method subir() {
 		self.detenerMovimiento()
-		self.callar()
 		self.animar(animacionSubiendo)
 		self.moverAPosicionyHacerAccion(position.x(), 61, 20, {self.quedarseParado()})
 	}
@@ -107,15 +103,16 @@ object ralph inherits Personaje(nombre="ralph",
 	// Ralph decida que hacer:
 	// - protestar
 	// - golpear el piso
-	// TODO: mejorar mecanismo de decisión
 	method hacerRutina() {
+ 		// TODO: mejorar mecanismo de decisión
 		if(0.randomUpTo(2) < 1) 
 			self.golpear() 
 		else 
 			self.gritar("")
 			
 		game.schedule(1500, { 
-			caminandoALaIzquierda = (not caminandoALaIzquierda and position.x() >= 61) or (caminandoALaIzquierda and position.x()>25)
+			caminandoALaIzquierda = (not caminandoALaIzquierda and position.x() >= 61) 
+									or (caminandoALaIzquierda and position.x()>25)
 			const direccion = if(caminandoALaIzquierda) -1 else 1
 			const nuevaPosicionX = position.x() + distanciaEntreVentana * direccion
 			self.caminarAPosicionXyEjecutar(nuevaPosicionX, {self.hacerRutina()})

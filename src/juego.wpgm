@@ -10,60 +10,10 @@ program fixItFelix {
 	game.title("Fix It Felix Jr!")
 	game.width(100)
 	game.height(60)
-	game.cellSize(10)	
-  	game.boardGround("fondo/nivel-1.png")
-	game.addVisual(ralph)
-	game.addVisual(vida)
-	game.addVisual(score)
+	game.cellSize(10)
 	
-	
-	// agrego las ventanas para probar
-	game.addVisual(
-		new Ventana(
-			position = new Position(x = 30, y = 32)
-		)
-	)
-
-	game.addVisual(
-		new Ventana(
-			position = new Position(x = 39, y = 32)
-		)
-	)
-
-	game.addVisual(
-		new Ventana(
-			position = new Position(x = 48, y = 32)
-		)
-	)
-
-	game.addVisual(
-		new Ventana(
-			position = new Position(x = 57, y = 32)
-		)
-	)
-
-	game.addVisual(
-		new Ventana(
-			position = new Position(x = 66, y = 32)
-		)
-	)
-
-
-	game.addVisual(
-		new Ventana(
-			position = new Position(x = 30, y = 16)
-		)
-	)
-
-	const ventanaPrueba = new Ventana(
-			position = new Position(x = 30, y = 2)
-		)
-	game.addVisual(ventanaPrueba)
-	
-	
-	
-	keyboard.space().onPressDo({ ventanaPrueba.reparar() })
-	keyboard.backspace().onPressDo({ ventanaPrueba.romper() })
-	
+	keyboard.space().onPressDo({ juego.siguienteNivel() })
+ 	
+ 	juego.preparar()
 	juego.iniciar()
 }
