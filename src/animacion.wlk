@@ -3,7 +3,7 @@ import wollok.game.*
 class Animacion {
 	
 	// el nombre es requerido para poder deterner el evento automático
-	const property nombre
+	const property nombreAnimacion = "animacion_" + 0.randomUpTo(999999).toString()
 	const fotogramas = []
 	//velocidad en fotogramas por segundo
 	var property velocidad = 0
@@ -16,7 +16,6 @@ class Animacion {
 	
 	method image() = if(fotogramas.isEmpty()) "" else fotogramas.get(fotogramaActual)
 	
-	method nombreAnimacion() = "animacion_" + nombre
 	
 	// reinicia la secuencia de la animación
 	method resetear()  {
@@ -35,14 +34,14 @@ class Animacion {
 	method iniciar() {
 		if(velocidad != 0) {
 			animando = true
-			game.onTick(1000 / velocidad, self.nombreAnimacion(), { self.siguiente() })				
+			game.onTick(1000 / velocidad, nombreAnimacion, { self.siguiente() })				
 		}
 	}
 	
 	method detener() {
 		if(animando) {
 			animando = false
-			game.removeTickEvent(self.nombreAnimacion())			
+			game.removeTickEvent(nombreAnimacion)			
 		}
 	}
 	

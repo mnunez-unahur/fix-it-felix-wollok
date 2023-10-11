@@ -12,8 +12,7 @@ import Elementos.*
  */
  
  
-object ralph inherits Personaje(nombre="ralph",
-								animacion=new Animacion(nombre = "ralph-parado", 
+object ralph inherits Personaje(animacion=new Animacion(
 				  										velocidad=0,
   														fotogramas=["ralph/parado.png"]
   														), 
@@ -26,34 +25,34 @@ object ralph inherits Personaje(nombre="ralph",
 	const distanciaEntreVentana = 9
 	var caminandoALaIzquierda = true
 	
-	const  animacionParado = new Animacion(nombre = "ralph-parado", 
+	const  animacionParado = new Animacion( 
 				  						velocidad=0,
   										fotogramas=["ralph/parado.png"]
   								)
   
   
-	const  animacionGolpeando = new Animacion(nombre = "ralph-golpeando", 
+	const  animacionGolpeando = new Animacion( 
 				  						velocidad=6,
   										fotogramas=["ralph/pega-1.png", "ralph/pega-2.png"]
   								)
 
-	const  animacionCaminandoIzquierda = new Animacion(nombre = "ralph-camina-izquierda", 
+	const  animacionCaminandoIzquierda = new Animacion( 
 				  						velocidad=5,
   										fotogramas=["ralph/camina-izquierda-1.png", "ralph/camina-izquierda-2.png"]
   								)
 
 
-	const  animacionCaminandoDerecha = new Animacion(nombre = "ralph-camina-derecha", 
+	const  animacionCaminandoDerecha = new Animacion( 
 				  						velocidad=5,
   										fotogramas=["ralph/camina-derecha-1.png", "ralph/camina-derecha-2.png"]
   								)
 
-	const  animacionSubiendo = new Animacion(nombre = "ralph-sube", 
+	const  animacionSubiendo = new Animacion( 
 				  						velocidad=2,
   										fotogramas=["ralph/sube-1.png", "ralph/sube-2.png"]
   								)
 
-	const  animacionGritando = new Animacion(nombre = "ralph-grita", 
+	const  animacionGritando = new Animacion( 
 				  						velocidad=4,
   										fotogramas=["ralph/grita-1.png", "ralph/grita-2.png"]
   								)
@@ -110,7 +109,7 @@ object ralph inherits Personaje(nombre="ralph",
 		else 
 			self.gritar("")
 			
-		game.schedule(1500, { 
+		game.schedule(1000, { 
 			caminandoALaIzquierda = (not caminandoALaIzquierda and position.x() >= 61) 
 									or (caminandoALaIzquierda and position.x()>25)
 			const direccion = if(caminandoALaIzquierda) -1 else 1

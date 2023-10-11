@@ -4,7 +4,7 @@ import animacion.*
 import Elementos.*
 
 object juego {
-	var gameOver = false
+//	var gameOver = false
 	const stages = []
 	var stage = 0
 	
