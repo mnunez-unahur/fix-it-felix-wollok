@@ -35,30 +35,48 @@ object juego {
 	
 	  	game.boardGround("fondo/nivel-1.png")
 		stages.add(stage1)
-		stages.add(stage2)
-		stages.add(stage3)
+		stages.add(stage1)
+		stages.add(stage1)
 		
 		game.addVisual(ralph)
+		keyboard.space().onPressDo({ self.siguienteNivel() })
 		
 	}
 	
 
 	method stageActual() = stages.get(stage)
 	method iniciar() {
-		self.stageActual().iniciar()	
-		game.start()	
+		self.configurarVisual()
+		self.preparar()
+		self.mostrarImagenesIniciales()
+		game.schedule(2000,{self.iniciarNivel()})
+		game.start()
+	}	
+	method iniciarNivel(){
+		game.schedule(5000,{game.removeVisual(imagen33);self.stageActual().iniciar();})	
 		
 	}
+	method mostrarImagenesIniciales(){
+		inicio.mostrar()
+		keyboard.enter().onPressDo({game.removeVisual(inicio);imagen33.mostrar()})
+	}
+	method configurarVisual(){
+		game.title("Fix It Felix Jr!")
+		game.width(100)
+		game.height(60)
+		game.cellSize(10)
+	}
+
+		
 	
 	method siguienteNivel() {
 		self.stageActual().finalizar()
 		stage++
 		self.stageActual().iniciar()
 		
-		//TODO: cuando se finaliza el ultimo nivel se termina el juego
-		
-		
+		//TODO: cuando se finaliza el ultimo nivel se termina el juego	
 	}
+	
 }
 
 // representa una celda del tablero
@@ -106,6 +124,10 @@ class Tablero {
 	method esRangoValido(x, y) {
 		return (x >= 1 and x <= grilla.get(0).size()) and (y >=1 and y <= grilla.size())
 	}
+	method mostrarAtributos(){
+		game.addVisual(vida) //juego.vidas
+		//game.addVisual(score) //juego.score
+	}
 	
 	// devuelve la celda ubicada en la posición indicada del tablero
 	method celdaEn(x, y) {
@@ -137,6 +159,7 @@ class Tablero {
 	//muestra los componentes del tablero
 	method mostrar() {
 		self.mostrarVentanas()
+		self.mostrarAtributos()
 	}
 }
 
@@ -150,6 +173,7 @@ class Stage {
 		tablero.celdaEn(x, y).agregarVentana()
 		
 	}
+	method mostrar(){ game.addVisual(fondo) 
 	
 	// agrega múltiples ventanas en las coordinadas indicadas
 	// lista es una lista de coordenadas [[x,y], [x,y]...]

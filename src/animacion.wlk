@@ -51,3 +51,11 @@ class Animacion {
 	
 	
 }
+class Visual {
+	var property image
+	
+	method position() = game.at(0,0)
+	method mostrar(){ game.addVisual(self) }
+}
+const inicio = new Visual(image = "fondo/Captura4.JPG")
+const imagen33 = new Visual(image= "fondo/stage1.png")

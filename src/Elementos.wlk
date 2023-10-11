@@ -49,6 +49,8 @@ class Ladrillo {
 	}
 	
 }
+
+
 class Vida {
 	var posicion
 	var property vidasActuales 
@@ -65,6 +67,7 @@ class Vida {
 		}
 	}
 	method position() = posicion
+	
 	
 }											
 object vida inherits Vida (posicion=new Position(y=55, x=80),vidasActuales=3){ //prueba

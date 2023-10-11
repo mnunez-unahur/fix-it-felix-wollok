@@ -6,14 +6,7 @@ import Elementos.*
 
 
 program fixItFelix {
-	
-	game.title("Fix It Felix Jr!")
-	game.width(100)
-	game.height(60)
-	game.cellSize(10)
-	
-	keyboard.space().onPressDo({ juego.siguienteNivel() })
- 	
- 	juego.preparar()
+
 	juego.iniciar()
+	
 }
