@@ -1,6 +1,7 @@
 import wollok.game.*
 import personaje.*
 import animacion.*
+import Elementos.*
 /*
  * posiciones donde se detiene ralph
  * 25
@@ -57,11 +58,22 @@ object ralph inherits Personaje(nombre="ralph",
   										fotogramas=["ralph/grita-1.png", "ralph/grita-2.png"]
   								)
 
+
 	method golpear() {
 		self.detenerMovimiento()
 		self.callar()
 		self.animar(animacionGolpeando)
+		self.ladrilloSeCae()
+		
 	}
+	
+	method ladrilloSeCae(){ //ver como poner un objeto en la posicion x e y 
+		const ladrillo = new Ladrillo(posicion = position.down(8))
+		game.addVisual(ladrillo)
+		ladrillo.desplazarse()
+		
+	}
+	
 	
 	// mueve a la posicion x especificada y ejecuta una accion al llegar
 	method caminarAPosicionXyEjecutar(x, accion) {
@@ -115,3 +127,4 @@ object ralph inherits Personaje(nombre="ralph",
 
 
 }
+	
