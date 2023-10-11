@@ -1,12 +1,13 @@
 import wollok.game.*
 import ralph.*
 import animacion.*
-import ventana.*
 import juego.*
+import Elementos.*
+
 
 program fixItFelix {
-	game.title("Fix It Felix Jr!")
 	
+	game.title("Fix It Felix Jr!")
 	game.width(100)
 	game.height(60)
 	game.cellSize(10)
@@ -15,5 +16,4 @@ program fixItFelix {
  	
  	juego.preparar()
 	juego.iniciar()
-	
 }

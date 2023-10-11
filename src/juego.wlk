@@ -1,7 +1,8 @@
 import wollok.game.*
 import ralph.*
 import ventana.*
-
+import animacion.*
+import Elementos.*
 
 object juego {
 	var gameOver = false
@@ -47,6 +48,7 @@ object juego {
 	method iniciar() {
 		self.stageActual().iniciar()	
 		game.start()	
+		
 	}
 	
 	method siguienteNivel() {
