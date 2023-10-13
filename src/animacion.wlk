@@ -1,4 +1,5 @@
 import wollok.game.*
+import Elementos.*
 
 class Animacion {
 	
@@ -9,6 +10,7 @@ class Animacion {
 	var property velocidad = 0
 	var fotogramaActual = 0
 	var animando = false
+	var reproduccionContinua = true
 	
 	method agregarFotograma(img) {
 		fotogramas.add(img)
@@ -34,7 +36,15 @@ class Animacion {
 	method iniciar() {
 		if(velocidad != 0) {
 			animando = true
-			game.onTick(1000 / velocidad, nombreAnimacion, { self.siguiente() })				
+			game.onTick(1000 / velocidad, nombreAnimacion, {
+					 if (!reproduccionContinua and fotogramaActual == fotogramas.size()-1){
+					 	self.detener()
+					 	self.resetear()
+					 }else{
+					 	self.siguiente()
+					 }
+															
+			})				
 		}
 	}
 	
@@ -51,11 +61,32 @@ class Animacion {
 	
 	
 }
-class Visual {
-	var property image
+class Pantalla inherits Visual (position = game.at(0,0)){
+	var image
 	
-	method position() = game.at(0,0)
-	method mostrar(){ game.addVisual(self) }
+ 	override method image() = image
 }
-const inicio = new Visual(image = "fondo/Captura4.JPG")
-const imagen33 = new Visual(image= "fondo/stage1.png")
+
+
+/* 
+object inicio inherits Pantallas (position = game.at(0,0)){
+	override method image() = "fondo/Captura4.JPG"
+}
+object imgStage inherits Pantallas (position = game.at(0,0)){
+		override method image() = "fondo/stage1.png"
+}
+object imgStage2 inherits Pantallas (position = game.at(0,0)){
+		override method image() = "fondo/stage1.png"
+}
+*/
+
+
+
+
+
+
+
+
+
+
+

@@ -12,18 +12,19 @@ import Elementos.*
  */
  
  
-object ralph inherits Personaje(animacion=new Animacion(
+object ralph inherits PersonajeAnimado (animacion=new Animacion(
 				  										velocidad=0,
   														fotogramas=["ralph/parado.png"]
   														), 
-  								position=new Position(y=47, x=43)) {
+  								position=new Position(y=47, x=43),
+  								velocidad = 20 )
+  								 
+  								 {
   									
-  									
-//	const limiteIzquierdo = 25
-//	const limiteDerecho = 61
-	const fila = 47
+	const fila = 47 // solo se mueve en la fila 47
 	const distanciaEntreVentana = 9
 	var caminandoALaIzquierda = true
+	var detenido = true
 	
 	const  animacionParado = new Animacion( 
 				  						velocidad=0,
@@ -66,9 +67,13 @@ object ralph inherits Personaje(animacion=new Animacion(
 	}
 	
 	method ladrilloSeCae(){ //ver como poner un objeto en la posicion x e y 
-		const ladrillo = new Ladrillo(posicion = position.down(8))
-		game.addVisual(ladrillo)
-		ladrillo.desplazarse()
+		const ladrillo = new Ladrillo (position = new Position(x = self.coordenadaActualX() + 5,
+															   y = self.coordenadaActualY() - 8),velocidad = 10)
+		
+										
+		ladrillo.mostrar()
+		ladrillo.moverAPosicionyHacerAccion(self.coordenadaActualX()+5, 0, {ladrillo.ocultar()})
+
 		
 	}
 	
@@ -76,9 +81,9 @@ object ralph inherits Personaje(animacion=new Animacion(
 	// mueve a la posicion x especificada y ejecuta una accion al llegar
 	method caminarAPosicionXyEjecutar(x, accion) {
 		self.detenerMovimiento()
-		const nuevaAnimacion = if(x < position.x()) animacionCaminandoIzquierda else  animacionCaminandoDerecha
+		const nuevaAnimacion = if(x < self.coordenadaActualX()) animacionCaminandoIzquierda else  animacionCaminandoDerecha
 		self.animar(nuevaAnimacion)
-		self.moverAPosicionyHacerAccion(x, fila, 20, accion)		
+		self.moverAPosicionyHacerAccion(x, fila, accion)		
 	}
 	
 	method quedarseParado() {
@@ -89,13 +94,13 @@ object ralph inherits Personaje(animacion=new Animacion(
 	method subir() {
 		self.detenerMovimiento()
 		self.animar(animacionSubiendo)
-		self.moverAPosicionyHacerAccion(position.x(), 61, 20, {self.quedarseParado()})
+		self.moverAPosicionyHacerAccion(self.coordenadaActualX(), 61, {self.quedarseParado()})
 	}
 
-	method gritar(texto) {
+	method gritar() {
 		self.detenerMovimiento()
 		self.animar(animacionGritando)
-		self.hablar(texto)
+
 	}
 	
 	// este método hace que cada vez que llega a una ventana
@@ -107,18 +112,31 @@ object ralph inherits Personaje(animacion=new Animacion(
 		if(0.randomUpTo(2) < 1) 
 			self.golpear() 
 		else 
-			self.gritar("")
-			
+			self.gritar()
+		
+		detenido = false 
 		game.schedule(1000, { 
-			caminandoALaIzquierda = (not caminandoALaIzquierda and position.x() >= 61) 
-									or (caminandoALaIzquierda and position.x()>25)
-			const direccion = if(caminandoALaIzquierda) -1 else 1
-			const nuevaPosicionX = position.x() + distanciaEntreVentana * direccion
-			self.caminarAPosicionXyEjecutar(nuevaPosicionX, {self.hacerRutina()})
+			
+			if(!detenido){
+				caminandoALaIzquierda = (not caminandoALaIzquierda and self.coordenadaActualX() >= 61) 
+									or (caminandoALaIzquierda and self.coordenadaActualX() >25)
+				const direccion = if(caminandoALaIzquierda) -1 else 1
+				const nuevaPosicionX = self.coordenadaActualX() + distanciaEntreVentana * direccion
+				self.caminarAPosicionXyEjecutar(nuevaPosicionX, {self.hacerRutina()})
+			}
+			
+			
 			
 		})
 	}
-	
+	method irAPosicionInicial(){
+		self.position(new Position(x = 43, y = fila))
+	}
+	method finalizarRutina(){
+		detenido = true
+		self.quedarseParado()
+		self.irAPosicionInicial()
+	}
 	
 
 

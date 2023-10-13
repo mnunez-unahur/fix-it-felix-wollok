@@ -26,36 +26,14 @@ class Ventana {
 
 }
 
-class Ladrillo {
-	var posicion
-
-	
-	method image() = "ladrillo.png"
-	method position() = posicion
-	
-
-	method desplazarse(){
-		//agregar la colision game.onCollideDo(self,{algo => algo.teChocoElLadrillo()})
-		posicion = posicion.right(5)
-		game.onTick(80,"ladrillo",{self.moverseAbajo()})
-		
-	}
-	method moverseAbajo(){
-		posicion = posicion.down(1)
-		if(posicion.y() == 0 ){
-			game.removeTickEvent("ladrillo")
-			game.removeVisual(self)
-		}
-	}
+class Ladrillo inherits PersonajeInanimado (image= "ladrillo.png") {
 	
 }
-
-
-class Vida {
-	var posicion
-	var property vidasActuales 
+											
+object vida inherits Visual (position=new Position(y=55, x=80 )){ 
+	var property vidasActuales = 3
 	
-	method image(){
+	override method image(){
 		if (vidasActuales == 3){
 			return "fondo/vida3.png"
 		}else if (vidasActuales ==2 ){
@@ -66,13 +44,15 @@ class Vida {
 			return "fondo/sin vida.png"
 		}
 	}
-	method position() = posicion
 	
-	
-}											
-object vida inherits Vida (posicion=new Position(y=55, x=80),vidasActuales=3){ //prueba
-	
+	method perderVida(){
+		vidasActuales = 0.max(vidasActuales-1)
+	}
+	method ganarVida(){
+		vidasActuales = 3.min(vidasActuales+1)
+	}
 }
+
 class Score{ // ver como hacer que sume el puntaje y con que criterio
 	var posicion
 	var property puntajeActual 
@@ -88,6 +68,16 @@ object score inherits Score (posicion=new Position(y=55, x=05),puntajeActual=0){
 class Edificio {
 	const property image
 	const property position = new Position(x=27, y=0)
+	
+}
+
+class Visual {
+	//var image
+	var property position
+	
+	method image()
+	method mostrar(){ 	game.addVisual(self) }
+	method ocultar(){	game.removeVisual(self)}
 	
 }
 

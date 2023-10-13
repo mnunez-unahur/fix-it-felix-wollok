@@ -1,8 +1,4 @@
-import wollok.game.*
-import ralph.*
-import animacion.*
 import juego.*
-import Elementos.*
 
 
 program fixItFelix {
@@ -10,3 +6,12 @@ program fixItFelix {
 	juego.iniciar()
 	
 }
+
+//Implementar diferentes tipos de ventana en el mismo nivel
+//Movimiento entre ventanas
+//corregir desfasaje de felix en la ventana
+//imagenes de felix izquierda
+//imagenes de feliz saltando
+//colision de felix y ladrillo
+
+ 

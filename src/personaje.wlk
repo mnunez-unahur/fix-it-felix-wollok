@@ -1,10 +1,11 @@
 import wollok.game.*
+import Elementos.*
 
 import animacion.*
 
-class PersonajeTransladable {
-	var property position
+class PersonajeTransladable inherits Visual {
 	var enMovimiento = false
+	var property velocidad
 	
 	//genera un nombre único para el objeto
 	// esto es utilizado por los eventos automaticos
@@ -12,7 +13,7 @@ class PersonajeTransladable {
 	
 	// Mueve a la coordenada indicada y luego ejecuta una acción
 	// TODO: refactorizar
-	method moverAPosicionyHacerAccion(x, y, velocidad, accion) {
+	method moverAPosicionyHacerAccion(x, y,accion) {
 		if(enMovimiento) {
 			self.detenerMovimiento()
 		}
@@ -22,19 +23,35 @@ class PersonajeTransladable {
 		game.onTick(1000 / velocidad, nombreEventoMovimiento , {
 			
 			// legué a mi destino
-			if(position.x() == x && position.y() == y) {
+			if(self.coordenadaActualX() == x && self.coordenadaActualY() == y) {
 				self.detenerMovimiento()
 				accion.apply()
 			}
-			else {
-			const posX = position.x() + if(position.x() > x) -1 else if(position.x() < x) 1 else 0
-			const posY = position.y() + if(position.y() > y) -1 else if(position.y() < y) 1 else 0
-			
-			position = new Position(x=posX, y=posY)
+			else {	
+			self.position(new Position(x= self.coordenadaActualX() + self.diferenciaDePosicionX(x), y=self.coordenadaActualY() + self.diferenciaDePosicionY(y)))
 				
 			}
 		})				
 		
+	}
+	method moverAPosicion(x,y){
+		self.moverAPosicionyHacerAccion(x,y,{})
+	}
+	method diferenciaDePosicionX(x){
+		return if(self.coordenadaActualX() > x) - 1 
+			else if(self.coordenadaActualX() < x) 1 
+			else 0
+	}
+	method diferenciaDePosicionY(y){
+		return if(self.coordenadaActualY() > y) - 1 
+			else if(self.coordenadaActualY()  < y) 1 
+			else 0
+	}
+	method coordenadaActualX(){
+		return self.position().x()
+	}
+	method coordenadaActualY(){
+		return self.position().y()
 	}
 	
 	method detenerMovimiento() {
@@ -45,10 +62,15 @@ class PersonajeTransladable {
 	}	
 }
 
+class PersonajeInanimado inherits PersonajeTransladable{
+	var property image
+	
+}
+
 class PersonajeAnimado inherits PersonajeTransladable {
 	var animacion 
 	
-	method image() = animacion.image()
+	override method image() = animacion.image()
 	
 	// inicia la animación actual
 	method animar() {
@@ -71,21 +93,9 @@ class PersonajeAnimado inherits PersonajeTransladable {
 		animacion.detener()		
 		animacion.resetear()
 	}	
+	method siguienteFotograma(){
+		animacion.siguiente()
+	}
 }
 
 
-class Personaje inherits PersonajeAnimado {	
-	var text = ""
-	
-	method hablar(mensaje) {
-		text = mensaje
-	}
-	
-	method callar() {
-		text = ""
-	}
-
-	method text() = text
-	
-	
-}
