@@ -7,6 +7,7 @@ class PersonajeTransladable inherits Visual {
 	var enMovimiento = false
 	var property velocidad
 	
+	
 	//genera un nombre único para el objeto
 	// esto es utilizado por los eventos automaticos
 	const nombreEventoMovimiento= "movimiento-personaje-" + 0.randomUpTo(100000)
