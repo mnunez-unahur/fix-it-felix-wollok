@@ -3,15 +3,14 @@ import personaje.*
 import animacion.*
 import ralph.*
 
-class Ventana {
-	var property position
+class Ventana inherits Visual{
 	var salud = 0
 	
 	const  animacion = new Animacion(	velocidad=0,
   										fotogramas=["ventana/1/rota-2.png", "ventana/1/rota-1.png", "ventana/1/sana.png"]
   								)	
 
-	method image() = animacion.image()
+	override method image() = animacion.image()
 	method salud() = salud
 	
 	method reparar() {
@@ -79,6 +78,16 @@ class Visual {
 	method mostrar(){ 	game.addVisual(self) }
 	method ocultar(){	game.removeVisual(self)}
 	
+}
+
+class Nube inherits PersonajeInanimado(image = "varios/nube.png", velocidad=15) {
+	method mover() {
+		if(self.coordenadaActualX() < 0) {
+			self.moverAPosicionyHacerAccion(110, self.coordenadaActualY(), {self.mover()})
+		} else {
+			self.moverAPosicionyHacerAccion(-15, self.coordenadaActualY(), {self.mover()})
+		}
+	}
 }
 
 
