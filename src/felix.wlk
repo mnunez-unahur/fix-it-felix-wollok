@@ -14,8 +14,6 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 	var mirandoAlaDerecha = true
 	var saltando = false
 
-	
-	
 	const  animacionParado = new Animacion( 
 				  						velocidad=0,
   										fotogramas=["felix/derecha-1.png"]
@@ -73,14 +71,17 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   													]
   								)
 
+	method saltando() = saltando
   								
   	method reparar(ventana){
-  		self.detenerMovimiento()
-		self.animar(self.animacionReparando())
-		game.schedule(500,{
-			ventana.reparar()
-			self.resetearAnimacion()
-		})	
+  		if(!saltando) {
+	  		self.detenerMovimiento()
+			self.animar(self.animacionReparando())
+			game.schedule(500,{
+				ventana.reparar()
+				self.resetearAnimacion()
+			})	  			
+  		}
   	}
   	
   	method animacionReparando() {

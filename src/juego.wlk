@@ -14,6 +14,7 @@ object juego {
 	var iniciado  = false
 	
 	method stageActual() = stages.get(stage)
+	method tableroActual() = self.tableroActual()
 
 	method preparar() {
 		const stage1 = new Stage(fondo = new Edificio(image="niveles/edificio-1.png"), 
@@ -40,10 +41,12 @@ object juego {
 		
 //		keyboard.space().onPressDo({ self.siguienteNivel();})// despues se va.
 		keyboard.q().onPressDo({
-								const x= felix.coordenadaActualX()
-								const y= felix.coordenadaActualY()
-								if(self.stageActual().tablero().celdaEnPosicionAbsoluta(x,y).tieneVentana()){
-									felix.reparar(self.stageActual().tablero().celdaEnPosicionAbsoluta(x,y).ventana());
+								if(!felix.saltando()) {
+									const x= felix.coordenadaActualX()
+									const y= felix.coordenadaActualY()
+//									if(self.tableroActual().celdaEnPosicionAbsoluta(x,y).tieneVentana()){
+//										felix.reparar(self.tableroActual().celdaEnPosicionAbsoluta(x,y).ventana());
+//									}
 								}
 		})
 		keyboard.right().onPressDo({felix.moverA(felix.coordenadaActualX()+9,felix.coordenadaActualY())})
@@ -59,13 +62,22 @@ object juego {
 		game.width(100)
 		game.height(60)
 		game.cellSize(10)
+		
+		// pongo un par de nubes
+		const nube1 = new Nube(position = new Position(x=-20, y=40))
+		nube1.mostrar()
+		nube1.mover()
+		
+		const nube2 = new Nube(position = new Position(x=-20, y=20), velocidad=10)
+		nube2.mostrar()
+		nube2.mover()			
+		
 	}
 	
 	method iniciar() {
 		self.configurarVisual()
 		self.preparar()
 		self.mostrarImagenesIniciales()
-		//game.schedule(0,{self.iniciarNivel()})
 		game.start()
 	}
 	
@@ -97,7 +109,8 @@ object juego {
 // cada celda puede contener o no ventana
 class Celda{
 	var ventana = null
-	var property position
+	const position
+	const posicionRelativa
 	var property tieneLadrillo = false
 	var property estaFelix = false
 	
@@ -113,25 +126,25 @@ class Tablero {
 	// la grilla representa las posisiones válidas del tablero
 	const grilla = [
 		[
-			new Celda(position = new Position(x = 30, y = 2)),
-			new Celda(position = new Position(x = 39, y = 2)),
-			new Celda(position = new Position(x = 48, y = 2)),
-			new Celda(position = new Position(x = 57, y = 2)),
-			new Celda(position = new Position(x = 66, y = 2))
+			new Celda(position = new Position(x = 30, y = 2), posicionRelativa = new Position(x=1, y=1)),
+			new Celda(position = new Position(x = 39, y = 2), posicionRelativa = new Position(x=1, y=1)),
+			new Celda(position = new Position(x = 48, y = 2), posicionRelativa = new Position(x=1, y=1)),
+			new Celda(position = new Position(x = 57, y = 2), posicionRelativa = new Position(x=1, y=1)),
+			new Celda(position = new Position(x = 66, y = 2), posicionRelativa = new Position(x=1, y=1))
 		],
 		[
-			new Celda(position = new Position(x = 30, y = 16)),
-			new Celda(position = new Position(x = 39, y = 16)),
-			new Celda(position = new Position(x = 48, y = 16)),
-			new Celda(position = new Position(x = 57, y = 16)),
-			new Celda(position = new Position(x = 66, y = 16))
+			new Celda(position = new Position(x = 30, y = 16), posicionRelativa = new Position(x=1, y=1)),
+			new Celda(position = new Position(x = 39, y = 16), posicionRelativa = new Position(x=1, y=1)),
+			new Celda(position = new Position(x = 48, y = 16), posicionRelativa = new Position(x=1, y=1)),
+			new Celda(position = new Position(x = 57, y = 16), posicionRelativa = new Position(x=1, y=1)),
+			new Celda(position = new Position(x = 66, y = 16), posicionRelativa = new Position(x=1, y=1))
 		],
 		[
-			new Celda(position = new Position(x = 30, y = 32)),
-			new Celda(position = new Position(x = 39, y = 32)),
-			new Celda(position = new Position(x = 48, y = 32)),
-			new Celda(position = new Position(x = 57, y = 32)),
-			new Celda(position = new Position(x = 66, y = 32))
+			new Celda(position = new Position(x = 30, y = 32), posicionRelativa = new Position(x=1, y=1)),
+			new Celda(position = new Position(x = 39, y = 32), posicionRelativa = new Position(x=1, y=1)),
+			new Celda(position = new Position(x = 48, y = 32), posicionRelativa = new Position(x=1, y=1)),
+			new Celda(position = new Position(x = 57, y = 32), posicionRelativa = new Position(x=1, y=1)),
+			new Celda(position = new Position(x = 66, y = 32), posicionRelativa = new Position(x=1, y=1))
 		]
 	]
 	//dada una ubicacion del juego x,y retorna la celda del tablero correspondiente
@@ -145,7 +158,7 @@ class Tablero {
 		return (x >= 1 and x <= grilla.get(0).size()) and (y >=1 and y <= grilla.size())
 	}
 	
-	// devuelve la celda ubicada en la posición indicada del tablero
+	// dada una coordenada válida del tablero, devuelve la celda de dicha coordenada
 	method celdaEn(x, y) {
 		if(!self.esRangoValido(x, y)) {
 			self.error("las coordenadas quedan fuera del tablero")
@@ -153,7 +166,6 @@ class Tablero {
 		return grilla.get(y-1).get(x-1)		
 	}
 	
-	// devuelve la posición absoluta de la coordinada del tablero
 	method posicionDeCoordenadas(x, y) = self.celdaEn(x, y).position()
 	
 	method celdasConVentanas() = grilla.flatten().filter({c => c.ventana() != null})
@@ -169,13 +181,19 @@ class Tablero {
 	
 	//Oculta las ventanas del stage si están visibles
 	method ocultarVentanas() {
-		self.ventanas().forEach({v => if(game.hasVisual(v)) game.removeVisual(v)})		
+		self.ventanas().forEach({v => if(game.hasVisual(v)) v.mostrar()})		
+	}
+	
+	// agrega sensores en las celdas para detectar si felix ingresa
+	method agregarSensores() {
+		
 	}
 	
 	//muestra los componentes del tablero
 	method mostrar() {
 		self.mostrarVentanas()
 	}
+	
 	
 	
 }
@@ -207,7 +225,6 @@ class Stage {
 	
 	method ocultar() {
 		game.removeVisual(fondo)
-//		ralph.detenerAnimacion()
 		ralph.ocultar()
 		felix.ocultar()
 		
