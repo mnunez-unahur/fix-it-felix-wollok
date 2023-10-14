@@ -10,7 +10,7 @@ class Animacion {
 	var property velocidad = 0
 	var fotogramaActual = 0
 	var animando = false
-	var reproduccionContinua = true
+	const reproduccionContinua = true
 	
 	method agregarFotograma(img) {
 		fotogramas.add(img)
@@ -39,7 +39,7 @@ class Animacion {
 			game.onTick(1000 / velocidad, nombreAnimacion, {
 					 if (!reproduccionContinua and fotogramaActual == fotogramas.size()-1){
 					 	self.detener()
-					 	self.resetear()
+//					 	self.resetear()
 					 }else{
 					 	self.siguiente()
 					 }
