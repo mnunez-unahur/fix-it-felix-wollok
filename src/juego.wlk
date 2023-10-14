@@ -14,7 +14,8 @@ object juego {
 	var iniciado  = false
 	
 	method stageActual() = stages.get(stage)
-	method tableroActual() = self.tableroActual()
+	method tableroActual() = self.stageActual().tablero()
+	method celdaActiva() = self.tableroActual().celdaActiva()
 
 	method preparar() {
 		const stage1 = new Stage(fondo = new Edificio(image="niveles/edificio-1.png"), 
@@ -42,17 +43,39 @@ object juego {
 //		keyboard.space().onPressDo({ self.siguienteNivel();})// despues se va.
 		keyboard.q().onPressDo({
 								if(!felix.saltando()) {
-									const x= felix.coordenadaActualX()
-									const y= felix.coordenadaActualY()
-//									if(self.tableroActual().celdaEnPosicionAbsoluta(x,y).tieneVentana()){
-//										felix.reparar(self.tableroActual().celdaEnPosicionAbsoluta(x,y).ventana());
-//									}
+									if(self.celdaActiva().tieneVentana()){
+										felix.reparar(self.celdaActiva().ventana());
+									}
 								}
 		})
-		keyboard.right().onPressDo({felix.moverA(felix.coordenadaActualX()+9,felix.coordenadaActualY())})
-		keyboard.left().onPressDo({felix.moverA(felix.coordenadaActualX()-9,felix.coordenadaActualY())})
-		keyboard.up().onPressDo({felix.moverA(felix.coordenadaActualX(),16)})
-		keyboard.down().onPressDo({felix.moverA(felix.coordenadaActualX(),16)})
+		keyboard.right().onPressDo({
+			if(!felix.saltando()) {
+				felix.moverA(self.tableroActual().right().position().x(),felix.coordenadaActualY())
+			}
+		})
+		keyboard.left().onPressDo({
+			if(!felix.saltando()) {
+				felix.moverA(self.tableroActual().left().position().x(),felix.coordenadaActualY())	
+			}
+		})
+		
+		keyboard.up().onPressDo({
+			if(!felix.saltando()) {
+				felix.moverA(felix.coordenadaActualX(), self.tableroActual().up().position().y())
+			}
+		})
+		
+		keyboard.down().onPressDo({
+			if(!felix.saltando()) {
+				felix.moverA(felix.coordenadaActualX(), self.tableroActual().down().position().y())
+			}
+		})
+
+
+		
+//		keyboard.left().onPressDo({felix.moverA(felix.coordenadaActualX()-9,felix.coordenadaActualY())})
+//		keyboard.up().onPressDo({felix.moverA(felix.coordenadaActualX(),16)})
+//		keyboard.down().onPressDo({felix.moverA(felix.coordenadaActualX(),16)})
 		vida.mostrar()
 		
 	}
@@ -81,20 +104,18 @@ object juego {
 		game.start()
 	}
 	
-	
-	
 	method mostrarImagenesIniciales(){
 		const inicio = new Pantalla(image = "fondo/Captura4.JPG")
 		inicio.mostrar()
-		keyboard.enter().onPressDo({if(!iniciado){
-									inicio.ocultar();
-								   	self.stageActual().iniciar()
-								   	iniciado = true
-								   	}})
+		keyboard.enter().onPressDo({
+			if(!iniciado){
+				inicio.ocultar();
+			   	self.stageActual().iniciar()
+			   	iniciado = true
+		   	}
+	   	})
 									
 	}
-	
-
 	
 	method siguienteNivel() {
 		self.stageActual().finalizar()
@@ -109,8 +130,8 @@ object juego {
 // cada celda puede contener o no ventana
 class Celda{
 	var ventana = null
-	const position
-	const posicionRelativa
+	const property position
+	const property posicionRelativa
 	var property tieneLadrillo = false
 	var property estaFelix = false
 	
@@ -125,50 +146,42 @@ class Celda{
 class Tablero {
 	// la grilla representa las posisiones válidas del tablero
 	const grilla = [
-		[
-			new Celda(position = new Position(x = 30, y = 2), posicionRelativa = new Position(x=1, y=1)),
-			new Celda(position = new Position(x = 39, y = 2), posicionRelativa = new Position(x=1, y=1)),
-			new Celda(position = new Position(x = 48, y = 2), posicionRelativa = new Position(x=1, y=1)),
-			new Celda(position = new Position(x = 57, y = 2), posicionRelativa = new Position(x=1, y=1)),
-			new Celda(position = new Position(x = 66, y = 2), posicionRelativa = new Position(x=1, y=1))
-		],
-		[
-			new Celda(position = new Position(x = 30, y = 16), posicionRelativa = new Position(x=1, y=1)),
-			new Celda(position = new Position(x = 39, y = 16), posicionRelativa = new Position(x=1, y=1)),
-			new Celda(position = new Position(x = 48, y = 16), posicionRelativa = new Position(x=1, y=1)),
-			new Celda(position = new Position(x = 57, y = 16), posicionRelativa = new Position(x=1, y=1)),
-			new Celda(position = new Position(x = 66, y = 16), posicionRelativa = new Position(x=1, y=1))
-		],
-		[
-			new Celda(position = new Position(x = 30, y = 32), posicionRelativa = new Position(x=1, y=1)),
-			new Celda(position = new Position(x = 39, y = 32), posicionRelativa = new Position(x=1, y=1)),
-			new Celda(position = new Position(x = 48, y = 32), posicionRelativa = new Position(x=1, y=1)),
-			new Celda(position = new Position(x = 57, y = 32), posicionRelativa = new Position(x=1, y=1)),
-			new Celda(position = new Position(x = 66, y = 32), posicionRelativa = new Position(x=1, y=1))
-		]
+		new Celda(position = new Position(x = 30, y = 2), posicionRelativa = new Position(x=1, y=1)),
+		new Celda(position = new Position(x = 39, y = 2), posicionRelativa = new Position(x=2, y=1)),
+		new Celda(position = new Position(x = 48, y = 2), posicionRelativa = new Position(x=3, y=1)),
+		new Celda(position = new Position(x = 57, y = 2), posicionRelativa = new Position(x=4, y=1)),
+		new Celda(position = new Position(x = 66, y = 2), posicionRelativa = new Position(x=5, y=1)),
+		new Celda(position = new Position(x = 30, y = 16), posicionRelativa = new Position(x=1, y=2)),
+		new Celda(position = new Position(x = 39, y = 16), posicionRelativa = new Position(x=2, y=2)),
+		new Celda(position = new Position(x = 48, y = 16), posicionRelativa = new Position(x=3, y=2)),
+		new Celda(position = new Position(x = 57, y = 16), posicionRelativa = new Position(x=4, y=2)),
+		new Celda(position = new Position(x = 66, y = 16), posicionRelativa = new Position(x=5, y=2)),
+		new Celda(position = new Position(x = 30, y = 32), posicionRelativa = new Position(x=1, y=3)),
+		new Celda(position = new Position(x = 39, y = 32), posicionRelativa = new Position(x=2, y=3)),
+		new Celda(position = new Position(x = 48, y = 32), posicionRelativa = new Position(x=3, y=3)),
+		new Celda(position = new Position(x = 57, y = 32), posicionRelativa = new Position(x=4, y=3)),
+		new Celda(position = new Position(x = 66, y = 32), posicionRelativa = new Position(x=5, y=3))
 	]
-	//dada una ubicacion del juego x,y retorna la celda del tablero correspondiente
-	method celdaEnPosicionAbsoluta(x,y){
-			return
-			grilla.flatten().find({c => c.position().x() == x and
-										c.position().y() == y
-									})}
+	
 	
 	method esRangoValido(x, y) {
-		return (x >= 1 and x <= grilla.get(0).size()) and (y >=1 and y <= grilla.size())
+		return grilla.any({c => c.posicionRelativa().x() == x && c.posicionRelativa().y() == y})
 	}
 	
 	// dada una coordenada válida del tablero, devuelve la celda de dicha coordenada
-	method celdaEn(x, y) {
+	// x e y son las posiciones relativas de la celda
+	method celda(x, y) {
 		if(!self.esRangoValido(x, y)) {
 			self.error("las coordenadas quedan fuera del tablero")
 		}
-		return grilla.get(y-1).get(x-1)		
+		return grilla.find({c => c.posicionRelativa().x() == x && c.posicionRelativa().y() == y})
 	}
 	
-	method posicionDeCoordenadas(x, y) = self.celdaEn(x, y).position()
+	//devuelve la posicion Absoluta de la celda especificada
+	// x e y son las posiciones relativas de la celda
+//	method posicionAbsolutaDeCelda(x, y) = self.celda(x, y).position()
 	
-	method celdasConVentanas() = grilla.flatten().filter({c => c.ventana() != null})
+	method celdasConVentanas() = grilla.filter({c => c.ventana() != null})
 	
 	// devuelve la lista de ventanas del tablero
 	method ventanas() {
@@ -194,7 +207,83 @@ class Tablero {
 		self.mostrarVentanas()
 	}
 	
+	// indica la celda en la cual se encuentra felix
+	method celdaActiva() {
+		return grilla.find({c => self.estaFelixAca(c.position().x(), c.position().y())})
+	}
 	
+	// indica si en la posicion absoluta actual se encuentra felix
+	method estaFelixAca(x, y) {
+//		console.println("x: " + x + " y: " + y)
+		return x == felix.coordenadaActualX() && y == felix.coordenadaActualY()
+	}
+	
+	// indica cual es la útima fila (relativa) del tablero
+	method ultimaFila() {
+		return grilla.max({c => c.posicionRelativa().y()})
+	}
+	
+	// indica cual es la útima columna (relativa) del tablero
+	method ultimaColumna() {
+		return grilla.max({c => c.posicionRelativa().x()})
+	}
+	
+	method esPrimeraColumna(celda) {
+		return celda.posicionRelativa().x() == 1
+	}
+
+	method esPrimeraFila(celda) {
+		return celda.posicionRelativa().y() == 1
+	}
+
+	method esUltimaColumna(celda) {
+		return celda == self.ultimaColumna()
+	}
+
+	method esUltimaFila(celda) {
+		return celda == self.ultimaFila()
+	}
+
+	// devuelve la celda a la izquierda de la actual
+	// si la celda actual es la primera, la devuelve
+	method left() {
+		if(self.esPrimeraColumna(self.celdaActiva())) {
+			return self.celdaActiva()
+		} else {
+			return grilla.find({c => c.posicionRelativa().x() == self.celdaActiva().posicionRelativa().x() - 1})
+		}
+	}
+
+	// devuelve la celda a la derecha de la actual
+	// si la celda actual es la ultima, la devuelve
+	method right() {
+		if(self.esUltimaColumna(self.celdaActiva())) {
+			return self.celdaActiva()
+		} else {
+			return grilla.find({c => c.posicionRelativa().x() == self.celdaActiva().posicionRelativa().x() + 1})
+		}
+	}
+
+	// devuelve la celda que esta arriba de la actual
+	// si la celda actual es la ultima, la devuelve
+	method up() {
+		if(self.esUltimaFila(self.celdaActiva())) {
+			return self.celdaActiva()
+		} else {
+			return grilla.find({c => c.posicionRelativa().y() == self.celdaActiva().posicionRelativa().y() + 1})
+		}
+	}
+
+	// devuelve la celda que esta abajo de la actual
+	// si la celda actual es la primera, la devuelve
+	method down() {
+		if(self.esPrimeraFila(self.celdaActiva())) {
+			return self.celdaActiva()
+		} else {
+			return grilla.find({c => c.posicionRelativa().y() == self.celdaActiva().posicionRelativa().y() - 1})
+		}
+	}
+
 	
 }
 
@@ -206,7 +295,7 @@ class Stage {
 	
 	// agrega una ventana en la celda x y del tablero
 	method agregarVentanaEn(x,y) {
-		tablero.celdaEn(x, y).agregarVentana()
+		tablero.celda(x, y).agregarVentana()
 		
 	}
 	method tablero() = tablero

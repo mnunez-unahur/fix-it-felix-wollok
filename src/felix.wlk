@@ -9,7 +9,7 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   														fotogramas=["felix/derecha-parado.png"]
   														), 
   									  position=new Position(x = 30, y = 2),
-  								      velocidad = 30 ){
+  								      velocidad = 40 ){
 	
 	var mirandoAlaDerecha = true
 	var saltando = false

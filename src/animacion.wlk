@@ -68,19 +68,6 @@ class Pantalla inherits Visual (position = game.at(0,0)){
 }
 
 
-/* 
-object inicio inherits Pantallas (position = game.at(0,0)){
-	override method image() = "fondo/Captura4.JPG"
-}
-object imgStage inherits Pantallas (position = game.at(0,0)){
-		override method image() = "fondo/stage1.png"
-}
-object imgStage2 inherits Pantallas (position = game.at(0,0)){
-		override method image() = "fondo/stage1.png"
-}
-*/
-
-
 
 
 
