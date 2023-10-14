@@ -38,7 +38,7 @@ object juego {
 		stages.add(stage1)
 		stages.add(stage2)
 		
-		keyboard.space().onPressDo({ self.siguienteNivel();})// despues se va.
+//		keyboard.space().onPressDo({ self.siguienteNivel();})// despues se va.
 		keyboard.q().onPressDo({
 								const x= felix.coordenadaActualX()
 								const y= felix.coordenadaActualY()
@@ -207,7 +207,7 @@ class Stage {
 	
 	method ocultar() {
 		game.removeVisual(fondo)
-		ralph.detenerAnimacion()
+//		ralph.detenerAnimacion()
 		ralph.ocultar()
 		felix.ocultar()
 		
