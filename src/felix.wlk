@@ -13,6 +13,8 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 	
 	var mirandoAlaDerecha = true
 	var saltando = false
+	var perdiendoVida = false
+	const sensores = []
 
 	const  animacionParado = new Animacion( 
 				  						velocidad=0,
@@ -71,6 +73,15 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   													]
   								)
 
+	method initialize() {
+		sensores.add(new Sensor(position = self.position()))
+		sensores.add(new Sensor(position = self.position()))
+		sensores.add(new Sensor(position = self.position()))
+		self.actualizarSensores()
+		
+	}
+
+
 	method saltando() = saltando
   								
   	method reparar(ventana){
@@ -94,17 +105,59 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   	method animacionCayendo() {
   		return if(mirandoAlaDerecha) animacionCayendoDerecha else animacionCayendoIzquierda
   	}
+  	
+  	override method mostrar() {
+  		super()
+		game.whenCollideDo(self, { c => if(c.haceDanio()) self.perderVida()  }) 
+		self.mostrarSensores()
+		self.activarSensores()
+  	}
+  	
+  	override method ocultar() {
+  		super()
+  		self.ocultarSensores()
+  	}
+  	
+  	method mostrarSensores() {
+		sensores.forEach({s => s.mostrar()})
+  	}
+  	method activarSensores() {
+		sensores.forEach({s => game.whenCollideDo(s, { c => if(c.haceDanio()) self.perderVida()  })})
+  	}
+  	
+  	method ocultarSensores() {
+		sensores.forEach({s => s.ocultar()})  		
+  	}
+  	
+  	method perderVida() {
+  		if(!perdiendoVida) {
+	  		perdiendoVida = true
+	  		vida.perderVida()
+	  		// por un segundo no pierde mas vida
+	  		// TODO: agregar animacion
+	  		game.schedule(1000, {
+		  		perdiendoVida = false
+	  		})
+  		}
+  	}
 
+	method actualizarSensores() {
+		var pos = self.position().up(3)
+		sensores.forEach({s => s.position(pos); pos = pos.up(3)})
+	}
   	
   	method moverA(x,y){
   		if(!saltando) {
+  			self.ocultarSensores()
 	  		mirandoAlaDerecha = x >= self.coordenadaActualX()
 	  		saltando = true
 			self.animar(self.animacionSaltando())
 	  		self.moverAPosicionyHacerAccion(x,y, {
-	  			self.animar(self.animacionCayendo())
+	  			self.actualizarSensores()
+	  			self.mostrarSensores()
+	  			self.animar(self.animacionCayendo())	  			
 	  			saltando = false
 	  		})  			
   		}
-  	}  	
+  	}
 }

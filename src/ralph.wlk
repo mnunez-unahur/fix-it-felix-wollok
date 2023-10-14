@@ -68,11 +68,13 @@ object ralph inherits PersonajeAnimado (animacion=new Animacion(
 	
 	method ladrilloSeCae(){ //ver como poner un objeto en la posicion x e y 
 		const ladrillo = new Ladrillo (position = new Position(x = self.coordenadaActualX() + 5,
-															   y = self.coordenadaActualY() - 2),velocidad = 10)
+															   y = self.coordenadaActualY() - 2),
+									   velocidad = 10,
+									   haceDanio = true)
 		
 										
 		ladrillo.mostrar()
-		ladrillo.moverAPosicionyHacerAccion(self.coordenadaActualX()+5, 0, {ladrillo.ocultar()})
+		ladrillo.caer()
 
 		
 	}
@@ -107,7 +109,7 @@ object ralph inherits PersonajeAnimado (animacion=new Animacion(
 	// Ralph decida que hacer:
 	// - protestar
 	// - golpear el piso
-	method hacerRutina() {
+	method hacerRutina(dificultad) {
  		// TODO: mejorar mecanismo de decisión
 		if(0.randomUpTo(2) < 1) 
 			self.golpear() 
@@ -115,14 +117,14 @@ object ralph inherits PersonajeAnimado (animacion=new Animacion(
 			self.gritar()
 		
 		detenido = false 
-		game.schedule(1000, { 
+		game.schedule(1000 / dificultad, { 
 			
 			if(!detenido){
 				caminandoALaIzquierda = (not caminandoALaIzquierda and self.coordenadaActualX() >= 61) 
 									or (caminandoALaIzquierda and self.coordenadaActualX() >25)
 				const direccion = if(caminandoALaIzquierda) -1 else 1
 				const nuevaPosicionX = self.coordenadaActualX() + distanciaEntreVentana * direccion
-				self.caminarAPosicionXyEjecutar(nuevaPosicionX, {self.hacerRutina()})
+				self.caminarAPosicionXyEjecutar(nuevaPosicionX, {self.hacerRutina(dificultad)})
 			}
 			
 			

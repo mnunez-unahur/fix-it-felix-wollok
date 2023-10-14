@@ -27,8 +27,10 @@ object juego {
 
 
 	method configurarStages() {
-		const stage1 = new Stage(fondo = new Edificio(image="niveles/edificio-1.png"), 
-								 imgInicial = new Pantalla (image ="fondo/stage1.png"))
+		const stage1 = new Stage(
+			dificultad = 1,
+			fondo = new Edificio(image="niveles/edificio-1.png"), 
+			imgInicial = new Pantalla (image ="fondo/stage1.png"))
 		
 		stage1.agregarMultiplesVentanas([
 			[1,1], [2,1], [4,1], [5,1],
@@ -36,8 +38,10 @@ object juego {
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
-		const stage2 = new Stage(fondo = new Edificio(image="niveles/edificio-2.png"),
-								 imgInicial = new Pantalla (image = "fondo/stage2.png")
+		const stage2 = new Stage(
+			dificultad = 2,
+			fondo = new Edificio(image="niveles/edificio-2.png"),
+			imgInicial = new Pantalla (image = "fondo/stage2.png")
 		)
 		stage2.agregarMultiplesVentanas([
 			[1,1], [2,1], [3,1], [4,1], [5,1],
@@ -45,8 +49,10 @@ object juego {
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
-		const stage3 = new Stage(fondo = new Edificio(image="niveles/edificio-2.png"),
-								 imgInicial = new Pantalla (image = "fondo/stage2.png")
+		const stage3 = new Stage(
+			dificultad = 3,
+			fondo = new Edificio(image="niveles/edificio-2.png"),
+			imgInicial = new Pantalla (image = "fondo/stage2.png")
 		)
 		stage3.agregarMultiplesVentanas([
 			[1,1], [2,1], [3,1], [4,1], [5,1],
@@ -54,8 +60,10 @@ object juego {
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
-		const stage4 = new Stage(fondo = new Edificio(image="niveles/edificio-2.png"),
-								 imgInicial = new Pantalla (image = "fondo/stage2.png")
+		const stage4 = new Stage(
+			dificultad = 4,
+			fondo = new Edificio(image="niveles/edificio-2.png"),
+			imgInicial = new Pantalla (image = "fondo/stage2.png")
 		)
 		stage4.agregarMultiplesVentanas([
 			[1,1], [2,1], [3,1], [4,1], [5,1],
@@ -63,8 +71,10 @@ object juego {
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
-		const stage5 = new Stage(fondo = new Edificio(image="niveles/edificio-2.png"),
-								 imgInicial = new Pantalla (image = "fondo/stage2.png")
+		const stage5 = new Stage(
+			dificultad = 5,
+			fondo = new Edificio(image="niveles/edificio-2.png"),
+			imgInicial = new Pantalla (image = "fondo/stage2.png")
 		)
 		stage5.agregarMultiplesVentanas([
 			[1,1], [2,1], [3,1], [4,1], [5,1],
@@ -330,6 +340,7 @@ class Tablero {
 class Stage {
 	const fondo
 	const imgInicial
+	const dificultad
 	
 	const tablero = new Tablero()
 	
@@ -347,7 +358,7 @@ class Stage {
 	    imgInicial.mostrar()
 	  	game.schedule(4000,{
 	  						imgInicial.ocultar();
-	  						ralph.hacerRutina()
+	  						ralph.hacerRutina(dificultad)
 	  	})
 	  	
 	}

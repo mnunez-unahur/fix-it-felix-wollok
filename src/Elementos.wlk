@@ -26,7 +26,13 @@ class Ventana inherits Visual{
 }
 
 class Ladrillo inherits PersonajeInanimado (image= "ladrillo.png") {
-	
+	method caer() {
+		self.moverAPosicionyHacerAccion(self.coordenadaActualX(), 0, {
+			self.ocultar()
+			self.detenerMovimiento()
+		})
+		
+	}
 }
 											
 object vida inherits Visual (position=new Position(y=55, x=80 )){ 
@@ -73,10 +79,21 @@ class Edificio {
 class Visual {
 	//var image
 	var property position
+
+	// indica si ese objeto provoca daño cuando colisiona con felix
+	const property haceDanio = false
 	
 	method image()
-	method mostrar(){ 	game.addVisual(self) }
-	method ocultar(){	game.removeVisual(self)}
+	method mostrar(){
+		if(!game.hasVisual(self)) {
+			game.addVisual(self)
+		}
+	}
+	method ocultar(){
+		if(game.hasVisual(self)) {
+			game.removeVisual(self)		
+		}
+	}
 	
 }
 
@@ -88,6 +105,16 @@ class Nube inherits PersonajeInanimado(image = "varios/nube.png", velocidad=15) 
 			self.moverAPosicionyHacerAccion(-15, self.coordenadaActualY(), {self.mover()})
 		}
 	}
+}
+
+// el sensor es un objeto asociado a felix para detectar colisiónes 
+class Sensor inherits Visual {
+	
+	//TODO eliminar imagen antes de version final
+	override method image() = "punto-referencia.png"
+	
+	
+	
 }
 
 
