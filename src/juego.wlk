@@ -17,7 +17,16 @@ object juego {
 	method tableroActual() = self.stageActual().tablero()
 	method celdaActiva() = self.tableroActual().celdaActiva()
 
-	method preparar() {
+	method iniciar() {
+		self.configurarVisual()
+		self.configurarTeclas()
+		self.configurarStages()
+		self.mostrarImagenesIniciales()
+		game.start()
+	}
+
+
+	method configurarStages() {
 		const stage1 = new Stage(fondo = new Edificio(image="niveles/edificio-1.png"), 
 								 imgInicial = new Pantalla (image ="fondo/stage1.png"))
 		
@@ -36,17 +45,55 @@ object juego {
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
-	  	game.boardGround("fondo.png")
+		const stage3 = new Stage(fondo = new Edificio(image="niveles/edificio-2.png"),
+								 imgInicial = new Pantalla (image = "fondo/stage2.png")
+		)
+		stage3.agregarMultiplesVentanas([
+			[1,1], [2,1], [3,1], [4,1], [5,1],
+			[1,2], [2,2], [3,2], [4,2], [5,2],
+			[1,3], [2,3], [3,3], [4,3], [5,3]
+		])
+
+		const stage4 = new Stage(fondo = new Edificio(image="niveles/edificio-2.png"),
+								 imgInicial = new Pantalla (image = "fondo/stage2.png")
+		)
+		stage4.agregarMultiplesVentanas([
+			[1,1], [2,1], [3,1], [4,1], [5,1],
+			[1,2], [2,2], [3,2], [4,2], [5,2],
+			[1,3], [2,3], [3,3], [4,3], [5,3]
+		])
+
+		const stage5 = new Stage(fondo = new Edificio(image="niveles/edificio-2.png"),
+								 imgInicial = new Pantalla (image = "fondo/stage2.png")
+		)
+		stage5.agregarMultiplesVentanas([
+			[1,1], [2,1], [3,1], [4,1], [5,1],
+			[1,2], [2,2], [3,2], [4,2], [5,2],
+			[1,3], [2,3], [3,3], [4,3], [5,3]
+		])
+
 		stages.add(stage1)
 		stages.add(stage2)
+		stages.add(stage3)
+		stages.add(stage4)
+		stages.add(stage5)
 		
-//		keyboard.space().onPressDo({ self.siguienteNivel();})// despues se va.
+	}
+	
+	method configurarTeclas() {
 		keyboard.q().onPressDo({
-								if(!felix.saltando()) {
-									if(self.celdaActiva().tieneVentana()){
-										felix.reparar(self.celdaActiva().ventana());
-									}
-								}
+			if(!felix.saltando() && self.celdaActiva().tieneVentana()) {
+				felix.reparar(self.celdaActiva().ventana());
+				
+				// espero a que la ventana esté reparada
+				// esto es porque por un tema de animación felix tarda 200 ms en reparar la ventana
+				game.schedule(300,{
+					if(self.tableroActual().cantidadVentanasRotas() == 0) {
+						self.siguienteNivel()
+					}			
+				})	  			
+				
+			}
 		})
 		keyboard.right().onPressDo({
 			if(!felix.saltando()) {
@@ -69,14 +116,7 @@ object juego {
 			if(!felix.saltando()) {
 				felix.moverA(felix.coordenadaActualX(), self.tableroActual().down().position().y())
 			}
-		})
-
-
-		
-//		keyboard.left().onPressDo({felix.moverA(felix.coordenadaActualX()-9,felix.coordenadaActualY())})
-//		keyboard.up().onPressDo({felix.moverA(felix.coordenadaActualX(),16)})
-//		keyboard.down().onPressDo({felix.moverA(felix.coordenadaActualX(),16)})
-		vida.mostrar()
+		})	
 		
 	}
 	
@@ -85,6 +125,8 @@ object juego {
 		game.width(100)
 		game.height(60)
 		game.cellSize(10)
+	  	game.boardGround("fondo.png")
+		vida.mostrar()
 		
 		// pongo un par de nubes
 		const nube1 = new Nube(position = new Position(x=-20, y=40))
@@ -94,14 +136,8 @@ object juego {
 		const nube2 = new Nube(position = new Position(x=-20, y=20), velocidad=10)
 		nube2.mostrar()
 		nube2.mover()			
+
 		
-	}
-	
-	method iniciar() {
-		self.configurarVisual()
-		self.preparar()
-		self.mostrarImagenesIniciales()
-		game.start()
 	}
 	
 	method mostrarImagenesIniciales(){
@@ -192,6 +228,10 @@ class Tablero {
 		self.ventanas().forEach({v => game.addVisual(v)})		
 	}
 	
+	method cantidadVentanasRotas() {
+		return self.ventanas().count({v => v.salud() < 2})
+	}
+	
 	//Oculta las ventanas del stage si están visibles
 	method ocultarVentanas() {
 		self.ventanas().forEach({v => if(game.hasVisual(v)) v.mostrar()})		
@@ -237,11 +277,11 @@ class Tablero {
 	}
 
 	method esUltimaColumna(celda) {
-		return celda == self.ultimaColumna()
+		return celda.position().x() == self.ultimaColumna().position().x()
 	}
 
 	method esUltimaFila(celda) {
-		return celda == self.ultimaFila()
+		return celda.position().y() == self.ultimaFila().position().y()
 	}
 
 	// devuelve la celda a la izquierda de la actual
@@ -332,8 +372,10 @@ class Stage {
 	}
 	
 	method finalizar() {
-		self.ocultar()
 		ralph.finalizarRutina()
+		felix.position(tablero.celda(1,1).position())
+		
+		self.ocultar()
 	}
 	
 }

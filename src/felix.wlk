@@ -77,7 +77,7 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   		if(!saltando) {
 	  		self.detenerMovimiento()
 			self.animar(self.animacionReparando())
-			game.schedule(500,{
+			game.schedule(200,{
 				ventana.reparar()
 				self.resetearAnimacion()
 			})	  			
@@ -106,6 +106,5 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 	  			saltando = false
 	  		})  			
   		}
-  		
-  	}
+  	}  	
 }
