@@ -163,4 +163,17 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 	  		})  			
   		}
   	}
+  	
+  	override method detenerMovimiento() {
+  		super()
+  		saltando = false
+  	}
+  	
+  	method reset() {
+		self.resetearAnimacion()
+		self.detenerMovimiento()
+  		self.ocultarSensores()
+		mirandoAlaDerecha = true
+		perdiendoVida = false  		
+  	}
 }

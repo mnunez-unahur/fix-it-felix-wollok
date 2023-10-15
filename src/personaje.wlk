@@ -60,7 +60,7 @@ class PersonajeTransladable inherits Visual {
 			enMovimiento = false
 			game.removeTickEvent(nombreEventoMovimiento)			
 		}
-	}	
+	}
 }
 
 class PersonajeInanimado inherits PersonajeTransladable{
