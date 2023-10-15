@@ -112,9 +112,21 @@ class Sensor inherits Visual {
 	
 	//TODO eliminar imagen antes de version final
 	override method image() = "punto-referencia.png"
-	
-	
-	
+}
+
+class Obstaculo inherits Visual {
+	const izquierda = false
+	const derecha = false
+	const abajo = false
+	const arriba = false
+}
+
+class Postigo inherits Obstaculo(derecha=true, izquierda=true) {
+	override method image() = "ventana/postigos.png"
+}
+
+class Maceta inherits Obstaculo(abajo=true) {
+	override method image() = "ventana/macetas.png"
 }
 
 

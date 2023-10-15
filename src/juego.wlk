@@ -57,6 +57,15 @@ object juego {
 			[1,2], [2,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
+		
+		stage1.agregarMultiplesMacetas([
+			[2,2], [4,2],
+			[1,3], [5,3]
+		])
+		stage1.agregarMultiplesPostigos([
+			[1,1],[3,3], [5,2]
+		])
+		
 
 		const stage2 = new Stage(
 			dificultad = 2,
@@ -141,16 +150,28 @@ object juego {
 // cada celda puede contener o no ventana
 class Celda{
 	var ventana = null
+	const obstaculos = []
 	const property position
 	const property posicionRelativa
-	var property tieneLadrillo = false
-	var property estaFelix = false
+	
 	
 	method ventana() = ventana
+	method obstaculos() = obstaculos
+	
 	method agregarVentana() {
 		ventana = new Ventana(position = position)
 	}
+	
+	method agregarPostigo() {
+		obstaculos.add(new Postigo(position = position))
+	}
+
+	method agregarMaceta() {
+		obstaculos.add(new Maceta(position = position))
+	}
+	
 	method tieneVentana() = ventana != null
+	method tieneObstaculos() = obstaculos.size() > 0
 	
 }
 
@@ -188,35 +209,38 @@ class Tablero {
 		return grilla.find({c => c.posicionRelativa().x() == x && c.posicionRelativa().y() == y})
 	}
 	
-	//devuelve la posicion Absoluta de la celda especificada
-	// x e y son las posiciones relativas de la celda
-//	method posicionAbsolutaDeCelda(x, y) = self.celda(x, y).position()
 	
-	method celdasConVentanas() = grilla.filter({c => c.ventana() != null})
+	method celdasConVentanas() = grilla.filter({c => c.tieneVentana()})
+
+	method celdasConObstaculos() = grilla.filter({c => c.tieneObstaculos()})
 	
 	// devuelve la lista de ventanas del tablero
 	method ventanas() {
 		return self.celdasConVentanas().map({v => v.ventana()})		
 	}
 	
-	method mostrarVentanas() {
-		self.ventanas().forEach({v => game.addVisual(v)})		
+	method obstaculos() {
+		return self.celdasConObstaculos().map({v => v.obstaculos()}).flatten()		
 	}
+	
 	
 	method cantidadVentanasRotas() {
 		return self.ventanas().count({v => v.salud() < 2})
 	}
 	
+	method mostrarVentanas() {
+		self.ventanas().forEach({v => v.mostrar()})		
+	}
+	
 	//Oculta las ventanas del stage si están visibles
 	method ocultarVentanas() {
-		self.ventanas().forEach({v => if(game.hasVisual(v)) v.mostrar()})		
+		self.ventanas().forEach({v => v.ocultar()})		
 	}
 	
-	// agrega sensores en las celdas para detectar si felix ingresa
-	method agregarSensores() {
-		
+	method mostrarObstaculos() {
+		self.obstaculos().forEach({v => v.mostrar()})		
 	}
-	
+
 	//muestra los componentes del tablero
 	method mostrar() {
 		self.mostrarVentanas()
@@ -310,12 +334,12 @@ class Stage {
 	const tablero = new Tablero()
 	method celdaActiva() = tablero.celdaActiva()
 	
+	method tablero() = tablero
+	
 	// agrega una ventana en la celda x y del tablero
 	method agregarVentanaEn(x,y) {
-		tablero.celda(x, y).agregarVentana()
-		
+		tablero.celda(x, y).agregarVentana()	
 	}
-	method tablero() = tablero
 	
 	method configurarTeclas() {
 		keyboard.q().onPressDo({ self.repararVentanaSiHay()	})
@@ -367,6 +391,8 @@ class Stage {
 		ralph.mostrar()
 	  	tablero.mostrar()
 	  	felix.mostrar()
+	  	tablero.mostrarObstaculos()
+	  	
 	    imgInicial.mostrar()
 	  	
 	}
@@ -384,6 +410,15 @@ class Stage {
 	method agregarMultiplesVentanas(lista) {
 		lista.forEach({ c => self.agregarVentanaEn(c.get(0), c.get(1))})
 	}
+
+	method agregarMultiplesMacetas(lista) {
+		lista.forEach({ c => tablero.celda(c.get(0), c.get(1)).agregarMaceta()})
+	}
+
+	method agregarMultiplesPostigos(lista) {
+		lista.forEach({ c => tablero.celda(c.get(0), c.get(1)).agregarPostigo()})
+	}
+
 	
 	method iniciar() {
 	  	self.mostrar()
