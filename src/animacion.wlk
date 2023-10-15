@@ -12,6 +12,8 @@ class Animacion {
 	var animando = false
 	const reproduccionContinua = true
 	
+	method animando() = animando
+	
 	method agregarFotograma(img) {
 		fotogramas.add(img)
 	}

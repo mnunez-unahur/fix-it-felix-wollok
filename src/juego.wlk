@@ -10,22 +10,42 @@ object juego {
 	var stage = 0
 	
 	var property vidas = 3
-	var property dificultad = 1
 	var iniciado  = false
 	
 	method stageActual() = stages.get(stage)
 	method tableroActual() = self.stageActual().tablero()
-	method celdaActiva() = self.tableroActual().celdaActiva()
+//	method celdaActiva() = self.tableroActual().celdaActiva()
 
 	method iniciar() {
 		self.configurarVisual()
-		self.configurarTeclas()
+//		self.configurarTeclas()
 		self.configurarStages()
 		self.mostrarImagenesIniciales()
 		game.start()
 	}
 
+	method configurarVisual(){
+		game.title("Fix It Felix Jr!")
+		game.width(100)
+		game.height(60)
+		game.cellSize(10)
+	  	game.boardGround("fondo.png")
+		vida.mostrar()
+		
+		// pongo un par de nubes
+		const nube1 = new Nube(position = new Position(x=-20, y=40))
+		nube1.mostrar()
+		nube1.mover()
+		
+		const nube2 = new Nube(position = new Position(x=-20, y=20), velocidad=10)
+		nube2.mostrar()
+		nube2.mover()			
 
+		
+	}
+
+
+	
 	method configurarStages() {
 		const stage1 = new Stage(
 			dificultad = 1,
@@ -82,72 +102,16 @@ object juego {
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
-		stages.add(stage1)
-		stages.add(stage2)
-		stages.add(stage3)
-		stages.add(stage4)
-		stages.add(stage5)
+		self.agregarStage(stage1)
+		self.agregarStage(stage2)
+		self.agregarStage(stage3)
+		self.agregarStage(stage4)
+		self.agregarStage(stage5)
 		
 	}
 	
-	method configurarTeclas() {
-		keyboard.q().onPressDo({
-			if(!felix.saltando() && self.celdaActiva().tieneVentana()) {
-				felix.reparar(self.celdaActiva().ventana());
-				
-				// espero a que la ventana esté reparada
-				// esto es porque por un tema de animación felix tarda 200 ms en reparar la ventana
-				game.schedule(300,{
-					if(self.tableroActual().cantidadVentanasRotas() == 0) {
-						self.siguienteNivel()
-					}			
-				})	  			
-				
-			}
-		})
-		keyboard.right().onPressDo({
-			if(!felix.saltando()) {
-				felix.moverA(self.tableroActual().right().position().x(),felix.coordenadaActualY())
-			}
-		})
-		keyboard.left().onPressDo({
-			if(!felix.saltando()) {
-				felix.moverA(self.tableroActual().left().position().x(),felix.coordenadaActualY())	
-			}
-		})
-		
-		keyboard.up().onPressDo({
-			if(!felix.saltando()) {
-				felix.moverA(felix.coordenadaActualX(), self.tableroActual().up().position().y())
-			}
-		})
-		
-		keyboard.down().onPressDo({
-			if(!felix.saltando()) {
-				felix.moverA(felix.coordenadaActualX(), self.tableroActual().down().position().y())
-			}
-		})	
-		
-	}
-	
-	method configurarVisual(){
-		game.title("Fix It Felix Jr!")
-		game.width(100)
-		game.height(60)
-		game.cellSize(10)
-	  	game.boardGround("fondo.png")
-		vida.mostrar()
-		
-		// pongo un par de nubes
-		const nube1 = new Nube(position = new Position(x=-20, y=40))
-		nube1.mostrar()
-		nube1.mover()
-		
-		const nube2 = new Nube(position = new Position(x=-20, y=20), velocidad=10)
-		nube2.mostrar()
-		nube2.mover()			
-
-		
+	method agregarStage(nuevoStage) {
+		stages.add(nuevoStage)
 	}
 	
 	method mostrarImagenesIniciales(){
@@ -165,6 +129,7 @@ object juego {
 	
 	method siguienteNivel() {
 		self.stageActual().finalizar()
+		self.configurarVisual()
 		stage++
 		self.stageActual().iniciar()
 		
@@ -343,6 +308,7 @@ class Stage {
 	const dificultad
 	
 	const tablero = new Tablero()
+	method celdaActiva() = tablero.celdaActiva()
 	
 	// agrega una ventana en la celda x y del tablero
 	method agregarVentanaEn(x,y) {
@@ -350,23 +316,65 @@ class Stage {
 		
 	}
 	method tablero() = tablero
+	
+	method configurarTeclas() {
+		keyboard.q().onPressDo({ self.repararVentanaSiHay()	})
+		keyboard.space().onPressDo({ self.repararVentanaSiHay()	})
+		
+		keyboard.right().onPressDo({
+			if(!felix.saltando()) {
+				felix.moverA(tablero.right().position().x(),felix.coordenadaActualY())
+			}
+		})
+		keyboard.left().onPressDo({
+			if(!felix.saltando()) {
+				felix.moverA(tablero.left().position().x(),felix.coordenadaActualY())	
+			}
+		})
+		
+		keyboard.up().onPressDo({
+			if(!felix.saltando()) {
+				felix.moverA(felix.coordenadaActualX(), tablero.up().position().y())
+			}
+		})
+		
+		keyboard.down().onPressDo({
+			if(!felix.saltando()) {
+				felix.moverA(felix.coordenadaActualX(), tablero.down().position().y())
+			}
+		})	
+		
+	}	
+
+	method repararVentanaSiHay() {
+		if(!felix.saltando() && self.celdaActiva().tieneVentana()) {
+			felix.reparar(self.celdaActiva().ventana());
+			
+			// espero a que la ventana esté reparada
+			// esto es porque por un tema de animación felix tarda 200 ms en reparar la ventana
+			game.schedule(300,{
+				if(tablero.cantidadVentanasRotas() == 0) {
+					juego.siguienteNivel()
+				}			
+			})	  			
+			
+		}
+	}
+	
+	
 	method mostrar(){ 
 		game.addVisual(fondo)
 		ralph.mostrar()
 	  	tablero.mostrar()
 	  	felix.mostrar()
 	    imgInicial.mostrar()
-	  	game.schedule(4000,{
-	  						imgInicial.ocultar();
-	  						ralph.hacerRutina(dificultad)
-	  	})
 	  	
 	}
 	
 	method ocultar() {
+		felix.ocultar()
 		game.removeVisual(fondo)
 		ralph.ocultar()
-		felix.ocultar()
 		
 	}
 	
@@ -377,16 +385,21 @@ class Stage {
 		lista.forEach({ c => self.agregarVentanaEn(c.get(0), c.get(1))})
 	}
 	
-	method iniciar() {	
+	method iniciar() {
 	  	self.mostrar()
+	  	game.schedule(4000,{
+			imgInicial.ocultar();
+			self.configurarTeclas()
+			ralph.hacerRutina(dificultad)
+	  	})
 
 	}
 	
 	method finalizar() {
-		ralph.finalizarRutina()
 		felix.position(tablero.celda(1,1).position())
-		
 		self.ocultar()
+		ralph.finalizarRutina()		
+		game.clear()
 	}
 	
 }
