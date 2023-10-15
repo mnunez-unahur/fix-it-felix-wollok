@@ -397,8 +397,9 @@ class Stage {
 	
 	method finalizar() {
 		felix.position(tablero.celda(1,1).position())
-		self.ocultar()
 		ralph.finalizarRutina()		
+		felix.reset()
+		self.ocultar()
 		game.clear()
 	}
 	
