@@ -27,30 +27,32 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 				  						velocidad=6,
   										fotogramas=["felix/derecha-parado.png",
   													"felix/derecha-saltando-1.png", 
-  													"felix/derecha-golpeando.png"]
+  													"felix/derecha-golpeando.png",
+  													"felix/derecha-parado.png"]
   								)
     const  animacionReparandoIzquierda = new Animacion( 
 				  						velocidad=6,
 				  						reproduccionContinua= false,
   										fotogramas=["felix/izquierda-parado.png",
   													"felix/izquierda-saltando-1.png", 
-  													"felix/izquierda-golpeando.png"]
+  													"felix/izquierda-golpeando.png",
+  													"felix/izquierda-parado.png"]
   								)  
 
 	const  animacionSaltandoIzquierda = new Animacion( 
 				  						velocidad=10,
 				  						reproduccionContinua= false,
   										fotogramas=["felix/izquierda-parado.png",
-  													"felix/izquierda-saltando-1.png", 
-  													"felix/izquierda-saltando-2.png"
+  													"felix/izquierda-saltando-1.png" 
+//  													"felix/izquierda-saltando-2.png"
   													]
   								)
   	const  animacionSaltandoDerecha = new Animacion( 
 				  						velocidad=10,
 				  						reproduccionContinua= false,
   										fotogramas=["felix/derecha-parado.png",
-  													"felix/derecha-saltando-1.png", 
-  													"felix/derecha-saltando-2.png"
+  													"felix/derecha-saltando-1.png" 
+//  													"felix/derecha-saltando-2.png"
   													]
   								)
 
@@ -58,7 +60,7 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 				  						velocidad=10,
 				  						reproduccionContinua= false,
   										fotogramas=[
-  													"felix/derecha-saltando-2.png",
+//  													"felix/derecha-saltando-2.png",
   													"felix/derecha-saltando-1.png",
   													"felix/derecha-parado.png"
   													]
@@ -67,7 +69,8 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   	const  animacionCayendoIzquierda = new Animacion( 
 				  						velocidad=10,
 				  						reproduccionContinua= false,
-  										fotogramas=["felix/izquierda-saltando-2.png",
+  										fotogramas=[
+//													"felix/izquierda-saltando-2.png",
   													"felix/izquierda-saltando-1.png",
   													"felix/izquierda-parado.png"
   													]
@@ -90,7 +93,7 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 			self.animar(self.animacionReparando())
 			game.schedule(200,{
 				ventana.reparar()
-				self.resetearAnimacion()
+				self.siguienteFotograma()
 			})	  			
   		}
   	}
@@ -142,8 +145,8 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   	}
 
 	method actualizarSensores() {
-		var pos = self.position().up(3)
-		sensores.forEach({s => s.position(pos); pos = pos.up(3)})
+		var pos = self.position().up(2)
+		sensores.forEach({s => s.position(pos); pos = pos.up(2)})
 	}
   	
   	method moverA(x,y){

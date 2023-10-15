@@ -80,8 +80,10 @@ class PersonajeAnimado inherits PersonajeTransladable {
 
 	//inicia una nueva animación	
 	method animar(nuevaAnimacion) {
-		self.detenerAnimacion()
-		animacion = nuevaAnimacion
+		if(nuevaAnimacion != animacion) {
+			self.detenerAnimacion()		
+			animacion = nuevaAnimacion
+		}
 		self.animar()
 	}
 	
@@ -97,6 +99,10 @@ class PersonajeAnimado inherits PersonajeTransladable {
 	method siguienteFotograma(){
 		animacion.siguiente()
 	}
+	
+	// indica si actualmente hay una animación en curso
+	method animando() = animacion.animando()
+	
 }
 
 

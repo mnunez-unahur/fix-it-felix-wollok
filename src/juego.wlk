@@ -10,7 +10,6 @@ object juego {
 	var stage = 0
 	
 	var property vidas = 3
-	var property dificultad = 1
 	var iniciado  = false
 	
 	method stageActual() = stages.get(stage)
@@ -82,29 +81,22 @@ object juego {
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
-		stages.add(stage1)
-		stages.add(stage2)
-		stages.add(stage3)
-		stages.add(stage4)
-		stages.add(stage5)
+		self.agregarStage(stage1)
+		self.agregarStage(stage2)
+		self.agregarStage(stage3)
+		self.agregarStage(stage4)
+		self.agregarStage(stage5)
 		
 	}
 	
+	method agregarStage(nuevoStage) {
+		stages.add(nuevoStage)
+	}
+	
 	method configurarTeclas() {
-		keyboard.q().onPressDo({
-			if(!felix.saltando() && self.celdaActiva().tieneVentana()) {
-				felix.reparar(self.celdaActiva().ventana());
-				
-				// espero a que la ventana esté reparada
-				// esto es porque por un tema de animación felix tarda 200 ms en reparar la ventana
-				game.schedule(300,{
-					if(self.tableroActual().cantidadVentanasRotas() == 0) {
-						self.siguienteNivel()
-					}			
-				})	  			
-				
-			}
-		})
+		keyboard.q().onPressDo({ self.repararVentanaSiHay()	})
+		keyboard.space().onPressDo({ self.repararVentanaSiHay()	})
+		
 		keyboard.right().onPressDo({
 			if(!felix.saltando()) {
 				felix.moverA(self.tableroActual().right().position().x(),felix.coordenadaActualY())
@@ -128,6 +120,21 @@ object juego {
 			}
 		})	
 		
+	}
+	
+	method repararVentanaSiHay() {
+			if(!felix.saltando() && self.celdaActiva().tieneVentana()) {
+				felix.reparar(self.celdaActiva().ventana());
+				
+				// espero a que la ventana esté reparada
+				// esto es porque por un tema de animación felix tarda 200 ms en reparar la ventana
+				game.schedule(300,{
+					if(self.tableroActual().cantidadVentanasRotas() == 0) {
+						self.siguienteNivel()
+					}			
+				})	  			
+				
+			}
 	}
 	
 	method configurarVisual(){
@@ -364,9 +371,9 @@ class Stage {
 	}
 	
 	method ocultar() {
+		felix.ocultar()
 		game.removeVisual(fondo)
 		ralph.ocultar()
-		felix.ocultar()
 		
 	}
 	
@@ -383,10 +390,9 @@ class Stage {
 	}
 	
 	method finalizar() {
-		ralph.finalizarRutina()
 		felix.position(tablero.celda(1,1).position())
-		
 		self.ocultar()
+		ralph.finalizarRutina()		
 	}
 	
 }

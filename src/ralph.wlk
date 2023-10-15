@@ -117,7 +117,7 @@ object ralph inherits PersonajeAnimado (animacion=new Animacion(
 			self.gritar()
 		
 		detenido = false 
-		game.schedule(1000 / dificultad, { 
+		game.schedule((1000 - (dificultad*100).max(400)), { 
 			
 			if(!detenido){
 				caminandoALaIzquierda = (not caminandoALaIzquierda and self.coordenadaActualX() >= 61) 
