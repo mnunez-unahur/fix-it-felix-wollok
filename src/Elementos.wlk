@@ -133,11 +133,37 @@ class Maceta inherits Obstaculo(abajo=true) {
 	override method image() = "ventana/macetas.png"
 }
 
-
-
-
-
-
+class Sonido{
+	
+	const property sound
+	const volumen 
+	
+	method reproducir(){
+		game.sound(sound).play()
+	}
+	method detener(){
+		game.sound(sound).stop()
+	}
+	
+	
+}
+// Sonidos
+object sonidoInicial inherits Sonido(sound = "Sonidos/juego.mp3",volumen= 0.3 ){
+}
+object salto inherits Sonido (sound = "Sonidos/salto.mp3",volumen= 0.2){
+}
+object arreglar inherits Sonido (sound = "Sonidos/repararVentana.mp3",volumen= 0.2){
+}
+object golpe inherits Sonido (sound = "Sonidos/ralphGolpe.mp3",volumen= 0.2){	
+}
+object restarVida inherits Sonido (sound = "Sonidos/perderVida2.mp3",volumen= 0.2){	
+}
+object sgameOver inherits Sonido (sound = "Sonidos/sinVidas.mp3",volumen= 0.2){
+}
+object sonidoStage inherits Sonido (sound = "Sonidos/juego2.mp3",volumen= 0.2){
+}
+//object grito inherits Sonido (sound = "Sonidos/juego2.mp3",volumen= 0.2){
+//}
 
 
 

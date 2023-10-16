@@ -95,7 +95,8 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 			game.schedule(200,{
 				ventana.reparar()
 				self.siguienteFotograma()
-			})	  			
+			})	 
+		arreglar.reproducir() 			
   		}
   	}
   	
@@ -146,9 +147,11 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   	
   		if(vida.vidasActuales()>0){
   		vida.perderVida()
+  		restarVida.reproducir()
   		}else{
   			juego.stageActual().finalizar()
   			gameOver.mostrar()
+  			sgameOver.reproducir()
   		}
   	}
 
@@ -168,7 +171,8 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 	  			self.mostrarSensores()
 	  			self.animar(self.animacionCayendo())	  			
 	  			saltando = false
-	  		})  			
+	  		})  
+	  	  salto.reproducir()
   		}
   	}
   	

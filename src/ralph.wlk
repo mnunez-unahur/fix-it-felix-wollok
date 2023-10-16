@@ -62,6 +62,7 @@ object ralph inherits PersonajeAnimado (animacion=new Animacion(
 	method golpear() {
 		self.detenerMovimiento()
 		self.animar(animacionGolpeando)
+		golpe.reproducir()
 		self.ladrilloSeCae()
 		
 	}

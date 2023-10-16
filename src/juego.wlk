@@ -26,10 +26,10 @@ object juego {
 	}
 	
 	method configurarSonido(){
-		const sound = game.sound("Sonidos/juego.mp3")
+		var  sound = game.sound("Sonidos/juego.mp3")
 		sound.shouldLoop(true)
 		game.schedule(500, { sound.play()} )
-		keyboard.enter().onPressDo({sound.volume(1)})
+		keyboard.enter().onPressDo({sound.stop()})
 	}
 
 	method configurarVisual(){
