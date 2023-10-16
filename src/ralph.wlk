@@ -69,7 +69,7 @@ object ralph inherits PersonajeAnimado (animacion=new Animacion(
 	method ladrilloSeCae(){ //ver como poner un objeto en la posicion x e y 
 		const ladrillo = new Ladrillo (position = new Position(x = self.coordenadaActualX() + 5,
 															   y = self.coordenadaActualY() - 2),
-									   velocidad = 10,
+									   velocidad = 12,
 									   haceDanio = true)
 		
 										
