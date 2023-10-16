@@ -134,3 +134,14 @@ class Maceta inherits Obstaculo(abajo=true) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+

@@ -21,7 +21,15 @@ object juego {
 //		self.configurarTeclas()
 		self.configurarStages()
 		self.mostrarImagenesIniciales()
+		self.configurarSonido()
 		game.start()
+	}
+	
+	method configurarSonido(){
+		const sound = game.sound("Sonidos/juego.mp3")
+		sound.shouldLoop(true)
+		game.schedule(500, { sound.play()} )
+		keyboard.enter().onPressDo({sound.volume(1)})
 	}
 
 	method configurarVisual(){

@@ -1,12 +1,16 @@
 import juego.*
+import wollok.game.*
 
 
 program fixItFelix {
-
+	
+	
 	juego.iniciar()
+	
 	
 }
 
-//Implementar diferentes tipos de ventana en el mismo nivel
+
+
 
  
