@@ -96,6 +96,10 @@ class Visual {
 	}
 	
 }
+object gameOver inherits Visual(position= new Position(x= 0, y = 0)) {
+	override method image() = "fondo/gameOver.png"
+	
+}
 
 class Nube inherits PersonajeInanimado(image = "varios/nube.png", velocidad=15) {
 	method mover() {

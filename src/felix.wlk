@@ -2,6 +2,7 @@ import wollok.game.*
 import animacion.*
 import Elementos.*
 import personaje.*
+import juego.*
 
 
 object felix inherits PersonajeAnimado(animacion=new Animacion(
@@ -132,15 +133,22 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 		sensores.forEach({s => s.ocultar()})  		
   	}
   	
-  	method perderVida() {
+ method perderVida() {
   		if(!perdiendoVida) {
 	  		perdiendoVida = true
-	  		vida.perderVida()
+	  		self.perderVida2()
 	  		// por un segundo no pierde mas vida
 	  		// TODO: agregar animacion
-	  		game.schedule(1000, {
-		  		perdiendoVida = false
-	  		})
+	  		game.schedule(1000, {perdiendoVida = false})
+	  	
+  	}}
+  	method perderVida2(){ // cuando se queda sin vidas finaliza el juego. CAMBIARLO A JUEGO
+  	
+  		if(vida.vidasActuales()>0){
+  		vida.perderVida()
+  		}else{
+  			juego.stageActual().finalizar()
+  			gameOver.mostrar()
   		}
   	}
 

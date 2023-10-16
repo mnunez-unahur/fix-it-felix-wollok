@@ -50,7 +50,7 @@ object juego {
 		const stage1 = new Stage(
 			dificultad = 1,
 			fondo = new Edificio(image="niveles/edificio-1.png"), 
-			imgInicial = new Pantalla (image ="fondo/stage1.png"))
+			imgInicial = new Pantalla (image ="fondo/stage1.jpg"))
 		
 		stage1.agregarMultiplesVentanas([
 			[1,1], [2,1], [4,1], [5,1],
@@ -70,7 +70,7 @@ object juego {
 		const stage2 = new Stage(
 			dificultad = 2,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
-			imgInicial = new Pantalla (image = "fondo/stage2.png")
+			imgInicial = new Pantalla (image = "fondo/stage2.jpg")
 		)
 		stage2.agregarMultiplesVentanas([
 			[1,1], [2,1], [3,1], [4,1], [5,1],
@@ -81,7 +81,7 @@ object juego {
 		const stage3 = new Stage(
 			dificultad = 3,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
-			imgInicial = new Pantalla (image = "fondo/stage2.png")
+			imgInicial = new Pantalla (image = "fondo/stage3.jpg")
 		)
 		stage3.agregarMultiplesVentanas([
 			[1,1], [2,1], [3,1], [4,1], [5,1],
@@ -92,7 +92,7 @@ object juego {
 		const stage4 = new Stage(
 			dificultad = 4,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
-			imgInicial = new Pantalla (image = "fondo/stage2.png")
+			imgInicial = new Pantalla (image = "fondo/stage4.jpg")
 		)
 		stage4.agregarMultiplesVentanas([
 			[1,1], [2,1], [3,1], [4,1], [5,1],
@@ -103,7 +103,7 @@ object juego {
 		const stage5 = new Stage(
 			dificultad = 5,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
-			imgInicial = new Pantalla (image = "fondo/stage2.png")
+			imgInicial = new Pantalla (image = "fondo/stage5.jpg")
 		)
 		stage5.agregarMultiplesVentanas([
 			[1,1], [2,1], [3,1], [4,1], [5,1],
@@ -124,7 +124,7 @@ object juego {
 	}
 	
 	method mostrarImagenesIniciales(){
-		const inicio = new Pantalla(image = "fondo/Captura4.JPG")
+		const inicio = new Pantalla(image = "fondo/inicioJuego.JPG")
 		inicio.mostrar()
 		keyboard.enter().onPressDo({
 			if(!iniciado){
