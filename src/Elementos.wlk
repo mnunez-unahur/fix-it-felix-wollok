@@ -116,6 +116,11 @@ class Sensor inherits Visual {
 	
 	//TODO eliminar imagen antes de version final
 	override method image() = "punto-referencia.png"
+	
+	// activa el sensor 
+	method activarDeteccion(accion) {
+		game.whenCollideDo(self, accion)		
+	}
 }
 
 class Obstaculo inherits Visual {
