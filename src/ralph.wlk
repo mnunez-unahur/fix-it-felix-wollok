@@ -112,10 +112,14 @@ object ralph inherits PersonajeAnimado (animacion=new Animacion(
 	// - golpear el piso
 	method hacerRutina(dificultad) {
  		// TODO: mejorar mecanismo de decisión
-		if(0.randomUpTo(2) < 1) 
-			self.golpear() 
-		else 
+		if(0.randomUpTo(1+dificultad) < 1) 
 			self.gritar()
+		else 
+			self.golpear() 
+		
+		if(1.randomUpTo(10) > 8) {
+			caminandoALaIzquierda = !caminandoALaIzquierda
+		}
 		
 		detenido = false 
 		game.schedule((1000 - (dificultad*100).max(400)), { 

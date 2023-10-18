@@ -14,7 +14,9 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 	
 	var mirandoAlaDerecha = true
 	var saltando = false
-	var perdiendoVida = false
+	
+	//mientras felix está inmune los objetos no le hacen daño
+	var inmune = false
 	const sensores = []
 
 	const  animacionParado = new Animacion( 
@@ -81,6 +83,7 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 		sensores.add(new Sensor(position = self.position()))
 		sensores.add(new Sensor(position = self.position()))
 		sensores.add(new Sensor(position = self.position()))
+		sensores.add(new Sensor(position = self.position()))
 		self.actualizarSensores()
 		
 	}
@@ -127,7 +130,7 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 		sensores.forEach({s => s.mostrar()})
   	}
   	method activarSensores() {
-		sensores.forEach({s => game.whenCollideDo(s, { c => if(c.haceDanio()) self.perderVida()  })})
+		sensores.forEach({s => s.activarDeteccion({ c => if(c.haceDanio()) self.perderVida()  })})
   	}
   	
   	method ocultarSensores() {
@@ -135,12 +138,12 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   	}
   	
  method perderVida() {
-  		if(!perdiendoVida) {
-	  		perdiendoVida = true
+  		if(!inmune) {
+	  		inmune = true
 	  		self.perderVida2()
 	  		// por un segundo no pierde mas vida
 	  		// TODO: agregar animacion
-	  		game.schedule(1000, {perdiendoVida = false})
+	  		game.schedule(1000, {inmune = false})
 	  	
   	}}
   	method perderVida2(){ // cuando se queda sin vidas finaliza el juego. CAMBIARLO A JUEGO
@@ -186,6 +189,6 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 		self.detenerMovimiento()
   		self.ocultarSensores()
 		mirandoAlaDerecha = true
-		perdiendoVida = false  		
+		inmune = false  		
   	}
 }
