@@ -559,7 +559,6 @@ object score inherits Visual(position = new Position(x=2, y=56)) {
 	method puntaje(nuevoPuntaje) {
 		puntaje = nuevoPuntaje
 		var p = nuevoPuntaje
-		console.println(nuevoPuntaje)
 		
 		(0..5).forEach({ i => 
 			const d = (p % 10).truncate(0)
