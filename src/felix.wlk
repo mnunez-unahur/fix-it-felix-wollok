@@ -14,6 +14,7 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 	
 	var mirandoAlaDerecha = true
 	var saltando = false
+	var reparando = false
 	
 	//mientras felix está inmune los objetos no le hacen daño
 	var inmune = false
@@ -90,16 +91,23 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 
 
 	method saltando() = saltando
+	method reparando() = reparando
   								
   	method reparar(ventana){
-  		if(!saltando) {
+  		if(!saltando && !reparando) {
+  			console.println(reparando)		
+  			reparando = true
 	  		self.detenerMovimiento()
 			self.animar(self.animacionReparando())
 			game.schedule(200,{
+				if(ventana.salud() < 2) {
+					score.sumarPuntos(50)				
+				}
 				ventana.reparar()
+				reparando = false
 				self.siguienteFotograma()
 			})	 
-		arreglar.reproducir() 			
+			arreglar.reproducir() 			
   		}
   	}
   	
