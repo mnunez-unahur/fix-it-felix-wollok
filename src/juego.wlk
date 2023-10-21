@@ -184,6 +184,19 @@ class Celda{
 	method tieneVentanaReparable() {
 		return self.tieneVentana() && ventana.salud() < 2
 	}
+	method tieneObstaculoALaIzquierda(){
+		return self.tieneObstaculos() &&
+			   obstaculos.any(	{o => o.izquierda()}	)
+	}
+	method tieneObstaculoALaDerecha(){
+		return self.tieneObstaculos() &&
+			   obstaculos.any(	{o => o.derecha()}	)
+	}
+	method tieneObstaculoAbajo(){
+		return self.tieneObstaculos() &&
+			   obstaculos.any(	{o => o.abajo()}	)
+	}
+	
 	
 }
 
@@ -294,44 +307,111 @@ class Tablero {
 	method esUltimaFila(celda) {
 		return celda.position().y() == self.ultimaFila().position().y()
 	}
-
+	method puedeMoverALaIzquierda(){
+		return  self.hayCeldaALaIzquierda() &&  
+			   !self.celdaActiva().tieneObstaculoALaIzquierda()	&&
+			   !self.celdaALaIzquierda().tieneObstaculoALaDerecha()
+			
+	}
+	method puedeMoverALaDerecha(){
+		return  self.hayCeldaALaDerecha()&&  
+			   !self.celdaActiva().tieneObstaculoALaDerecha()&&
+			   !self.celdaALaDerecha().tieneObstaculoALaIzquierda()
+	}
+	
+	method puedeMoverArriba(){
+		return  self.hayCeldaArriba()&&
+			   !self.celdaArriba().tieneObstaculoAbajo()
+	}
+	
+	
+	method puedeMoverAbajo(){
+		return self.hayCeldaAbajo() &&  
+			   !self.celdaActiva().tieneObstaculoAbajo()
+	}
+	method hayCeldaALaIzquierda(){
+		return !self.esPrimeraColumna(self.celdaActiva())
+	}
+	method hayCeldaALaDerecha(){
+		return !self.esUltimaColumna(self.celdaActiva())
+	}
+	method hayCeldaArriba(){
+		return !self.esUltimaFila(self.celdaActiva())
+	}
+	method hayCeldaAbajo(){
+		return !self.esPrimeraFila(self.celdaActiva())
+	}
+	method celdaALaIzquierda(){
+		if(!self.hayCeldaALaIzquierda()){
+			self.error("No hay celda a la izquierda")
+		}
+		return grilla.find({c => c.posicionRelativa().x() == self.celdaActiva().posicionRelativa().x() - 1
+							&&   c.posicionRelativa().y() == self.celdaActiva().posicionRelativa().y()
+		})
+	}
+	method celdaALaDerecha(){
+		if(!self.hayCeldaALaDerecha()){
+			self.error("No hay celda a la Derecha")
+		}
+		return grilla.find({c => c.posicionRelativa().x() == self.celdaActiva().posicionRelativa().x() + 1
+							&&   c.posicionRelativa().y() == self.celdaActiva().posicionRelativa().y()
+		})
+	}
+	method celdaArriba(){
+		if(!self.hayCeldaArriba()){
+			self.error("No hay celda a la Arriba")
+		}
+		return grilla.find({c => c.posicionRelativa().y() == self.celdaActiva().posicionRelativa().y() + 1
+							&&   c.posicionRelativa().x() == self.celdaActiva().posicionRelativa().x()
+		})
+	}
+	method celdaAbajo(){
+		if(!self.hayCeldaAbajo()){
+			self.error("No hay celda a la Abajo")
+		}
+		return grilla.find({c => c.posicionRelativa().y() == self.celdaActiva().posicionRelativa().y() - 1
+							&&   c.posicionRelativa().x() == self.celdaActiva().posicionRelativa().x()
+		})
+	}
+	
+	
 	// devuelve la celda a la izquierda de la actual
 	// si la celda actual es la primera, la devuelve
 	method left() {
-		if(self.esPrimeraColumna(self.celdaActiva())) {
-			return self.celdaActiva()
+		if(self.puedeMoverALaIzquierda()) {
+			return self.celdaALaIzquierda()
 		} else {
-			return grilla.find({c => c.posicionRelativa().x() == self.celdaActiva().posicionRelativa().x() - 1})
+			return self.celdaActiva()
 		}
 	}
 
 	// devuelve la celda a la derecha de la actual
 	// si la celda actual es la ultima, la devuelve
 	method right() {
-		if(self.esUltimaColumna(self.celdaActiva())) {
-			return self.celdaActiva()
+		if(self.puedeMoverALaDerecha()) {
+			return self.celdaALaDerecha()
 		} else {
-			return grilla.find({c => c.posicionRelativa().x() == self.celdaActiva().posicionRelativa().x() + 1})
+			return self.celdaActiva()
 		}
 	}
 
 	// devuelve la celda que esta arriba de la actual
 	// si la celda actual es la ultima, la devuelve
 	method up() {
-		if(self.esUltimaFila(self.celdaActiva())) {
-			return self.celdaActiva()
+		if(self.puedeMoverArriba()) {
+			return self.celdaArriba()
 		} else {
-			return grilla.find({c => c.posicionRelativa().y() == self.celdaActiva().posicionRelativa().y() + 1})
+			return self.celdaActiva()
 		}
 	}
 
 	// devuelve la celda que esta abajo de la actual
 	// si la celda actual es la primera, la devuelve
 	method down() {
-		if(self.esPrimeraFila(self.celdaActiva())) {
-			return self.celdaActiva()
+		if(self.puedeMoverAbajo()) {
+			return self.celdaAbajo()
 		} else {
-			return grilla.find({c => c.posicionRelativa().y() == self.celdaActiva().posicionRelativa().y() - 1})
+			return self.celdaActiva()
 		}
 	}
 

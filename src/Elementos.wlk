@@ -117,6 +117,11 @@ class Obstaculo inherits Visual {
 	const derecha = false
 	const abajo = false
 	const arriba = false
+	
+	method izquierda() =izquierda
+	method derecha() =derecha
+	method abajo() =abajo
+	method arriba() =arriba
 }
 
 class Postigo inherits Obstaculo(derecha=true, izquierda=true) {
