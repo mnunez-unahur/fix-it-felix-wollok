@@ -48,7 +48,9 @@ object juego {
 		const nube2 = new Nube(position = new Position(x=-20, y=20), velocidad=10)
 		nube2.mostrar()
 		nube2.mover()			
-
+		
+		score.mostrar()
+		
 		
 	}
 
@@ -140,8 +142,7 @@ object juego {
 			   	self.stageActual().iniciar()
 			   	iniciado = true
 		   	}
-	   	})
-									
+	   	})						
 	}
 	
 	method siguienteNivel() {
@@ -180,6 +181,9 @@ class Celda{
 	
 	method tieneVentana() = ventana != null
 	method tieneObstaculos() = obstaculos.size() > 0
+	method tieneVentanaReparable() {
+		return self.tieneVentana() && ventana.salud() < 2
+	}
 	
 }
 
@@ -379,8 +383,9 @@ class Stage {
 	}	
 
 	method repararVentanaSiHay() {
-		if(!felix.saltando() && self.celdaActiva().tieneVentana()) {
+		if(!felix.saltando() && !felix.reparando() && self.celdaActiva().tieneVentana()) {
 			felix.reparar(self.celdaActiva().ventana());
+			
 			
 			// espero a que la ventana esté reparada
 			// esto es porque por un tema de animación felix tarda 200 ms en reparar la ventana
@@ -447,4 +452,63 @@ class Stage {
 	}
 	
 }
+
+// Score
+object score inherits Visual(position = new Position(x=2, y=56)) { 
+	var property puntaje = 0
+	const digitos = [
+		new Digito(position = new Position(x= 23, y=56)),
+		new Digito(position = new Position(x= 21, y=56)),
+		new Digito(position = new Position(x= 19, y=56)),
+		new Digito(position = new Position(x= 17, y=56)),
+		new Digito(position = new Position(x= 15, y=56)),
+		new Digito(position = new Position(x= 13, y=56))
+	]
+	
+	override method mostrar() {
+		super()
+		digitos.forEach({d => d.mostrar()})
+	}
+	
+	override method ocultar() {
+		super()
+		digitos.forEach({d => d.ocultar()})
+	}
+	override method image()="score.png"
+	
+	method puntaje(nuevoPuntaje) {
+		puntaje = nuevoPuntaje
+		var p = nuevoPuntaje
+		console.println(nuevoPuntaje)
+		
+		(0..5).forEach({ i => 
+			const d = (p % 10).truncate(0)
+			digitos.get(i).valor(d)
+			p = (p / 10).truncate(0);
+		})
+		
+	}
+	
+	method sumarPuntos(puntos) {
+		self.puntaje(puntaje + puntos)
+	}
+	
+	method reset() {
+		puntaje = 0
+	}
+}
+
+
+// representa un digito del 0 al 9 en la pantalla
+class Digito inherits Visual {
+	var property valor = 0
+	
+	override method image() = "numeros/" + valor + ".png" 
+}
+
+
+
+
+
+
 

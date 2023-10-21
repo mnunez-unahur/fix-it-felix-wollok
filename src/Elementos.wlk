@@ -58,17 +58,6 @@ object vida inherits Visual (position=new Position(y=55, x=80 )){
 	}
 }
 
-class Score{ // ver como hacer que sume el puntaje y con que criterio
-	var posicion
-	var property puntajeActual 
-	
-	method image()="fondo/score.png"
-	method position() = posicion
-}
-
-object score inherits Score (posicion=new Position(y=55, x=05),puntajeActual=0){ //prueba
-								
-}
 
 class Edificio {
 	const property image
