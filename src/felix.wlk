@@ -207,7 +207,9 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 		self.resetearAnimacion()
 		self.detenerMovimiento()
   		self.ocultarSensores()
+		self.actualizarSensores()
 		mirandoAlaDerecha = true
-		inmune = false  		
+		inmune = false 
+		reparando = false
   	}
 }

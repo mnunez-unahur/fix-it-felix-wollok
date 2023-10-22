@@ -283,21 +283,16 @@ class Tablero {
 		return grilla.find({c => c.position() == position})
 	}
 	
-
-	// indica si en la posicion absoluta actual se encuentra felix
-//	method estaFelixAca(x, y) {
-//		return x == felix.coordenadaActualX() && y == felix.coordenadaActualY()
+	
+//	// indica cual es la útima fila (relativa) del tablero
+//	method ultimaFila() {
+//		return grilla.max({c => c.posicionRelativa().y()})
 //	}
-	
-	// indica cual es la útima fila (relativa) del tablero
-	method ultimaFila() {
-		return grilla.max({c => c.posicionRelativa().y()})
-	}
-	
-	// indica cual es la útima columna (relativa) del tablero
-	method ultimaColumna() {
-		return grilla.max({c => c.posicionRelativa().x()})
-	}
+//	
+//	// indica cual es la útima columna (relativa) del tablero
+//	method ultimaColumna() {
+//		return grilla.max({c => c.posicionRelativa().x()})
+//	}
 	
 	method esPrimeraColumna(celda) {
 		return celda.posicionRelativa().x() == 1
