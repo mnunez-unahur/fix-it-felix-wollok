@@ -284,16 +284,6 @@ class Tablero {
 	}
 	
 	
-//	// indica cual es la útima fila (relativa) del tablero
-//	method ultimaFila() {
-//		return grilla.max({c => c.posicionRelativa().y()})
-//	}
-//	
-//	// indica cual es la útima columna (relativa) del tablero
-//	method ultimaColumna() {
-//		return grilla.max({c => c.posicionRelativa().x()})
-//	}
-	
 	method esPrimeraColumna(celda) {
 		return celda.posicionRelativa().x() == 1
 	}
@@ -331,6 +321,7 @@ class Tablero {
 		return self.hayCeldaAbajo() &&  
 			   !self.celdaActiva().tieneObstaculoAbajo()
 	}
+	
 	method hayCeldaALaIzquierda(){
 		return !self.esPrimeraColumna(self.celdaActiva())
 	}
@@ -343,6 +334,7 @@ class Tablero {
 	method hayCeldaAbajo(){
 		return !self.esPrimeraFila(self.celdaActiva())
 	}
+	
 	method celdaALaIzquierda(){
 		if(!self.hayCeldaALaIzquierda()){
 			self.error("No hay celda a la izquierda")
