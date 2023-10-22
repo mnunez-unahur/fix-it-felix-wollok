@@ -20,10 +20,10 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 	var inmune = false
 	const sensores = []
 
-	const  animacionParado = new Animacion( 
-				  						velocidad=0,
-  										fotogramas=["felix/derecha-1.png"]
-  								)
+//	const  animacionParado = new Animacion( 
+//				  						velocidad=0,
+//  										fotogramas=["felix/derecha-1.png"]
+//  								)
   
   
 	const  animacionReparandoDerecha = new Animacion( 
@@ -48,7 +48,6 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 				  						reproduccionContinua= false,
   										fotogramas=["felix/izquierda-parado.png",
   													"felix/izquierda-saltando-1.png" 
-//  													"felix/izquierda-saltando-2.png"
   													]
   								)
   	const  animacionSaltandoDerecha = new Animacion( 
@@ -56,7 +55,6 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 				  						reproduccionContinua= false,
   										fotogramas=["felix/derecha-parado.png",
   													"felix/derecha-saltando-1.png" 
-//  													"felix/derecha-saltando-2.png"
   													]
   								)
 
@@ -64,7 +62,6 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 				  						velocidad=10,
 				  						reproduccionContinua= false,
   										fotogramas=[
-//  													"felix/derecha-saltando-2.png",
   													"felix/derecha-saltando-1.png",
   													"felix/derecha-parado.png"
   													]
@@ -90,7 +87,6 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 
 
 	method initialize() {
-		sensores.add(new Sensor(position = self.position()))
 		sensores.add(new Sensor(position = self.position()))
 		sensores.add(new Sensor(position = self.position()))
 		sensores.add(new Sensor(position = self.position()))
@@ -153,7 +149,12 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 		sensores.forEach({s => s.ocultar()})  		
   	}
   	
- method perderVida() {
+  	override method position(pos) {
+  		super(pos)
+  		self.actualizarSensores()
+  	}
+  	
+	method perderVida() {
   		if(!inmune) {
 	  		inmune = true
 	  		self.perderVida2()
@@ -177,19 +178,17 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   	}
 
 	method actualizarSensores() {
-		var pos = self.position().up(2)
-		sensores.forEach({s => s.position(pos); pos = pos.up(2)})
+		var pos = self.position().up(3)
+		sensores.forEach({s => s.position(pos); pos = pos.up(3)})
 	}
   	
   	override method moverAPosicionyHacerAccion(x,y, accion){
   		if(!saltando) {
-  			self.ocultarSensores()
 	  		mirandoAlaDerecha = x >= self.coordenadaActualX()
 	  		saltando = true
 			self.animar(self.animacionSaltando())
 	  		super(x,y, {
 	  			self.actualizarSensores()
-	  			self.mostrarSensores()
 	  			self.animar(self.animacionCayendo())	  			
 	  			saltando = false
 	  			accion.apply()
@@ -206,7 +205,6 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   	method reset() {
 		self.resetearAnimacion()
 		self.detenerMovimiento()
-  		self.ocultarSensores()
 		self.actualizarSensores()
 		mirandoAlaDerecha = true
 		inmune = false 
