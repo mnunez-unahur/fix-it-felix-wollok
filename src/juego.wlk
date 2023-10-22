@@ -14,11 +14,9 @@ object juego {
 	
 	method stageActual() = stages.get(stage)
 	method tableroActual() = self.stageActual().tablero()
-//	method celdaActiva() = self.tableroActual().celdaActiva()
 
 	method iniciar() {
 		self.configurarVisual()
-//		self.configurarTeclas()
 		self.configurarStages()
 		self.mostrarImagenesIniciales()
 		self.configurarSonido()
@@ -50,8 +48,6 @@ object juego {
 		nube2.mover()			
 		
 		score.mostrar()
-		
-		
 	}
 
 
@@ -220,15 +216,26 @@ class Tablero {
 		new Celda(position = new Position(x = 66, y = 32), posicionRelativa = new Position(x=5, y=3))
 	]
 	
+	var property celdaActiva = grilla.get(0)
 	
-	method esRangoValido(x, y) {
+	// cantidad de filas y de columnas del tablero
+	// se ponen como constantes para evitar ejecutar la misma búsqueda a cada rato
+	const cantidadFilas = grilla.map({c => c.posicionRelativa().y()}).max()
+	const cantidadColumnas = grilla.map({c => c.posicionRelativa().x()}).max()
+	
+	method initialize() {
+		
+	}
+	
+	
+	method esCoordinadaValida(x, y) {
 		return grilla.any({c => c.posicionRelativa().x() == x && c.posicionRelativa().y() == y})
 	}
 	
 	// dada una coordenada válida del tablero, devuelve la celda de dicha coordenada
 	// x e y son las posiciones relativas de la celda
 	method celda(x, y) {
-		if(!self.esRangoValido(x, y)) {
+		if(!self.esCoordinadaValida(x, y)) {
 			self.error("las coordenadas quedan fuera del tablero")
 		}
 		return grilla.find({c => c.posicionRelativa().x() == x && c.posicionRelativa().y() == y})
@@ -271,16 +278,16 @@ class Tablero {
 		self.mostrarVentanas()
 	}
 	
-	// indica la celda en la cual se encuentra felix
-	method celdaActiva() {
-		return grilla.find({c => self.estaFelixAca(c.position().x(), c.position().y())})
+	// devuelve la celda correspondiente a la posición absoluta indicada
+	method celdaEn(position) {
+		return grilla.find({c => c.position() == position})
 	}
 	
+
 	// indica si en la posicion absoluta actual se encuentra felix
-	method estaFelixAca(x, y) {
-//		console.println("x: " + x + " y: " + y)
-		return x == felix.coordenadaActualX() && y == felix.coordenadaActualY()
-	}
+//	method estaFelixAca(x, y) {
+//		return x == felix.coordenadaActualX() && y == felix.coordenadaActualY()
+//	}
 	
 	// indica cual es la útima fila (relativa) del tablero
 	method ultimaFila() {
@@ -301,11 +308,11 @@ class Tablero {
 	}
 
 	method esUltimaColumna(celda) {
-		return celda.position().x() == self.ultimaColumna().position().x()
+		return celda.posicionRelativa().x() == cantidadColumnas
 	}
 
 	method esUltimaFila(celda) {
-		return celda.position().y() == self.ultimaFila().position().y()
+		return celda.posicionRelativa().y() == cantidadFilas
 	}
 	method puedeMoverALaIzquierda(){
 		return  self.hayCeldaALaIzquierda() &&  
@@ -439,24 +446,32 @@ class Stage {
 		
 		keyboard.right().onPressDo({
 			if(!felix.saltando()) {
-				felix.moverA(tablero.right().position().x(),felix.coordenadaActualY())
+				felix.moverAPosicionyHacerAccion(tablero.right().position().x(),felix.coordenadaActualY(), {
+					tablero.celdaActiva(tablero.celdaEn(felix.position()))
+				})
 			}
 		})
 		keyboard.left().onPressDo({
 			if(!felix.saltando()) {
-				felix.moverA(tablero.left().position().x(),felix.coordenadaActualY())	
+				felix.moverAPosicionyHacerAccion(tablero.left().position().x(),felix.coordenadaActualY(),{
+					tablero.celdaActiva(tablero.celdaEn(felix.position()))
+				} )	
 			}
 		})
 		
 		keyboard.up().onPressDo({
 			if(!felix.saltando()) {
-				felix.moverA(felix.coordenadaActualX(), tablero.up().position().y())
+				felix.moverAPosicionyHacerAccion(felix.coordenadaActualX(), tablero.up().position().y(), {
+					tablero.celdaActiva(tablero.celdaEn(felix.position()))
+				})
 			}
 		})
 		
 		keyboard.down().onPressDo({
 			if(!felix.saltando()) {
-				felix.moverA(felix.coordenadaActualX(), tablero.down().position().y())
+				felix.moverAPosicionyHacerAccion(felix.coordenadaActualX(), tablero.down().position().y(), {
+					tablero.celdaActiva(tablero.celdaEn(felix.position()))
+				})
 			}
 		})	
 		

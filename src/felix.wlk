@@ -10,7 +10,7 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   														fotogramas=["felix/derecha-parado.png"]
   														), 
   									  position=new Position(x = 30, y = 2),
-  								      velocidad = 30 ){
+  								      velocidad = 40 ){
 	
 	var mirandoAlaDerecha = true
 	var saltando = false
@@ -74,11 +74,20 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 				  						velocidad=10,
 				  						reproduccionContinua= false,
   										fotogramas=[
-//													"felix/izquierda-saltando-2.png",
   													"felix/izquierda-saltando-1.png",
   													"felix/izquierda-parado.png"
   													]
   								)
+
+  	const  animacionPerdiendoVida = new Animacion( 
+				  						velocidad=3,
+				  						reproduccionContinua= true,
+  										fotogramas=[
+  													"nada.png",
+  													"felix/derecha-parado.png"
+  													]
+  								)
+
 
 	method initialize() {
 		sensores.add(new Sensor(position = self.position()))
@@ -95,7 +104,6 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   								
   	method reparar(ventana){
   		if(!saltando && !reparando) {
-  			console.println(reparando)		
   			reparando = true
 	  		self.detenerMovimiento()
 			self.animar(self.animacionReparando())
@@ -149,16 +157,18 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   		if(!inmune) {
 	  		inmune = true
 	  		self.perderVida2()
-	  		// por un segundo no pierde mas vida
-	  		// TODO: agregar animacion
-	  		game.schedule(1000, {inmune = false})
+			self.animar(animacionPerdiendoVida)
+	  		game.schedule(3000, {
+	  			inmune = false
+				self.resetearAnimacion()		
+	  		})
 	  	
   	}}
-  	method perderVida2(){ // cuando se queda sin vidas finaliza el juego. CAMBIARLO A JUEGO
   	
+  	method perderVida2(){ // cuando se queda sin vidas finaliza el juego. CAMBIARLO A JUEGO
   		if(vida.vidasActuales()>0){
-  		vida.perderVida()
-  		restarVida.reproducir()
+	  		vida.perderVida()
+	  		restarVida.reproducir()
   		}else{
   			juego.stageActual().finalizar()
   			gameOver.mostrar()
@@ -171,19 +181,20 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 		sensores.forEach({s => s.position(pos); pos = pos.up(2)})
 	}
   	
-  	method moverA(x,y){
+  	override method moverAPosicionyHacerAccion(x,y, accion){
   		if(!saltando) {
   			self.ocultarSensores()
 	  		mirandoAlaDerecha = x >= self.coordenadaActualX()
 	  		saltando = true
 			self.animar(self.animacionSaltando())
-	  		self.moverAPosicionyHacerAccion(x,y, {
+	  		super(x,y, {
 	  			self.actualizarSensores()
 	  			self.mostrarSensores()
 	  			self.animar(self.animacionCayendo())	  			
 	  			saltando = false
+	  			accion.apply()
 	  		})  
-	  	  salto.reproducir()
+	  	  	salto.reproducir()
   		}
   	}
   	
