@@ -3,6 +3,36 @@ import personaje.*
 import animacion.*
 import ralph.*
 
+class Posicionable {
+	var position
+	
+	method position(nuevaPosicion) {
+		position = nuevaPosicion
+	}
+	method position() = position
+	
+	method mostrar(){
+		if(!game.hasVisual(self)) {
+			game.addVisual(self)
+		}
+	}
+	method ocultar(){
+		if(game.hasVisual(self)) {
+			game.removeVisual(self)		
+		}
+	}
+	
+}
+
+class Visual inherits Posicionable {
+	// indica si ese objeto provoca daño cuando colisiona con felix
+	const property haceDanio = false
+	
+	method image()
+	
+}
+
+
 class Ventana inherits Visual{
 	var salud = 0
 	
@@ -65,26 +95,6 @@ class Edificio {
 	
 }
 
-class Visual {
-	//var image
-	var property position
-
-	// indica si ese objeto provoca daño cuando colisiona con felix
-	const property haceDanio = false
-	
-	method image()
-	method mostrar(){
-		if(!game.hasVisual(self)) {
-			game.addVisual(self)
-		}
-	}
-	method ocultar(){
-		if(game.hasVisual(self)) {
-			game.removeVisual(self)		
-		}
-	}
-	
-}
 object gameOver inherits Visual(position= new Position(x= 0, y = 0)) {
 	override method image() = "fondo/gameOver.png"
 	
@@ -101,10 +111,8 @@ class Nube inherits PersonajeInanimado(image = "varios/nube.png", velocidad=15) 
 }
 
 // el sensor es un objeto asociado a felix para detectar colisiónes 
-class Sensor inherits Visual {
-	
-	//TODO eliminar imagen antes de version final
-	override method image() = "punto-referencia.png"
+class Sensor inherits Posicionable {
+
 	
 	// activa el sensor 
 	method activarDeteccion(accion) {
