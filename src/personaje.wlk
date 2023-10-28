@@ -1,16 +1,73 @@
 import wollok.game.*
-import Elementos.*
+import elementos.*
 
 import animacion.*
 
-class PersonajeTransladable inherits Visual {
+// un caracter es un elemento que puede ser insertado en el juego
+// un caracter no necesariamente es visible
+class Caracter {
+	var position
+	
+	// indica si ese objeto provoca daño cuando colisiona con felix
+	const property haceDanio = false
+	
+	method position(nuevaPosicion) {
+		position = nuevaPosicion
+	}
+	method position() = position
+	
+	method mostrar(){
+		if(!game.hasVisual(self)) {
+			game.addVisual(self)
+		}
+	}
+	method ocultar(){
+		if(game.hasVisual(self)) {
+			game.removeVisual(self)		
+		}
+	}
+	
+}
+
+// representa un objeto que tiene una representación
+// visual en el juego
+// es una clase abstracta ya que no implementa cómo se muestra el elemento 
+class Visual inherits Caracter {
+	
+	method image()
+//	method image(nuevaImagen)
+	
+}
+
+// representa un objeto Visual que no puede cambiar su posición inicial
+// es útil para obstaculos
+class Estatico inherits Visual {
+	var image
+	
+	override method image() = image
+	
+	
+	override method position(nuevaPosicion) {
+		self.error("este elemento no puede ser reubicado")
+	}
+}
+
+
+// Representa un objeto que Visual que puede transladarse
+// de una celda a otra, pasando por las intermedias
+class Movil inherits Visual {
 	var enMovimiento = false
-	var property velocidad
+	var velocidad
 	
 	
 	//genera un nombre único para el objeto
 	// esto es utilizado por los eventos automaticos
 	const nombreEventoMovimiento= "movimiento-personaje-" + 0.randomUpTo(100000)
+	
+	method velocidad() = velocidad
+	method velocidad(nuevaVelocidad) {
+		velocidad = nuevaVelocidad
+	}
 	
 	// Mueve a la coordenada indicada y luego ejecuta una acción
 	// TODO: refactorizar
@@ -21,7 +78,7 @@ class PersonajeTransladable inherits Visual {
 		
 		enMovimiento = true
 		
-		game.onTick(1000 / velocidad, nombreEventoMovimiento , {
+		game.onTick(1000 / self.velocidad(), nombreEventoMovimiento , {
 			
 			// legué a mi destino
 			if(self.coordenadaActualX() == x && self.coordenadaActualY() == y) {
@@ -63,13 +120,14 @@ class PersonajeTransladable inherits Visual {
 	}
 }
 
-class PersonajeInanimado inherits PersonajeTransladable{
+// representa un objeto transladable sin animación
+class Inanimado inherits personaje.Movil{
 	var property image
 	
 }
 
-class PersonajeAnimado inherits PersonajeTransladable {
-	var animacion 
+class Animado inherits Movil {
+	var animacion = nullAnimacion
 	
 	override method image() = animacion.image()
 	

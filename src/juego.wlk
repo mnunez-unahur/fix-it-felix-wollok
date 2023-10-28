@@ -1,8 +1,10 @@
 import wollok.game.*
 import ralph.*
 import animacion.*
-import Elementos.*
+import elementos.*
 import felix.*
+import pantalla.*
+import personaje.*
 
 object juego {
 //	var gameOver = false
@@ -53,6 +55,7 @@ object juego {
 
 	
 	method configurarStages() {
+		// stage 1
 		const stage1 = new Stage(
 			dificultad = 1,
 			fondo = new Edificio(image="niveles/edificio-1.png"), 
@@ -72,7 +75,7 @@ object juego {
 			[1,1],[3,3], [5,2]
 		])
 		
-
+		// stage 2
 		const stage2 = new Stage(
 			dificultad = 2,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
@@ -84,6 +87,15 @@ object juego {
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
+		stage2.agregarMultiplesMacetas([
+			[2,2], [4,2],
+			[1,3], [5,3]
+		])
+		stage2.agregarMultiplesPostigos([
+			[1,1],[3,3], [5,2]
+		])
+
+		// stage 3
 		const stage3 = new Stage(
 			dificultad = 3,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
@@ -94,7 +106,15 @@ object juego {
 			[1,2], [2,2], [3,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
+		stage3.agregarMultiplesMacetas([
+			[2,2], [4,2],
+			[1,3], [5,3]
+		])
+		stage3.agregarMultiplesPostigos([
+			[1,1],[3,3], [5,2]
+		])
 
+		// stage 4
 		const stage4 = new Stage(
 			dificultad = 4,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
@@ -105,7 +125,15 @@ object juego {
 			[1,2], [2,2], [3,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
+		stage4.agregarMultiplesMacetas([
+			[2,2], [4,2],
+			[1,3], [5,3]
+		])
+		stage4.agregarMultiplesPostigos([
+			[1,1],[3,3], [5,2]
+		])
 
+		// stage 5
 		const stage5 = new Stage(
 			dificultad = 5,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
@@ -116,6 +144,14 @@ object juego {
 			[1,2], [2,2], [3,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
+		stage5.agregarMultiplesMacetas([
+			[2,2], [4,2],
+			[1,3], [5,3]
+		])
+		stage5.agregarMultiplesPostigos([
+			[1,1],[3,3], [5,2]
+		])
+		
 
 		self.agregarStage(stage1)
 		self.agregarStage(stage2)
@@ -145,6 +181,7 @@ object juego {
 		self.stageActual().finalizar()
 		self.configurarVisual()
 		stage++
+		vida.ganarVida()
 		self.stageActual().iniciar()
 		
 		//TODO: cuando se finaliza el ultimo nivel se termina el juego	
@@ -222,10 +259,6 @@ class Tablero {
 	// se ponen como constantes para evitar ejecutar la misma búsqueda a cada rato
 	const cantidadFilas = grilla.map({c => c.posicionRelativa().y()}).max()
 	const cantidadColumnas = grilla.map({c => c.posicionRelativa().x()}).max()
-	
-	method initialize() {
-		
-	}
 	
 	
 	method esCoordinadaValida(x, y) {
@@ -415,7 +448,7 @@ class Tablero {
 class Stage {
 	const fondo
 	const imgInicial
-	const dificultad
+	const property dificultad
 	
 	const tablero = new Tablero()
 	method celdaActiva() = tablero.celdaActiva()
@@ -488,7 +521,7 @@ class Stage {
 	  	felix.mostrar()
 	  	tablero.mostrarObstaculos()
 	  	
-	    imgInicial.mostrar()
+//	    imgInicial.mostrar()
 	  	
 	}
 	
@@ -514,26 +547,35 @@ class Stage {
 		lista.forEach({ c => tablero.celda(c.get(0), c.get(1)).agregarPostigo()})
 	}
 
-	
 	method iniciar() {
 	  	self.mostrar()
-	  	game.schedule(4000,{
-			imgInicial.ocultar();
+	  	imgInicial.mostrarPorMilisegundosYLuegoEjecutar(2000, {
 			self.configurarTeclas()
-			ralph.hacerRutina(dificultad)
+			ralph.stage(self)
+			ralph.hacerRutina()
 	  	})
-
 	}
 	
 	method finalizar() {
-		felix.position(tablero.celda(1,1).position())
 		ralph.finalizarRutina()		
+		felix.position(tablero.celda(1,1).position())
 		felix.reset()
 		self.ocultar()
 		game.clear()
 	}
 	
 }
+
+//representa un stage nulo
+// se utiliza para inicializar los personajes que tienen un atributo stage
+object nullStage inherits Stage(
+			dificultad = 0,
+			fondo = new Edificio(image="niveles/edificio-1.png"), 
+			imgInicial = new Pantalla (image ="nada.jpg")){
+	override method mostrar() {}
+	override method ocultar() {}
+}
+
 
 // Score
 object score inherits Visual(position = new Position(x=2, y=56)) { 
@@ -587,6 +629,28 @@ class Digito inherits Visual {
 	override method image() = "numeros/" + valor + ".png" 
 }
 
+object vida inherits Visual (position=new Position(y=55, x=80 )){ 
+	var property vidasActuales = 3
+	
+	override method image(){
+		if (vidasActuales == 3){
+			return "fondo/vida3.png"
+		}else if (vidasActuales ==2 ){
+			return "fondo/vida2.png"
+		}else if (vidasActuales ==1){
+			return "fondo/vida1.png"
+		}else{
+			return "fondo/sin vida.png"
+		}
+	}
+	
+	method perderVida(){
+		vidasActuales = 0.max(vidasActuales-1)
+	}
+	method ganarVida(){
+		vidasActuales = 3.min(vidasActuales+1)
+	}
+}
 
 
 
