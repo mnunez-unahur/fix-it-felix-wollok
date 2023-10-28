@@ -55,6 +55,7 @@ object juego {
 
 	
 	method configurarStages() {
+		// stage 1
 		const stage1 = new Stage(
 			dificultad = 1,
 			fondo = new Edificio(image="niveles/edificio-1.png"), 
@@ -74,7 +75,7 @@ object juego {
 			[1,1],[3,3], [5,2]
 		])
 		
-
+		// stage 2
 		const stage2 = new Stage(
 			dificultad = 2,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
@@ -86,6 +87,15 @@ object juego {
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 
+		stage2.agregarMultiplesMacetas([
+			[2,2], [4,2],
+			[1,3], [5,3]
+		])
+		stage2.agregarMultiplesPostigos([
+			[1,1],[3,3], [5,2]
+		])
+
+		// stage 3
 		const stage3 = new Stage(
 			dificultad = 3,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
@@ -96,7 +106,15 @@ object juego {
 			[1,2], [2,2], [3,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
+		stage3.agregarMultiplesMacetas([
+			[2,2], [4,2],
+			[1,3], [5,3]
+		])
+		stage3.agregarMultiplesPostigos([
+			[1,1],[3,3], [5,2]
+		])
 
+		// stage 4
 		const stage4 = new Stage(
 			dificultad = 4,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
@@ -107,7 +125,15 @@ object juego {
 			[1,2], [2,2], [3,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
+		stage4.agregarMultiplesMacetas([
+			[2,2], [4,2],
+			[1,3], [5,3]
+		])
+		stage4.agregarMultiplesPostigos([
+			[1,1],[3,3], [5,2]
+		])
 
+		// stage 5
 		const stage5 = new Stage(
 			dificultad = 5,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
@@ -118,6 +144,14 @@ object juego {
 			[1,2], [2,2], [3,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
+		stage5.agregarMultiplesMacetas([
+			[2,2], [4,2],
+			[1,3], [5,3]
+		])
+		stage5.agregarMultiplesPostigos([
+			[1,1],[3,3], [5,2]
+		])
+		
 
 		self.agregarStage(stage1)
 		self.agregarStage(stage2)
@@ -147,6 +181,7 @@ object juego {
 		self.stageActual().finalizar()
 		self.configurarVisual()
 		stage++
+		vida.ganarVida()
 		self.stageActual().iniciar()
 		
 		//TODO: cuando se finaliza el ultimo nivel se termina el juego	
@@ -413,7 +448,7 @@ class Tablero {
 class Stage {
 	const fondo
 	const imgInicial
-	const dificultad
+	const property dificultad
 	
 	const tablero = new Tablero()
 	method celdaActiva() = tablero.celdaActiva()
@@ -516,13 +551,14 @@ class Stage {
 	  	self.mostrar()
 	  	imgInicial.mostrarPorMilisegundosYLuegoEjecutar(2000, {
 			self.configurarTeclas()
-			ralph.hacerRutina(dificultad)
+			ralph.stage(self)
+			ralph.hacerRutina()
 	  	})
 	}
 	
 	method finalizar() {
-		felix.position(tablero.celda(1,1).position())
 		ralph.finalizarRutina()		
+		felix.position(tablero.celda(1,1).position())
 		felix.reset()
 		self.ocultar()
 		game.clear()

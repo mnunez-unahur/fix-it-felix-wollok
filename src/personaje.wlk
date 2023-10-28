@@ -8,6 +8,9 @@ import animacion.*
 class Caracter {
 	var position
 	
+	// indica si ese objeto provoca daño cuando colisiona con felix
+	const property haceDanio = false
+	
 	method position(nuevaPosicion) {
 		position = nuevaPosicion
 	}
@@ -30,8 +33,6 @@ class Caracter {
 // visual en el juego
 // es una clase abstracta ya que no implementa cómo se muestra el elemento 
 class Visual inherits Caracter {
-	// indica si ese objeto provoca daño cuando colisiona con felix
-	const property haceDanio = false
 	
 	method image()
 //	method image(nuevaImagen)
@@ -54,14 +55,19 @@ class Estatico inherits Visual {
 
 // Representa un objeto que Visual que puede transladarse
 // de una celda a otra, pasando por las intermedias
-class Transladable inherits Visual {
+class Movil inherits Visual {
 	var enMovimiento = false
-	var property velocidad
+	var velocidad
 	
 	
 	//genera un nombre único para el objeto
 	// esto es utilizado por los eventos automaticos
 	const nombreEventoMovimiento= "movimiento-personaje-" + 0.randomUpTo(100000)
+	
+	method velocidad() = velocidad
+	method velocidad(nuevaVelocidad) {
+		velocidad = nuevaVelocidad
+	}
 	
 	// Mueve a la coordenada indicada y luego ejecuta una acción
 	// TODO: refactorizar
@@ -72,7 +78,7 @@ class Transladable inherits Visual {
 		
 		enMovimiento = true
 		
-		game.onTick(1000 / velocidad, nombreEventoMovimiento , {
+		game.onTick(1000 / self.velocidad(), nombreEventoMovimiento , {
 			
 			// legué a mi destino
 			if(self.coordenadaActualX() == x && self.coordenadaActualY() == y) {
@@ -115,12 +121,12 @@ class Transladable inherits Visual {
 }
 
 // representa un objeto transladable sin animación
-class Inanimado inherits Transladable{
+class Inanimado inherits personaje.Movil{
 	var property image
 	
 }
 
-class Animado inherits Transladable {
+class Animado inherits Movil {
 	var animacion = nullAnimacion
 	
 	override method image() = animacion.image()

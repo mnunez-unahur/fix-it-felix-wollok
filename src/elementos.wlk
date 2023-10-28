@@ -5,7 +5,8 @@ import ralph.*
 import pantalla.*
 
 
-
+// Representa una ventana del tablero
+// Nota: si bien es un objeto estático, no se Hereda de Estatico porque Estático requiere una imagen
 class Ventana inherits Visual{
 	var salud = 0
 	
