@@ -3,6 +3,7 @@ import animacion.*
 import elementos.*
 import personaje.*
 import juego.*
+import pantalla.*
 
 
 object felix inherits Animado( position=new Position(x = 30, y = 2),
@@ -128,27 +129,27 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   		return if(mirandoAlaDerecha) animacionCayendoDerecha else animacionCayendoIzquierda
   	}
   	
-  	override method mostrar() {
+  	override method agregarAlJuego() {
   		super()
 		game.whenCollideDo(self, { c => if(c.haceDanio()) self.perderVida()  }) 
 		self.mostrarSensores()
 		self.activarSensores()
   	}
   	
-  	override method ocultar() {
+  	override method quitarDelJuego() {
   		super()
   		self.ocultarSensores()
   	}
   	
   	method mostrarSensores() {
-		sensores.forEach({s => s.mostrar()})
+		sensores.forEach({s => s.agregarAlJuego()})
   	}
   	method activarSensores() {
 		sensores.forEach({s => s.activarDeteccion({ c => if(c.haceDanio()) self.perderVida()  })})
   	}
   	
   	method ocultarSensores() {
-		sensores.forEach({s => s.ocultar()})  		
+		sensores.forEach({s => s.quitarDelJuego()})  		
   	}
   	
   	override method position(pos) {
@@ -174,7 +175,7 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
 	  		restarVida.reproducir()
   		}else{
   			juego.stageActual().finalizar()
-  			gameOver.mostrar()
+  			gameOver.agregarAlJuego()
   			sgameOver.reproducir()
   		}
   	}

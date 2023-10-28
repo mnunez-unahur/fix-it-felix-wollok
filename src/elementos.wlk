@@ -32,7 +32,7 @@ class Ventana inherits Visual{
 class Ladrillo inherits Inanimado (image= "ladrillo.png") {
 	method caer() {
 		self.moverAPosicionyHacerAccion(self.coordenadaActualX(), 0, {
-			self.ocultar()
+			self.quitarDelJuego()
 			self.detenerMovimiento()
 		})
 		
@@ -90,7 +90,6 @@ class Maceta inherits Obstaculo(abajo=true, image= "ventana/macetas.png") {
 class Sonido{
 	
 	const property sound
-	const volumen 
 	
 	method reproducir(){
 		game.sound(sound).play()
@@ -102,22 +101,23 @@ class Sonido{
 	
 }
 // Sonidos
-object sonidoInicial inherits Sonido(sound = "Sonidos/juego.mp3",volumen= 0.3 ){
+object sonidoInicial inherits Sonido(sound = "Sonidos/juego.mp3" ){
 }
-object salto inherits Sonido (sound = "Sonidos/salto.mp3",volumen= 0.2){
+object salto inherits Sonido (sound = "Sonidos/salto.mp3"){
 }
-object arreglar inherits Sonido (sound = "Sonidos/repararVentana.mp3",volumen= 0.2){
+object arreglar inherits Sonido (sound = "Sonidos/repararVentana.mp3"){
 }
-object golpe inherits Sonido (sound = "Sonidos/ralphGolpe.mp3",volumen= 0.2){	
+object golpe inherits Sonido (sound = "Sonidos/ralphGolpe.mp3"){	
 }
-object restarVida inherits Sonido (sound = "Sonidos/perderVida2.mp3",volumen= 0.2){	
+object restarVida inherits Sonido (sound = "Sonidos/perderVida2.mp3"){	
 }
-object sgameOver inherits Sonido (sound = "Sonidos/sinVidas.mp3",volumen= 0.2){
+object sgameOver inherits Sonido (sound = "Sonidos/sinVidas.mp3"){
 }
-object sonidoStage inherits Sonido (sound = "Sonidos/juego2.mp3",volumen= 0.2){
+object sonidoStage inherits Sonido (sound = "Sonidos/juego2.mp3"){
 }
-//object grito inherits Sonido (sound = "Sonidos/juego2.mp3",volumen= 0.2){
-//}
+object sonidoFinal inherits Sonido (sound = "Sonidos/winGame.mp3"){
+}
+
 
 
 

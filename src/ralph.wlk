@@ -78,7 +78,7 @@ object ralph inherits Animado ( position=new Position(y=47, x=43),
 									   haceDanio = true)
 		
 										
-		ladrillo.mostrar()
+		ladrillo.agregarAlJuego()
 		ladrillo.caer()
 
 		
