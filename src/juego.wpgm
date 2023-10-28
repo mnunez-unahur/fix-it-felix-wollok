@@ -4,7 +4,6 @@ import wollok.game.*
 
 program fixItFelix {
 	
-	
 	juego.iniciar()
 	
 	

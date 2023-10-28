@@ -1,5 +1,5 @@
 import wollok.game.*
-import Elementos.*
+import elementos.*
 
 class Animacion {
 	
@@ -7,10 +7,15 @@ class Animacion {
 	const property nombreAnimacion = "animacion_" + 0.randomUpTo(999999).toString()
 	const fotogramas = []
 	//velocidad en fotogramas por segundo
-	var property velocidad = 0
+	var velocidad = 0
 	var fotogramaActual = 0
 	var animando = false
 	const reproduccionContinua = true
+	
+	method velocidad() = velocidad
+	method velocidad(nuevaVelocidad) {
+		velocidad = nuevaVelocidad
+	}
 	
 	method animando() = animando
 	
@@ -63,13 +68,17 @@ class Animacion {
 	
 	
 }
-class Pantalla inherits Visual (position = game.at(0,0)){
-	var image
+
+// representa una Animación Nula
+// se utiliza para inicializar personajes sin animación inicial
+object nullAnimacion inherits Animacion(	velocidad=0, fotogramas=["nada.png"]	) {
+	override method velocidad(nuevaVelocidad) {} 
 	
- 	override method image() = image
+	override method agregarFotograma(img) {
+		self.error("no se puede agregar fotogramas a esta animación")
+	}
+	
 }
-
-
 
 
 

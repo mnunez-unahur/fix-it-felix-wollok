@@ -2,35 +2,8 @@ import wollok.game.*
 import personaje.*
 import animacion.*
 import ralph.*
+import pantalla.*
 
-class Posicionable {
-	var position
-	
-	method position(nuevaPosicion) {
-		position = nuevaPosicion
-	}
-	method position() = position
-	
-	method mostrar(){
-		if(!game.hasVisual(self)) {
-			game.addVisual(self)
-		}
-	}
-	method ocultar(){
-		if(game.hasVisual(self)) {
-			game.removeVisual(self)		
-		}
-	}
-	
-}
-
-class Visual inherits Posicionable {
-	// indica si ese objeto provoca daño cuando colisiona con felix
-	const property haceDanio = false
-	
-	method image()
-	
-}
 
 
 class Ventana inherits Visual{
@@ -55,7 +28,7 @@ class Ventana inherits Visual{
 
 }
 
-class Ladrillo inherits PersonajeInanimado (image= "ladrillo.png") {
+class Ladrillo inherits Inanimado (image= "ladrillo.png") {
 	method caer() {
 		self.moverAPosicionyHacerAccion(self.coordenadaActualX(), 0, {
 			self.ocultar()
@@ -65,42 +38,16 @@ class Ladrillo inherits PersonajeInanimado (image= "ladrillo.png") {
 	}
 }
 											
-object vida inherits Visual (position=new Position(y=55, x=80 )){ 
-	var property vidasActuales = 3
-	
-	override method image(){
-		if (vidasActuales == 3){
-			return "fondo/vida3.png"
-		}else if (vidasActuales ==2 ){
-			return "fondo/vida2.png"
-		}else if (vidasActuales ==1){
-			return "fondo/vida1.png"
-		}else{
-			return "fondo/sin vida.png"
-		}
-	}
-	
-	method perderVida(){
-		vidasActuales = 0.max(vidasActuales-1)
-	}
-	method ganarVida(){
-		vidasActuales = 3.min(vidasActuales+1)
-	}
+
+
+
+class Edificio inherits Estatico(position = new Position(x=27, y=0)) {
 }
 
+const gameOver = new Pantalla(image="fondo/gameOver.png")
 
-class Edificio {
-	const property image
-	const property position = new Position(x=27, y=0)
-	
-}
-
-object gameOver inherits Visual(position= new Position(x= 0, y = 0)) {
-	override method image() = "fondo/gameOver.png"
-	
-}
-
-class Nube inherits PersonajeInanimado(image = "varios/nube.png", velocidad=15) {
+// representa una nube que pasa por el fondo de la pantalla
+class Nube inherits Inanimado(image = "varios/nube.png", velocidad=15) {
 	method mover() {
 		if(self.coordenadaActualX() < 0) {
 			self.moverAPosicionyHacerAccion(110, self.coordenadaActualY(), {self.mover()})
@@ -111,16 +58,16 @@ class Nube inherits PersonajeInanimado(image = "varios/nube.png", velocidad=15) 
 }
 
 // el sensor es un objeto asociado a felix para detectar colisiónes 
-class Sensor inherits Posicionable {
-
-	
+class Sensor inherits Caracter {
 	// activa el sensor 
 	method activarDeteccion(accion) {
 		game.whenCollideDo(self, accion)		
 	}
 }
 
-class Obstaculo inherits Visual {
+// representa un obstaculo para la celda actual del tablero
+// un obstaculo puede impedir el paso a cualquiera de los lados
+class Obstaculo inherits Estatico {
 	const izquierda = false
 	const derecha = false
 	const abajo = false
@@ -132,12 +79,12 @@ class Obstaculo inherits Visual {
 	method arriba() =arriba
 }
 
-class Postigo inherits Obstaculo(derecha=true, izquierda=true) {
-	override method image() = "ventana/postigos.png"
+// Representa un obstaculo para movimiento horizontal
+class Postigo inherits Obstaculo(derecha=true, izquierda=true, image="ventana/postigos.png") {
 }
 
-class Maceta inherits Obstaculo(abajo=true) {
-	override method image() = "ventana/macetas.png"
+// Representa un obstaculo para movimientos verticales
+class Maceta inherits Obstaculo(abajo=true, image= "ventana/macetas.png") {
 }
 
 class Sonido{

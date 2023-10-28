@@ -1,8 +1,10 @@
 import wollok.game.*
 import ralph.*
 import animacion.*
-import Elementos.*
+import elementos.*
 import felix.*
+import pantalla.*
+import personaje.*
 
 object juego {
 //	var gameOver = false
@@ -222,10 +224,6 @@ class Tablero {
 	// se ponen como constantes para evitar ejecutar la misma búsqueda a cada rato
 	const cantidadFilas = grilla.map({c => c.posicionRelativa().y()}).max()
 	const cantidadColumnas = grilla.map({c => c.posicionRelativa().x()}).max()
-	
-	method initialize() {
-		
-	}
 	
 	
 	method esCoordinadaValida(x, y) {
@@ -488,7 +486,7 @@ class Stage {
 	  	felix.mostrar()
 	  	tablero.mostrarObstaculos()
 	  	
-	    imgInicial.mostrar()
+//	    imgInicial.mostrar()
 	  	
 	}
 	
@@ -514,15 +512,12 @@ class Stage {
 		lista.forEach({ c => tablero.celda(c.get(0), c.get(1)).agregarPostigo()})
 	}
 
-	
 	method iniciar() {
 	  	self.mostrar()
-	  	game.schedule(4000,{
-			imgInicial.ocultar();
+	  	imgInicial.mostrarPorMilisegundosYLuegoEjecutar(2000, {
 			self.configurarTeclas()
 			ralph.hacerRutina(dificultad)
 	  	})
-
 	}
 	
 	method finalizar() {
@@ -534,6 +529,17 @@ class Stage {
 	}
 	
 }
+
+//representa un stage nulo
+// se utiliza para inicializar los personajes que tienen un atributo stage
+object nullStage inherits Stage(
+			dificultad = 0,
+			fondo = new Edificio(image="niveles/edificio-1.png"), 
+			imgInicial = new Pantalla (image ="nada.jpg")){
+	override method mostrar() {}
+	override method ocultar() {}
+}
+
 
 // Score
 object score inherits Visual(position = new Position(x=2, y=56)) { 
@@ -587,6 +593,28 @@ class Digito inherits Visual {
 	override method image() = "numeros/" + valor + ".png" 
 }
 
+object vida inherits Visual (position=new Position(y=55, x=80 )){ 
+	var property vidasActuales = 3
+	
+	override method image(){
+		if (vidasActuales == 3){
+			return "fondo/vida3.png"
+		}else if (vidasActuales ==2 ){
+			return "fondo/vida2.png"
+		}else if (vidasActuales ==1){
+			return "fondo/vida1.png"
+		}else{
+			return "fondo/sin vida.png"
+		}
+	}
+	
+	method perderVida(){
+		vidasActuales = 0.max(vidasActuales-1)
+	}
+	method ganarVida(){
+		vidasActuales = 3.min(vidasActuales+1)
+	}
+}
 
 
 

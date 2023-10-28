@@ -1,7 +1,7 @@
 import wollok.game.*
 import personaje.*
 import animacion.*
-import Elementos.*
+import elementos.*
 /*
  * posiciones donde se detiene ralph
  * 25
@@ -12,14 +12,8 @@ import Elementos.*
  */
  
  
-object ralph inherits PersonajeAnimado (animacion=new Animacion(
-				  										velocidad=0,
-  														fotogramas=["ralph/parado.png"]
-  														), 
-  								position=new Position(y=47, x=43),
-  								velocidad = 20 )
-  								 
-  								 {
+object ralph inherits Animado ( position=new Position(y=47, x=43),
+  								velocidad = 20 ) {
   									
 	const fila = 47 // solo se mueve en la fila 47
 	const distanciaEntreVentana = 9

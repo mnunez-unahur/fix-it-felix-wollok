@@ -1,16 +1,12 @@
 import wollok.game.*
 import animacion.*
-import Elementos.*
+import elementos.*
 import personaje.*
 import juego.*
 
 
-object felix inherits PersonajeAnimado(animacion=new Animacion(
-				  										velocidad=0,
-  														fotogramas=["felix/derecha-parado.png"]
-  														), 
-  									  position=new Position(x = 30, y = 2),
-  								      velocidad = 40 ){
+object felix inherits Animado( position=new Position(x = 30, y = 2),
+  							   velocidad = 40 ){
 	
 	var mirandoAlaDerecha = true
 	var saltando = false
@@ -19,12 +15,15 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 	//mientras felix está inmune los objetos no le hacen daño
 	var inmune = false
 	const sensores = []
+	
+	//referencia al stage actual
+	var property stage = nullStage
 
-//	const  animacionParado = new Animacion( 
-//				  						velocidad=0,
-//  										fotogramas=["felix/derecha-1.png"]
-//  								)
-  
+	const  animacionParadoDerecha = new Animacion( 
+										reproduccionContinua= false,
+				  						velocidad=0,
+  										fotogramas=["felix/derecha-parado.png"])
+ 
   
 	const  animacionReparandoDerecha = new Animacion( 
 										reproduccionContinua= false,
@@ -77,9 +76,10 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   								)
 
   	const  animacionPerdiendoVida = new Animacion( 
-				  						velocidad=3,
+				  						velocidad=5,
 				  						reproduccionContinua= true,
   										fotogramas=[
+  													"felix/derecha-parado.png",
   													"nada.png",
   													"felix/derecha-parado.png"
   													]
@@ -87,6 +87,8 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
 
 
 	method initialize() {
+		animacion = animacionParadoDerecha
+		sensores.add(new Sensor(position = self.position()))
 		sensores.add(new Sensor(position = self.position()))
 		sensores.add(new Sensor(position = self.position()))
 		sensores.add(new Sensor(position = self.position()))
@@ -167,7 +169,7 @@ object felix inherits PersonajeAnimado(animacion=new Animacion(
   	}}
   	
   	method perderVida2(){ // cuando se queda sin vidas finaliza el juego. CAMBIARLO A JUEGO
-  		if(vida.vidasActuales()>0){
+  		if(vida.vidasActuales()>1){
 	  		vida.perderVida()
 	  		restarVida.reproducir()
   		}else{

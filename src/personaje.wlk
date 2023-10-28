@@ -1,9 +1,60 @@
 import wollok.game.*
-import Elementos.*
+import elementos.*
 
 import animacion.*
 
-class PersonajeTransladable inherits Visual {
+// un caracter es un elemento que puede ser insertado en el juego
+// un caracter no necesariamente es visible
+class Caracter {
+	var position
+	
+	method position(nuevaPosicion) {
+		position = nuevaPosicion
+	}
+	method position() = position
+	
+	method mostrar(){
+		if(!game.hasVisual(self)) {
+			game.addVisual(self)
+		}
+	}
+	method ocultar(){
+		if(game.hasVisual(self)) {
+			game.removeVisual(self)		
+		}
+	}
+	
+}
+
+// representa un objeto que tiene una representación
+// visual en el juego
+// es una clase abstracta ya que no implementa cómo se muestra el elemento 
+class Visual inherits Caracter {
+	// indica si ese objeto provoca daño cuando colisiona con felix
+	const property haceDanio = false
+	
+	method image()
+//	method image(nuevaImagen)
+	
+}
+
+// representa un objeto Visual que no puede cambiar su posición inicial
+// es útil para obstaculos
+class Estatico inherits Visual {
+	var image
+	
+	override method image() = image
+	
+	
+	override method position(nuevaPosicion) {
+		self.error("este elemento no puede ser reubicado")
+	}
+}
+
+
+// Representa un objeto que Visual que puede transladarse
+// de una celda a otra, pasando por las intermedias
+class Transladable inherits Visual {
 	var enMovimiento = false
 	var property velocidad
 	
@@ -63,13 +114,14 @@ class PersonajeTransladable inherits Visual {
 	}
 }
 
-class PersonajeInanimado inherits PersonajeTransladable{
+// representa un objeto transladable sin animación
+class Inanimado inherits Transladable{
 	var property image
 	
 }
 
-class PersonajeAnimado inherits PersonajeTransladable {
-	var animacion 
+class Animado inherits Transladable {
+	var animacion = nullAnimacion
 	
 	override method image() = animacion.image()
 	
