@@ -162,7 +162,7 @@ object juego {
 	}
 	
 	method mostrarImagenesIniciales(){
-		const inicio = new Pantalla(image = "fondo/inicioJuego.JPG")
+		const inicio = new Pantalla(image = "fondo/inicioJuego.JPG",incluirScore = false)
 		inicio.agregarAlJuego()
 		keyboard.enter().onPressDo({
 			if(!iniciado){

@@ -39,7 +39,7 @@ describe "Caracteres Inanimados" {
 		game.clear()
 	}
 	
-	test "la imagen es estática" {
+	test "la imagen es estatica" {
 		caracter.agregarAlJuego()
 	}	
 }
