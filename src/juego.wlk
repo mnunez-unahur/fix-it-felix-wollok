@@ -49,7 +49,7 @@ object juego {
 		nube2.mostrar()
 		nube2.mover()			
 		
-		score.mostrar()
+		
 	}
 
 
@@ -68,11 +68,10 @@ object juego {
 		])
 		
 		stage1.agregarMultiplesMacetas([
-			[2,2], [4,2],
-			[1,3], [5,3]
+			[4,3],[1,2]
 		])
 		stage1.agregarMultiplesPostigos([
-			[1,1],[3,3], [5,2]
+			[4,1],[1,3]
 		])
 		
 		// stage 2
@@ -88,11 +87,11 @@ object juego {
 		])
 
 		stage2.agregarMultiplesMacetas([
-			[2,2], [4,2],
-			[1,3], [5,3]
+		[2,2], [3,2],
+		[4,2]		
 		])
 		stage2.agregarMultiplesPostigos([
-			[1,1],[3,3], [5,2]
+			[1,2],[4,3]
 		])
 
 		// stage 3
@@ -126,11 +125,10 @@ object juego {
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 		stage4.agregarMultiplesMacetas([
-			[2,2], [4,2],
-			[1,3], [5,3]
+			[3,2], [4,2]
 		])
 		stage4.agregarMultiplesPostigos([
-			[1,1],[3,3], [5,2]
+			[1,1],[1,2], [3,2],[4,3]
 		])
 
 		// stage 5
@@ -145,18 +143,18 @@ object juego {
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 		stage5.agregarMultiplesMacetas([
-			[2,2], [4,2],
-			[1,3], [5,3]
+			[1,2],[2,2]
+
 		])
 		stage5.agregarMultiplesPostigos([
-			[1,1],[3,3], [5,2]
+			[1,3],[4,3],[3,2],[5,1]
 		])
 		
 
-		self.agregarStage(stage1)
-		self.agregarStage(stage2)
-		self.agregarStage(stage3)
-		self.agregarStage(stage4)
+//		self.agregarStage(stage1)
+//		self.agregarStage(stage2)
+//		self.agregarStage(stage3)
+//		self.agregarStage(stage4)
 		self.agregarStage(stage5)
 		
 	}
@@ -461,7 +459,7 @@ class Stage {
 	}
 	
 	method configurarTeclas() {
-		keyboard.q().onPressDo({ self.repararVentanaSiHay()	})
+		keyboard.x().onPressDo({ self.repararVentanaSiHay()	})
 		keyboard.space().onPressDo({ self.repararVentanaSiHay()	})
 		
 		keyboard.right().onPressDo({

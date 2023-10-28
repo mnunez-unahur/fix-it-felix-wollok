@@ -37,4 +37,5 @@ class Pantalla inherits Visual (position = game.at(0,0)){
  	
 }
 
-
+const gameOver = new Pantalla(image="fondo/gameOver.png")
+const congrats = new Pantalla(image= "fondo/techo.png")

@@ -45,7 +45,6 @@ class Ladrillo inherits Inanimado (image= "ladrillo.png") {
 class Edificio inherits Estatico(position = new Position(x=27, y=0)) {
 }
 
-const gameOver = new Pantalla(image="fondo/gameOver.png")
 
 // representa una nube que pasa por el fondo de la pantalla
 class Nube inherits Inanimado(image = "varios/nube.png", velocidad=15) {
