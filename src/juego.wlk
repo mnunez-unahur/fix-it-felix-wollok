@@ -38,18 +38,18 @@ object juego {
 		game.height(60)
 		game.cellSize(10)
 	  	game.boardGround("fondo.png")
-		vida.mostrar()
+		vida.agregarAlJuego()
 		
 		// pongo un par de nubes
 		const nube1 = new Nube(position = new Position(x=-20, y=40))
-		nube1.mostrar()
+		nube1.agregarAlJuego()
 		nube1.mover()
 		
 		const nube2 = new Nube(position = new Position(x=-20, y=20), velocidad=10)
-		nube2.mostrar()
+		nube2.agregarAlJuego()
 		nube2.mover()			
 		
-		score.mostrar()
+		score.agregarAlJuego()
 	}
 
 
@@ -167,10 +167,10 @@ object juego {
 	
 	method mostrarImagenesIniciales(){
 		const inicio = new Pantalla(image = "fondo/inicioJuego.JPG")
-		inicio.mostrar()
+		inicio.agregarAlJuego()
 		keyboard.enter().onPressDo({
 			if(!iniciado){
-				inicio.ocultar();
+				inicio.quitarDelJuego();
 			   	self.stageActual().iniciar()
 			   	iniciado = true
 		   	}
@@ -294,16 +294,16 @@ class Tablero {
 	}
 	
 	method mostrarVentanas() {
-		self.ventanas().forEach({v => v.mostrar()})		
+		self.ventanas().forEach({v => v.agregarAlJuego()})		
 	}
 	
 	//Oculta las ventanas del stage si están visibles
 	method ocultarVentanas() {
-		self.ventanas().forEach({v => v.ocultar()})		
+		self.ventanas().forEach({v => v.quitarDelJuego()})		
 	}
 	
 	method mostrarObstaculos() {
-		self.obstaculos().forEach({v => v.mostrar()})		
+		self.obstaculos().forEach({v => v.agregarAlJuego()})		
 	}
 
 	//muestra los componentes del tablero
@@ -516,19 +516,18 @@ class Stage {
 	
 	method mostrar(){ 
 		game.addVisual(fondo)
-		ralph.mostrar()
+		ralph.agregarAlJuego()
 	  	tablero.mostrar()
-	  	felix.mostrar()
+	  	felix.agregarAlJuego()
 	  	tablero.mostrarObstaculos()
 	  	
-//	    imgInicial.mostrar()
 	  	
 	}
 	
 	method ocultar() {
-		felix.ocultar()
+		felix.quitarDelJuego()
 		game.removeVisual(fondo)
-		ralph.ocultar()
+		ralph.quitarDelJuego()
 		
 	}
 	
@@ -589,14 +588,14 @@ object score inherits Visual(position = new Position(x=2, y=56)) {
 		new Digito(position = new Position(x= 13, y=56))
 	]
 	
-	override method mostrar() {
+	override method agregarAlJuego() {
 		super()
-		digitos.forEach({d => d.mostrar()})
+		digitos.forEach({d => d.agregarAlJuego()})
 	}
 	
-	override method ocultar() {
+	override method quitarDelJuego() {
 		super()
-		digitos.forEach({d => d.ocultar()})
+		digitos.forEach({d => d.quitarDelJuego()})
 	}
 	override method image()="score.png"
 	

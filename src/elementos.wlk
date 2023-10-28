@@ -32,7 +32,7 @@ class Ventana inherits Visual{
 class Ladrillo inherits Inanimado (image= "ladrillo.png") {
 	method caer() {
 		self.moverAPosicionyHacerAccion(self.coordenadaActualX(), 0, {
-			self.ocultar()
+			self.quitarDelJuego()
 			self.detenerMovimiento()
 		})
 		

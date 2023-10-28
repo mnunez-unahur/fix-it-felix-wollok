@@ -16,12 +16,12 @@ class Caracter {
 	}
 	method position() = position
 	
-	method mostrar(){
+	method agregarAlJuego(){
 		if(!game.hasVisual(self)) {
 			game.addVisual(self)
 		}
 	}
-	method ocultar(){
+	method quitarDelJuego(){
 		if(game.hasVisual(self)) {
 			game.removeVisual(self)		
 		}
@@ -53,7 +53,7 @@ class Estatico inherits Visual {
 }
 
 
-// Representa un objeto que Visual que puede transladarse
+// Clase Abstracta que representa un objeto que Visual que puede transladarse
 // de una celda a otra, pasando por las intermedias
 class Movil inherits Visual {
 	var enMovimiento = false

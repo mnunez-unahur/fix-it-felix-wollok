@@ -1,0 +1,47 @@
+import wollok.game.*
+import personaje.*
+
+describe "Caracteres" {
+	const caracter = new Caracter( position=new Position(x=1,y=1))
+	method initialize() {
+		game.clear()
+	}
+	
+	test "incialmente el caracter no está en el tablero" {
+		assert.that(!game.hasVisual(caracter))		
+	}
+
+	test "se puede agregar al tablero" {
+		caracter.agregarAlJuego()
+		assert.that(game.hasVisual(caracter))		
+	}
+
+}
+
+describe "Caracteres Estaticos" {
+	const caracter = new Estatico( position=new Position(x=1,y=1), image="nada.png")
+	method initialize() {
+		game.clear()
+	}
+	
+	test "falla si se intenta cambiar la posición" {
+		caracter.agregarAlJuego()
+		assert.throwsException({
+			caracter.position(new Position(x=1,y=1))
+		})
+	}	
+}
+
+
+describe "Caracteres Inanimados" {
+	const caracter = new Inanimado( position=new Position(x=1,y=1), velocidad=100, image="nada.png")
+	method initialize() {
+		game.clear()
+	}
+	
+	test "la imagen es estática" {
+		caracter.agregarAlJuego()
+	}	
+}
+
+
