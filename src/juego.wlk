@@ -59,10 +59,13 @@ object juego {
 			fondo = new Edificio(image="niveles/edificio-1.png"), 
 			imgInicial = new Pantalla (image ="fondo/stage1.jpg"))
 		
-		stage1.agregarMultiplesVentanas([
+		stage1.agregarMultiplesVentanas(1, [
 			[1,1],[2,1], [4,1], [5,1],
 			[1,2], [2,2], [4,2], [5,2],
-			[1,3], [2,3], [3,3], [4,3], [5,3]
+			[1,3], [2,3], [4,3], [5,3]
+		])
+		stage1.agregarMultiplesVentanas(2, [
+			[3,3]
 		])
 		
 		stage1.agregarMultiplesMacetas([
@@ -78,10 +81,15 @@ object juego {
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage2.jpg")
 		)
-		stage2.agregarMultiplesVentanas([
-			[1,1], [2,1], [3,1], [4,1], [5,1],
-			[1,2], [2,2], [3,2], [4,2], [5,2],
-			[1,3], [2,3], [3,3], [4,3], [5,3]
+		stage2.agregarMultiplesVentanas(1, [
+			[1,1], [2,1], [4,1], [5,1],
+			[1,2], [2,2], [4,2], [5,2],
+			[1,3], [2,3], [4,3], [5,3]
+		])
+		stage2.agregarMultiplesVentanas(2, [
+			[3,1],
+			[3,2],
+			[3,3]
 		])
 
 		stage2.agregarMultiplesMacetas([
@@ -98,10 +106,15 @@ object juego {
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage3.jpg")
 		)
-		stage3.agregarMultiplesVentanas([
-			[1,1], [2,1], [3,1], [4,1], [5,1],
-			[1,2], [2,2], [3,2], [4,2], [5,2],
-			[1,3], [2,3], [3,3], [4,3], [5,3]
+		stage3.agregarMultiplesVentanas(1, [
+			[1,1], [2,1], [4,1], [5,1],
+			[1,2], [2,2], [4,2], [5,2],
+			[1,3], [2,3], [4,3], [5,3]
+		])
+		stage3.agregarMultiplesVentanas(2, [
+			[3,1],
+			[3,2],
+			[3,3]
 		])
 		stage3.agregarMultiplesMacetas([
 			[2,2], [4,2],
@@ -117,10 +130,15 @@ object juego {
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage4.jpg")
 		)
-		stage4.agregarMultiplesVentanas([
-			[1,1], [2,1], [3,1], [4,1], [5,1],
-			[1,2], [2,2], [3,2], [4,2], [5,2],
-			[1,3], [2,3], [3,3], [4,3], [5,3]
+		stage4.agregarMultiplesVentanas(1, [
+			[1,1], [2,1], [4,1], [5,1],
+			[1,2], [2,2], [4,2], [5,2],
+			[1,3], [2,3], [4,3], [5,3]
+		])
+		stage4.agregarMultiplesVentanas(2, [
+			[3,1],
+			[3,2],
+			[3,3]
 		])
 		stage4.agregarMultiplesMacetas([
 			[3,2], [4,2]
@@ -135,7 +153,7 @@ object juego {
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage5.jpg")
 		)
-		stage5.agregarMultiplesVentanas([
+		stage5.agregarMultiplesVentanas(2, [
 			[1,1], [2,1], [3,1], [4,1], [5,1],
 			[1,2], [2,2], [3,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
@@ -200,8 +218,8 @@ class Celda{
 	method ventana() = ventana
 	method obstaculos() = obstaculos
 	
-	method agregarVentana() {
-		ventana = new Ventana(position = position)
+	method agregarVentana(modelo) {
+		ventana = new Ventana(position = position, modelo=modelo)
 	}
 	
 	method agregarPostigo() {
@@ -456,8 +474,8 @@ class Stage {
 	method tablero() = tablero
 	
 	// agrega una ventana en la celda x y del tablero
-	method agregarVentanaEn(x,y) {
-		tablero.celda(x, y).agregarVentana()	
+	method agregarVentanaEn(modelo, x,y) {
+		tablero.celda(x, y).agregarVentana(modelo)	
 	}
 	
 	method configurarTeclas() {
@@ -534,8 +552,8 @@ class Stage {
 	
 	// agrega múltiples ventanas en las coordinadas indicadas
 	// lista es una lista de coordenadas [[x,y], [x,y]...]
-	method agregarMultiplesVentanas(lista) {
-		lista.forEach({ c => self.agregarVentanaEn(c.get(0), c.get(1))})
+	method agregarMultiplesVentanas(modelo, lista) {
+		lista.forEach({ c => self.agregarVentanaEn(modelo, c.get(0), c.get(1))})
 	}
 
 	method agregarMultiplesMacetas(lista) {
