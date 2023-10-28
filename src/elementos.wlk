@@ -9,9 +9,12 @@ import pantalla.*
 // Nota: si bien es un objeto estático, no se Hereda de Estatico porque Estático requiere una imagen
 class Ventana inherits Visual{
 	var salud = 0
+	const modelo = 1
 	
 	const  animacion = new Animacion(	velocidad=0,
-  										fotogramas=["ventana/1/rota-2.png", "ventana/1/rota-1.png", "ventana/1/sana.png"]
+  										fotogramas=["ventana/"+ modelo +"/rota-2.png", 
+  													"ventana/" + modelo +"/rota-1.png", 
+  													"ventana/"+ modelo +"/sana.png"]
   								)	
 
 	override method image() = animacion.image()
