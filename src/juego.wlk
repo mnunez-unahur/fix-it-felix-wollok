@@ -166,14 +166,107 @@ object juego {
 			[1,3],[4,3],[3,2],[5,1]
 		])
 		
+		// stage 6
+			const stage6 = new Stage(
+			dificultad = 6,
+			fondo = new Edificio(image="niveles/edificio-3.png"),
+			imgInicial = new Pantalla (image = "fondo/stage6.jpg")
+		)
+		stage6.agregarMultiplesVentanas(1,[
+			[1,1], [2,1], [3,1], [4,1], [5,1],
+			[1,2], [2,2], [3,2], [4,2], [5,2],
+			[1,3], [2,3], [3,3], [4,3], [5,3]
+		])
+		stage6.agregarMultiplesMacetas([
+			[1,2],[2,2],[5,2],[2,3]
 
-		self.agregarStage(stage1)
-		self.agregarStage(stage2)
-		self.agregarStage(stage3)
-		self.agregarStage(stage4)
-		self.agregarStage(stage5)
+		])
+		stage6.agregarMultiplesPostigos([
+			[3,2],[4,1]
+		])
+		// stage 7
+			const stage7 = new Stage(
+			dificultad = 7,
+			fondo = new Edificio(image="niveles/edificio-3.png"),
+			imgInicial = new Pantalla (image = "fondo/stage7.jpg")
+		)
+		stage7.agregarMultiplesVentanas(2,[
+			[1,1], [2,1], [3,1], [4,1], [5,1],
+			[1,2], [2,2], [3,2], [4,2], [5,2],
+			[1,3], [2,3], [3,3], [4,3], [5,3]
+		])
+		stage7.agregarMultiplesMacetas([
+			[3,2], [4,2]
+
+		])
+		stage7.agregarMultiplesPostigos([
+			[1,1],[1,2], [3,2],[4,3]
+		])
+			// stage 8
+			const stage8 = new Stage(
+			dificultad = 8,
+			fondo = new Edificio(image="niveles/edificio-3.png"),
+			imgInicial = new Pantalla (image = "fondo/stage8.jpg")
+		)
+			stage8.agregarMultiplesVentanas(1,[
+			[1,1], [2,1], [3,1], [4,1], [5,1],
+			[1,2], [2,2], [3,2], [4,2], [5,2],
+			[1,3], [2,3], [3,3], [4,3], [5,3]
+		])
+		stage8.agregarMultiplesMacetas([
+			[4,3],[1,2]
+		])
+		stage8.agregarMultiplesPostigos([
+			[4,1],[1,3]
+		])
+		stage8.agregarMultiplesPostigos([
+			[1,3],[4,3],[3,2],[5,1]
+		])
+			// stage 9
+			const stage9 = new Stage(
+			dificultad = 9,
+			fondo = new Edificio(image="niveles/edificio-3.png"),
+			imgInicial = new Pantalla (image = "fondo/stage9.jpg")
+		)
+		stage9.agregarMultiplesVentanas(2,[
+			[1,1], [2,1], [3,1], [4,1], [5,1],
+			[1,2], [2,2], [3,2], [4,2], [5,2],
+			[1,3], [2,3], [3,3], [4,3], [5,3]
+		])
+		stage9.agregarMultiplesMacetas([
+			[1,2],[2,2]
+
+		])
+		stage9.agregarMultiplesPostigos([
+			[1,3],[4,3],[3,2],[5,1]
+		])	
+			// stage 10
+			const stage10 = new Stage(
+			dificultad = 10,
+			fondo = new Edificio(image="niveles/edificio-3.png"),
+			imgInicial = new Pantalla (image = "fondo/stage10.jpg")
+		)
+		stage10.agregarMultiplesVentanas(2,[
+			[1,1], [2,1], [3,1], [4,1], [5,1],
+			[1,2], [2,2], [3,2], [4,2], [5,2],
+			[1,3], [2,3], [3,3], [4,3], [5,3]
+		])
+
+		
+
+//		self.agregarStage(stage1)
+//		self.agregarStage(stage2)
+//		self.agregarStage(stage3)
+//		self.agregarStage(stage4)
+//		self.agregarStage(stage5)
+//		self.agregarStage(stage6)
+//		self.agregarStage(stage7)
+//		self.agregarStage(stage8)
+//		self.agregarStage(stage9)
+		self.agregarStage(stage10)
 		
 	}
+		
 	
 	method agregarStage(nuevoStage) {
 		stages.add(nuevoStage)
