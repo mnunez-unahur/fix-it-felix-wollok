@@ -12,26 +12,26 @@ class Pantalla inherits Visual (position = game.at(0,0)){
  	override method image() = image
  	
  	method ocultaryLuegoEjecutar(accion) {
- 		self.quitarDelJuego()
+ 		self.removeVisual()
 		accion.apply()
  	}
  	
  	// permite programar que la pantalla se muestre un tiempo
  	// luego se oculte, y luego ejecute una acción
  	method mostrarPorMilisegundosYLuegoEjecutar(timeout, accion) {
- 		self.agregarAlJuego()
+ 		self.addVisual()
  		
 	  	game.schedule(timeout,{
-			self.quitarDelJuego()
+			self.removeVisual()
 			accion.apply()
 	  	})
  	}
  	
- 	override method agregarAlJuego() {
+ 	override method addVisual() {
  		super()
  		if(incluirScore) {
- 			score.quitarDelJuego()
- 			score.agregarAlJuego()
+ 			score.removeVisual()
+ 			score.addVisual()
  		}
  	}
  	

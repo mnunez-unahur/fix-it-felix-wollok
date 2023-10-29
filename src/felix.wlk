@@ -1,9 +1,9 @@
-import wollok.game.*
 import animacion.*
 import elementos.*
 import personaje.*
 import juego.*
 import pantalla.*
+import wollok.game.*
 
 
 object felix inherits Animado( position=new Position(x = 30, y = 2),
@@ -19,6 +19,9 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
 	
 	//referencia al stage actual
 	var property stage = nullStage
+	
+	var invisible = false
+	
 
 	const  animacionParadoDerecha = new Animacion( 
 										reproduccionContinua= false,
@@ -97,6 +100,10 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
 		
 	}
 
+	override method image() {
+		return if(invisible) "nada.png" else super()
+	}
+
 
 	method saltando() = saltando
 	method reparando() = reparando
@@ -129,27 +136,27 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   		return if(mirandoAlaDerecha) animacionCayendoDerecha else animacionCayendoIzquierda
   	}
   	
-  	override method agregarAlJuego() {
+  	override method addVisual() {
   		super()
 		game.whenCollideDo(self, { c => if(c.haceDanio()) self.perderVida()  }) 
 		self.mostrarSensores()
 		self.activarSensores()
   	}
   	
-  	override method quitarDelJuego() {
+  	override method removeVisual() {
   		super()
   		self.ocultarSensores()
   	}
   	
   	method mostrarSensores() {
-		sensores.forEach({s => s.agregarAlJuego()})
+		sensores.forEach({s => s.addVisual()})
   	}
   	method activarSensores() {
 		sensores.forEach({s => s.activarDeteccion({ c => if(c.haceDanio()) self.perderVida()  })})
   	}
   	
   	method ocultarSensores() {
-		sensores.forEach({s => s.quitarDelJuego()})  		
+		sensores.forEach({s => s.removeVisual()})  		
   	}
   	
   	override method position(pos) {
@@ -161,7 +168,7 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   		if(!inmune) {
 	  		inmune = true
 	  		self.perderVida2()
-			self.animar(animacionPerdiendoVida)
+	  		self.parpadear()
 	  		game.schedule(3000, {
 	  			inmune = false
 				self.resetearAnimacion()		
@@ -169,14 +176,25 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
 	  	
   	}}
   	
+ 	
   	method perderVida2(){ // cuando se queda sin vidas finaliza el juego. CAMBIARLO A JUEGO
   		if(vida.vidasActuales()>1){
 	  		vida.perderVida()
 	  		restarVida.reproducir()
-  		}else{
+  		} else {
   			juego.stageActual().finalizar()
-  			gameOver.agregarAlJuego()
+  			gameOver.addVisual()
   			sgameOver.reproducir()
+  		}
+  	}
+  	
+  	// hace que felix aparezca y desaparezca mientras esté inmune (perdió una vida)
+  	method parpadear() {
+  		if(inmune) {
+  			invisible = !invisible
+	  		game.schedule(200, {
+	  			self.parpadear()
+	  		})
   		}
   	}
 

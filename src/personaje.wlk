@@ -16,12 +16,12 @@ class Caracter {
 	}
 	method position() = position
 	
-	method agregarAlJuego(){
+	method addVisual(){
 		if(!game.hasVisual(self)) {
 			game.addVisual(self)
 		}
 	}
-	method quitarDelJuego(){
+	method removeVisual(){
 		if(game.hasVisual(self)) {
 			game.removeVisual(self)		
 		}
