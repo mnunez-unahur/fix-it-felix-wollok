@@ -38,18 +38,18 @@ object juego {
 		game.height(60)
 		game.cellSize(10)
 	  	game.boardGround("fondo.png")
-		vida.agregarAlJuego()
+		vida.addVisual()
 		
 		// pongo un par de nubes
 		const nube1 = new Nube(position = new Position(x=-20, y=40))
-		nube1.agregarAlJuego()
+		nube1.addVisual()
 		nube1.mover()
 		
 		const nube2 = new Nube(position = new Position(x=-20, y=20), velocidad=10)
-		nube2.agregarAlJuego()
+		nube2.addVisual()
 		nube2.mover()			
 		
-		score.agregarAlJuego()
+		score.addVisual()
 	}
 	
 	method configurarStages() {
@@ -181,10 +181,10 @@ object juego {
 	
 	method mostrarImagenesIniciales(){
 		const inicio = new Pantalla(image = "fondo/inicioJuego.JPG",incluirScore = false)
-		inicio.agregarAlJuego()
+		inicio.addVisual()
 		keyboard.enter().onPressDo({
 			if(!iniciado){
-				inicio.quitarDelJuego();
+				inicio.removeVisual();
 			   	self.stageActual().iniciar()
 			   	iniciado = true
 		   	}
@@ -199,7 +199,7 @@ object juego {
 			vida.ganarVida()
 			self.stageActual().iniciar()
 		}else{
-			congrats.agregarAlJuego()
+			congrats.addVisual()
 			sonidoFinal.reproducir()
 		}
 		//TODO: cuando se finaliza el ultimo nivel se termina el juego	
@@ -312,16 +312,16 @@ class Tablero {
 	}
 	
 	method mostrarVentanas() {
-		self.ventanas().forEach({v => v.agregarAlJuego()})		
+		self.ventanas().forEach({v => v.addVisual()})		
 	}
 	
 	//Oculta las ventanas del stage si están visibles
 	method ocultarVentanas() {
-		self.ventanas().forEach({v => v.quitarDelJuego()})		
+		self.ventanas().forEach({v => v.removeVisual()})		
 	}
 	
 	method mostrarObstaculos() {
-		self.obstaculos().forEach({v => v.agregarAlJuego()})		
+		self.obstaculos().forEach({v => v.addVisual()})		
 	}
 
 	//muestra los componentes del tablero
@@ -534,18 +534,18 @@ class Stage {
 	
 	method mostrar(){ 
 		game.addVisual(fondo)
-		ralph.agregarAlJuego()
+		ralph.addVisual()
 	  	tablero.mostrar()
-	  	felix.agregarAlJuego()
+	  	felix.addVisual()
 	  	tablero.mostrarObstaculos()
 	  	
 	  	
 	}
 	
 	method ocultar() {
-		felix.quitarDelJuego()
+		felix.removeVisual()
 		game.removeVisual(fondo)
-		ralph.quitarDelJuego()
+		ralph.removeVisual()
 		
 	}
 	
@@ -606,14 +606,14 @@ object score inherits Visual(position = new Position(x=2, y=56)) {
 		new Digito(position = new Position(x= 13, y=56))
 	]
 	
-	override method agregarAlJuego() {
+	override method addVisual() {
 		super()
-		digitos.forEach({d => d.agregarAlJuego()})
+		digitos.forEach({d => d.addVisual()})
 	}
 	
-	override method quitarDelJuego() {
+	override method removeVisual() {
 		super()
-		digitos.forEach({d => d.quitarDelJuego()})
+		digitos.forEach({d => d.removeVisual()})
 	}
 	override method image()="score.png"
 	
