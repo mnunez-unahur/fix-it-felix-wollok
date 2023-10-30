@@ -87,14 +87,11 @@ object juego {
 			[1,3], [2,3], [4,3], [5,3]
 		])
 		stage2.agregarMultiplesVentanas(2, [
-			[3,1],
-			[3,2],
-			[3,3]
+			[3,1],[3,2],[3,3]
 		])
 
 		stage2.agregarMultiplesMacetas([
-		[2,2], [3,2],
-		[4,2]		
+			[2,2], [3,2],[4,2]		
 		])
 		stage2.agregarMultiplesPostigos([
 			[1,2],[4,3]
@@ -178,7 +175,7 @@ object juego {
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
 		stage6.agregarMultiplesMacetas([
-			[1,2],[2,2],[5,2],[2,3]
+			[1,2],[2,2],[5,3],[2,3]
 
 		])
 		stage6.agregarMultiplesPostigos([
@@ -254,15 +251,15 @@ object juego {
 
 		
 
-//		self.agregarStage(stage1)
-//		self.agregarStage(stage2)
-//		self.agregarStage(stage3)
-//		self.agregarStage(stage4)
-//		self.agregarStage(stage5)
-//		self.agregarStage(stage6)
-//		self.agregarStage(stage7)
-//		self.agregarStage(stage8)
-//		self.agregarStage(stage9)
+		self.agregarStage(stage1)
+		self.agregarStage(stage2)
+		self.agregarStage(stage3)
+		self.agregarStage(stage4)
+		self.agregarStage(stage5)
+		self.agregarStage(stage6)
+		self.agregarStage(stage7)
+		self.agregarStage(stage8)
+		self.agregarStage(stage9)
 		self.agregarStage(stage10)
 		
 	}
