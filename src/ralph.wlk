@@ -67,14 +67,14 @@ object ralph inherits Animado ( position=new Position(y=47, x=43),
 	method dificultad() = stage.dificultad()
 	
 	// la velocidad de ralph varía con la dificultad del juego
-	override method velocidad() = super() + self.dificultad() * 3
+	override method velocidad() = super() + self.dificultad() * 1
 	
 	// crea un nuevo ladrillo que cae desde el techo
 	// la velocidad de caída del ladrillo depende de la dificultad del stage
 	method ladrilloSeCae(){ //ver como poner un objeto en la posicion x e y 
 		const ladrillo = new Ladrillo (position = new Position(x = self.coordenadaActualX() + 5,
 															   y = self.coordenadaActualY() - 2),
-									   velocidad = 12 + self.dificultad()*2,
+									   velocidad = 18 + self.dificultad(),
 									   haceDanio = true)
 		
 										

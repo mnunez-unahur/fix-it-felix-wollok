@@ -7,7 +7,7 @@ import wollok.game.*
 
 
 object felix inherits Animado( position=new Position(x = 30, y = 2),
-  							   velocidad = 40 ){
+  							   velocidad = 30 ){
 	
 	var mirandoAlaDerecha = true
 	var saltando = false
@@ -54,7 +54,7 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   													]
   								)
   	const  animacionSaltandoDerecha = new Animacion( 
-				  						velocidad=10,
+				  						velocidad=4,
 				  						reproduccionContinua= false,
   										fotogramas=["felix/derecha-parado.png",
   													"felix/derecha-saltando-1.png" 
@@ -62,7 +62,7 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   								)
 
   	const  animacionCayendoDerecha = new Animacion( 
-				  						velocidad=10,
+				  						velocidad=4,
 				  						reproduccionContinua= false,
   										fotogramas=[
   													"felix/derecha-saltando-1.png",
@@ -71,7 +71,7 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   								)
 
   	const  animacionCayendoIzquierda = new Animacion( 
-				  						velocidad=10,
+				  						velocidad=4,
 				  						reproduccionContinua= false,
   										fotogramas=[
   													"felix/izquierda-saltando-1.png",
@@ -79,23 +79,13 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   													]
   								)
 
-  	const  animacionPerdiendoVida = new Animacion( 
-				  						velocidad=5,
-				  						reproduccionContinua= true,
-  										fotogramas=[
-  													"felix/derecha-parado.png",
-  													"nada.png",
-  													"felix/derecha-parado.png"
-  													]
-  								)
-
 
 	method initialize() {
 		animacion = animacionParadoDerecha
-		sensores.add(new Sensor(position = self.position()))
-		sensores.add(new Sensor(position = self.position()))
-		sensores.add(new Sensor(position = self.position()))
-		sensores.add(new Sensor(position = self.position()))
+//		sensores.add(new Sensor(position = self.position()))
+//		sensores.add(new Sensor(position = self.position()))
+//		sensores.add(new Sensor(position = self.position()))
+//		sensores.add(new Sensor(position = self.position()))
 		self.actualizarSensores()
 		
 	}
@@ -104,6 +94,12 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
 		return if(invisible) "nada.png" else super()
 	}
 
+	method dificultad() = stage.dificultad()
+
+	// la velocidad de felix depende el nivel
+	override method velocidad() {
+		return super() + self.dificultad() * 2
+	}
 
 	method saltando() = saltando
 	method reparando() = reparando
@@ -163,6 +159,12 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   		super(pos)
   		self.actualizarSensores()
   	}
+
+  	override method positionXY(x, y) {
+  		super(x, y)
+  		self.actualizarSensores()
+  	}
+
   	
 	method perderVida() {
   		if(!inmune) {
@@ -216,7 +218,7 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
 	  			saltando = false
 	  			accion.apply()
 	  		})  
-	  	  	salto.reproducir()
+	  	  	sonidoSalto.reproducir()
   		}
   	}
   	
