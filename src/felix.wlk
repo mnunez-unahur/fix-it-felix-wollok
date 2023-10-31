@@ -195,6 +195,8 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
 	  		game.schedule(200, {
 	  			self.parpadear()
 	  		})
+  		} else {
+  			invisible = false
   		}
   	}
 
