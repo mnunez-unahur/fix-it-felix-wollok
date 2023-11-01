@@ -82,13 +82,11 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
 
 	method initialize() {
 		animacion = animacionParadoDerecha
-//		sensores.add(new Sensor(position = self.position()))
-//		sensores.add(new Sensor(position = self.position()))
-//		sensores.add(new Sensor(position = self.position()))
-//		sensores.add(new Sensor(position = self.position()))
+		(1..4).forEach({ i => self.agregarSensor() })
 		self.actualizarSensores()
 		
 	}
+	
 
 	override method image() {
 		return if(invisible) "nada.png" else super()
@@ -143,6 +141,11 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   		super()
   		self.ocultarSensores()
   	}
+
+	/* agrega un nuevo sendor a felix */
+	method agregarSensor() {
+		sensores.add(new Sensor(position = new MutablePosition(x=position.x(), y=position.y())))
+	}
   	
   	method mostrarSensores() {
 		sensores.forEach({s => s.addVisual()})
@@ -154,6 +157,12 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   	method ocultarSensores() {
 		sensores.forEach({s => s.removeVisual()})  		
   	}
+
+	method actualizarSensores() {
+		// apila los sensores arriba de la celda de felix
+		(1..sensores.size()).forEach({ i => sensores.get(i-1).positionXY(position.x(), position.y()+i*2)	})
+	}
+
   	
   	override method position(pos) {
   		super(pos)
@@ -202,10 +211,6 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   		}
   	}
 
-	method actualizarSensores() {
-		var pos = self.position().up(3)
-		sensores.forEach({s => s.position(pos); pos = pos.up(3)})
-	}
   	
   	override method moverAPosicionyHacerAccion(x,y, accion){
   		if(!saltando) {
