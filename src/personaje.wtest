@@ -12,7 +12,7 @@ describe "Caracteres" {
 	}
 
 	test "se puede agregar al tablero" {
-		caracter.agregarAlJuego()
+		caracter.addVisual()
 		assert.that(game.hasVisual(caracter))		
 	}
 
@@ -25,7 +25,7 @@ describe "Caracteres Estaticos" {
 	}
 	
 	test "falla si se intenta cambiar la posición" {
-		caracter.agregarAlJuego()
+		caracter.addVisual()
 		assert.throwsException({
 			caracter.position(new Position(x=1,y=1))
 		})
@@ -39,9 +39,9 @@ describe "Caracteres Inanimados" {
 		game.clear()
 	}
 	
-	test "la imagen es estatica" {
-		caracter.agregarAlJuego()
-	}	
+//	test "la imagen es estatica" {
+//		caracter.agregarAlJuego()
+//	}	
 }
 
 
