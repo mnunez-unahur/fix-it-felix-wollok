@@ -197,15 +197,16 @@ object juego {
 
 		])
 		stage7.agregarMultiplesPostigos([
-			[1,1],[1,2], [3,2],[4,3]
+			[1,1],[1,3], [3,2],[4,3]
 		])
-			// stage 8
-			const stage8 = new Stage(
+		
+		// stage 8
+		const stage8 = new Stage(
 			dificultad = 8,
 			fondo = new Edificio(image="niveles/edificio-3.png"),
 			imgInicial = new Pantalla (image = "fondo/stage8.jpg")
 		)
-			stage8.agregarMultiplesVentanas(1,[
+		stage8.agregarMultiplesVentanas(1,[
 			[1,1], [2,1], [3,1], [4,1], [5,1],
 			[1,2], [2,2], [3,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
@@ -214,10 +215,7 @@ object juego {
 			[4,3],[1,2]
 		])
 		stage8.agregarMultiplesPostigos([
-			[4,1],[1,3]
-		])
-		stage8.agregarMultiplesPostigos([
-			[1,3],[4,3],[3,2],[5,1]
+			[1,3],[3,2],[5,1]
 		])
 			// stage 9
 			const stage9 = new Stage(
@@ -658,6 +656,7 @@ class Stage {
 	  	self.mostrar()
 	  	imgInicial.mostrarPorMilisegundosYLuegoEjecutar(2000, {
 			self.configurarTeclas()
+			felix.stage(self)
 			ralph.stage(self)
 			ralph.hacerRutina()
 	  	})

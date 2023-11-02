@@ -66,6 +66,9 @@ class Sensor inherits Caracter {
 	method activarDeteccion(accion) {
 		game.whenCollideDo(self, accion)		
 	}
+	
+	method image() = "punto-referencia.png"
+	
 }
 
 // representa un obstaculo para la celda actual del tablero
@@ -106,7 +109,7 @@ class Sonido{
 // Sonidos
 object sonidoInicial inherits Sonido(sound = "Sonidos/juego.mp3" ){
 }
-object salto inherits Sonido (sound = "Sonidos/salto.mp3"){
+object sonidoSalto inherits Sonido (sound = "Sonidos/salto.mp3"){
 }
 object arreglar inherits Sonido (sound = "Sonidos/repararVentana.mp3"){
 }
@@ -120,8 +123,6 @@ object sonidoStage inherits Sonido (sound = "Sonidos/juego2.mp3"){
 }
 object sonidoFinal inherits Sonido (sound = "Sonidos/winGame.mp3"){
 }
-
-
 
 
 

@@ -11,10 +11,15 @@ class Caracter {
 	// indica si ese objeto provoca daño cuando colisiona con felix
 	const property haceDanio = false
 	
-	method position(nuevaPosicion) {
-		position = nuevaPosicion
-	}
 	method position() = position
+	method position(nuevaPosicion) {
+		position = new MutablePosition(x=nuevaPosicion.x(), y=nuevaPosicion.y())
+//		position = nuevaPosicion
+	}
+	method positionXY(x, y) {
+		position.x(x)
+		position.y(y)
+	}
 	
 	method addVisual(){
 		if(!game.hasVisual(self)) {
@@ -56,8 +61,22 @@ class Estatico inherits Visual {
 // Clase Abstracta que representa un objeto que Visual que puede transladarse
 // de una celda a otra, pasando por las intermedias
 class Movil inherits Visual {
+	
+	/*
+	 * indica la cantidad máxima de ticks por segundo
+	 */
+	const maxTiksPorSegundo = 40
 	var enMovimiento = false
+	
+	/*
+	 * velocidad en pasos por segundo
+	 */
 	var velocidad
+	
+	/*
+	 * Cantidad de saltos por paso
+	 */
+//	var property salto = 1
 	
 	
 	//genera un nombre único para el objeto
@@ -69,6 +88,20 @@ class Movil inherits Visual {
 		velocidad = nuevaVelocidad
 	}
 	
+	/*
+	 * establece la cantidad de ticks por segundo del movimiento
+	 */
+	method ticksPorSegundo() {
+		return if(self.velocidad() > maxTiksPorSegundo) self.velocidad() / 2 else self.velocidad()
+	}
+
+	/*
+	 * indica la cantidad de saltos por movimiento basado en la velocidad
+	 */
+	method salto() {
+		return if(self.velocidad() > maxTiksPorSegundo) 2 else 1
+	}
+	
 	// Mueve a la coordenada indicada y luego ejecuta una acción
 	// TODO: refactorizar
 	method moverAPosicionyHacerAccion(x, y,accion) {
@@ -77,8 +110,14 @@ class Movil inherits Visual {
 		}
 		
 		enMovimiento = true
+		self.position(
+			new MutablePosition(
+				x= self.coordenadaActualX(), 
+				y=self.coordenadaActualY()
+			)
+		)
 		
-		game.onTick(1000 / self.velocidad(), nombreEventoMovimiento , {
+		game.onTick(1000 / self.ticksPorSegundo(), nombreEventoMovimiento , {
 			
 			// legué a mi destino
 			if(self.coordenadaActualX() == x && self.coordenadaActualY() == y) {
@@ -86,8 +125,19 @@ class Movil inherits Visual {
 				accion.apply()
 			}
 			else {	
-			self.position(new Position(x= self.coordenadaActualX() + self.diferenciaDePosicionX(x), y=self.coordenadaActualY() + self.diferenciaDePosicionY(y)))
-				
+				self.positionXY(
+					self.coordenadaActualX() + self.deltaX(x),
+					self.coordenadaActualY() + self.deltaY(y)
+				)
+//				self.position().y(self.coordenadaActualY() + self.deltaY(y))
+//				self.position().y(self.coordenadaActualY() + self.deltaY(y))
+
+//				self.position(
+//					new Position(
+//						x= self.coordenadaActualX() + self.deltaX(x), 
+//						y=self.coordenadaActualY() + self.deltaY(y)
+//					)
+//				)				
 			}
 		})				
 		
@@ -95,15 +145,22 @@ class Movil inherits Visual {
 	method moverAPosicion(x,y){
 		self.moverAPosicionyHacerAccion(x,y,{})
 	}
-	method diferenciaDePosicionX(x){
-		return if(self.coordenadaActualX() > x) - 1 
-			else if(self.coordenadaActualX() < x) 1 
-			else 0
+	
+	
+	/*
+	 * establece la dirección  y la cantidad de celdas a la que debe moverse
+	 * en el eje x
+	 */
+	method deltaX(x){
+		return (x - self.coordenadaActualX()).min(1*self.salto()).max(-1*self.salto())
 	}
-	method diferenciaDePosicionY(y){
-		return if(self.coordenadaActualY() > y) - 1 
-			else if(self.coordenadaActualY()  < y) 1 
-			else 0
+	
+	/*
+	 * establece la dirección  y la cantidad de celdas a la que debe moverse
+	 * en el eje y
+	 */
+	method deltaY(y){
+		return (y - self.coordenadaActualY()).min(1*self.salto()).max(-1*self.salto())		
 	}
 	method coordenadaActualX(){
 		return self.position().x()
@@ -163,4 +220,18 @@ class Animado inherits Movil {
 	
 }
 
-
+class MutablePosition inherits Position {
+	var mutableX = x
+	var mutableY = y
+	
+	override method x() = mutableX
+	method x(nuevaX) {
+		mutableX = nuevaX
+	}
+	
+	override method y() = mutableY
+	method y(nuevaY) {
+		mutableY = nuevaY
+	}
+	
+}
