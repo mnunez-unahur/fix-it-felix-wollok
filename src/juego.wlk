@@ -41,11 +41,11 @@ object juego {
 		vida.addVisual()
 		
 		// pongo un par de nubes
-		const nube1 = new Nube(position = new MutablePosition(x=-20, y=40))
+		const nube1 = new Nube(position = new Position(x=-20, y=40))
 		nube1.addVisual()
 		nube1.mover()
 		
-		const nube2 = new Nube(position = new MutablePosition(x=-20, y=20), velocidad=10)
+		const nube2 = new Nube(position = new Position(x=-20, y=20), velocidad=10)
 		nube2.addVisual()
 		nube2.mover()			
 		

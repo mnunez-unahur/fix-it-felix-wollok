@@ -67,7 +67,7 @@ class Sensor inherits Caracter {
 		game.whenCollideDo(self, accion)		
 	}
 	
-	method image() = "punto-referencia.png"
+//	method image() = "punto-referencia.png"
 	
 }
 

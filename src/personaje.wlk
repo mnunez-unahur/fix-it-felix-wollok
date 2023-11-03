@@ -2,7 +2,7 @@ import wollok.game.*
 import elementos.*
 
 import animacion.*
-
+/*
 class MutablePosition inherits Position {
 	var mutableX = x
 	var mutableY = y
@@ -35,41 +35,27 @@ class RelativePosition inherits Position {
 	}
 	
 }
-
+ */
+ 
+ 
 /*
  * un caracter es un elemento que puede ser insertado en el juego
  * un caracter no necesariamente es visible
  */
 class Caracter {
-	var position = new MutablePosition(x=0, y=0)
-	const mutablePosition = false
+	var position = new Position(x=0, y=0)
 	
 	// indica si ese objeto provoca daño cuando colisiona con felix
 	const property haceDanio = false
 	
-	method initialize() {
-		// nos aseguramos de que la posición sea del tipo mutable
-		position = new MutablePosition(x=0, y=0)
-	}
 	
 	method position() = position
 	method position(nuevaPosicion) {
-		if(mutablePosition) {
-			position.x(nuevaPosicion.x())
-			position.y(nuevaPosicion.y())			
-		} else {
-			position = nuevaPosicion		
-		}
+		position = nuevaPosicion		
 	}
 	
-	
 	method positionXY(x, y) {
-		if(mutablePosition) {
-			position.x(x)
-			position.y(y)
-		} else {
-			position = new Position(x=x, y=y)
-		}	
+		self.position(new Position(x=x, y=y))
 	}
 	
 	method addVisual(){
