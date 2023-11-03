@@ -125,6 +125,13 @@ object sonidoFinal inherits Sonido (sound = "Sonidos/winGame.mp3"){
 }
 
 
+object turbo inherits Inanimado(image="varios/turbo.png", velocidad=50, haceDanio=true) {
+	method aparecer() {
+		self.positionXY(110, 2)
+		self.addVisual()
+		self.moverAPosicionyHacerAccion(-10, self.coordenadaActualY(), {self.removeVisual()})		
+	}
+}
 
 
 

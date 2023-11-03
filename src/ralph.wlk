@@ -14,8 +14,7 @@ import juego.*
  */
  
  
-object ralph inherits Animado ( position=new MutablePosition(y=47, x=43),
-  								velocidad = 20 ) {
+object ralph inherits Animado ( velocidad = 20 ) {
   									
 	const fila = 47 // solo se mueve en la fila 47
 	const distanciaEntreVentana = 9
@@ -55,6 +54,9 @@ object ralph inherits Animado ( position=new MutablePosition(y=47, x=43),
   										fotogramas=["ralph/grita-1.png", "ralph/grita-2.png"]
   								)
 
+	method initialize() {
+		self.reset()
+	}
 
 	method golpear() {
 		self.detenerMovimiento()
@@ -72,12 +74,10 @@ object ralph inherits Animado ( position=new MutablePosition(y=47, x=43),
 	// crea un nuevo ladrillo que cae desde el techo
 	// la velocidad de caída del ladrillo depende de la dificultad del stage
 	method ladrilloSeCae(){ //ver como poner un objeto en la posicion x e y 
-		const ladrillo = new Ladrillo (position = new MutablePosition(x = self.coordenadaActualX() + 5,
-															   y = self.coordenadaActualY() - 2),
-									   velocidad = 18 + self.dificultad(),
+		const ladrillo = new Ladrillo (velocidad = 18 + self.dificultad(),
 									   haceDanio = true)
 		
-										
+		ladrillo.positionXY(self.coordenadaActualX() + 5, self.coordenadaActualY() - 2)
 		ladrillo.addVisual()
 		ladrillo.caer()
 
@@ -139,9 +139,9 @@ object ralph inherits Animado ( position=new MutablePosition(y=47, x=43),
 		})
 	}
 	method irAPosicionInicial(){
-		self.position(new Position(x = 43, y = fila))
+		self.positionXY(43, fila)
 	}
-	method finalizarRutina(){
+	method reset(){
 		detenido = true
 		self.quedarseParado()
 		self.irAPosicionInicial()
