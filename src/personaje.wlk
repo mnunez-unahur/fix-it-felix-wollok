@@ -3,22 +3,73 @@ import elementos.*
 
 import animacion.*
 
-// un caracter es un elemento que puede ser insertado en el juego
-// un caracter no necesariamente es visible
+class MutablePosition inherits Position {
+	var mutableX = x
+	var mutableY = y
+	
+	override method x() = mutableX
+	method x(nuevaX) {
+		mutableX = nuevaX
+	}
+	
+	override method y() = mutableY
+	method y(nuevaY) {
+		mutableY = nuevaY
+	}
+	
+}
+
+class RelativePosition inherits Position {
+	var property referencia
+	const deltaX = 0
+	const deltaY = 0
+	
+	override method x() {
+//		console.println(referencia.x() + deltaX)
+		return referencia.x() + deltaX
+	}
+	
+	override method y() {
+//		console.println(referencia.y() + deltaY)
+		return referencia.y() + deltaY
+	}
+	
+}
+
+/*
+ * un caracter es un elemento que puede ser insertado en el juego
+ * un caracter no necesariamente es visible
+ */
 class Caracter {
-	var position
+	var position = new MutablePosition(x=0, y=0)
+	const mutablePosition = false
 	
 	// indica si ese objeto provoca daño cuando colisiona con felix
 	const property haceDanio = false
 	
+	method initialize() {
+		// nos aseguramos de que la posición sea del tipo mutable
+		position = new MutablePosition(x=0, y=0)
+	}
+	
 	method position() = position
 	method position(nuevaPosicion) {
-		position = new MutablePosition(x=nuevaPosicion.x(), y=nuevaPosicion.y())
-//		position = nuevaPosicion
+		if(mutablePosition) {
+			position.x(nuevaPosicion.x())
+			position.y(nuevaPosicion.y())			
+		} else {
+			position = nuevaPosicion		
+		}
 	}
+	
+	
 	method positionXY(x, y) {
-		position.x(x)
-		position.y(y)
+		if(mutablePosition) {
+			position.x(x)
+			position.y(y)
+		} else {
+			position = new Position(x=x, y=y)
+		}	
 	}
 	
 	method addVisual(){
@@ -110,12 +161,6 @@ class Movil inherits Visual {
 		}
 		
 		enMovimiento = true
-//		self.position(
-//			new MutablePosition(
-//				x= self.coordenadaActualX(), 
-//				y=self.coordenadaActualY()
-//			)
-//		)
 		
 		game.onTick(1000 / self.ticksPorSegundo(), nombreEventoMovimiento , {
 			
@@ -169,7 +214,7 @@ class Movil inherits Visual {
 }
 
 // representa un objeto transladable sin animación
-class Inanimado inherits personaje.Movil{
+class Inanimado inherits Movil{
 	var property image
 	
 }
@@ -211,35 +256,3 @@ class Animado inherits Movil {
 	
 }
 
-class MutablePosition inherits Position {
-	var mutableX = x
-	var mutableY = y
-	
-	override method x() = mutableX
-	method x(nuevaX) {
-		mutableX = nuevaX
-	}
-	
-	override method y() = mutableY
-	method y(nuevaY) {
-		mutableY = nuevaY
-	}
-	
-}
-
-class RelativePosition inherits Position {
-	var property referencia
-	const deltaX = 0
-	const deltaY = 0
-	
-	override method x() {
-//		console.println(referencia.x() + deltaX)
-		return referencia.x() + deltaX
-	}
-	
-	override method y() {
-//		console.println(referencia.y() + deltaY)
-		return referencia.y() + deltaY
-	}
-	
-}

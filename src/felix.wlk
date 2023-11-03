@@ -6,8 +6,7 @@ import pantalla.*
 import wollok.game.*
 
 
-object felix inherits Animado( position=new MutablePosition(x = 30, y = 2),
-  							   velocidad = 30 ){
+object felix inherits Animado( velocidad = 30 ){
 	
 	var mirandoAlaDerecha = true
 	var saltando = false
@@ -15,7 +14,8 @@ object felix inherits Animado( position=new MutablePosition(x = 30, y = 2),
 	
 	//mientras felix está inmune los objetos no le hacen daño
 	var inmune = false
-	const sensores = []
+	const sensoresVerticales = []
+	const sensoresHorizontales = []
 	
 	//referencia al stage actual
 	var property stage = nullStage
@@ -83,6 +83,7 @@ object felix inherits Animado( position=new MutablePosition(x = 30, y = 2),
 	method initialize() {
 		animacion = animacionParadoDerecha
 		self.agregarSensores()
+		self.reset()
 	}
 	
 
@@ -141,31 +142,48 @@ object felix inherits Animado( position=new MutablePosition(x = 30, y = 2),
   	}
 
 	method agregarSensores() {
-		(1..2).forEach({ i => self.agregarSensor(0, i*4) })		
+		const x = self.position().x()
+		const y = self.position().y()
+		(1..4).forEach({ i => self.agregarSensorVertical(x, y+i*2) })		
+		(1..3).forEach({ i => self.agregarSensorHorizontal(x+i, y) })		
 	}
 
-	method nuevaPosicionRelativa(deltaX, deltaY) {
-		return new RelativePosition(referencia = self.position(), deltaX=deltaX, deltaY=deltaY)
+	/* agrega un nuevo sensor vertical a felix */
+	method agregarSensorVertical(x, y) {
+		const sensor = new Sensor()
+		sensor.positionXY(x, y)
+		sensoresVerticales.add(sensor)			
 	}
 
-	/* agrega un nuevo sendor a felix */
-	method agregarSensor(x, y) {
-		sensores.add(new Sensor(position = self.nuevaPosicionRelativa(x, y)))
+	/* agrega un nuevo sensor horizontal a felix */
+	method agregarSensorHorizontal(x, y) {
+		const sensor = new Sensor()
+		sensor.positionXY(x, y)
+		sensoresHorizontales.add(sensor)			
 	}
   	
   	method mostrarSensores() {
-		sensores.forEach({s => s.addVisual()})
+		sensoresVerticales.forEach({s => s.addVisual()})
+		sensoresHorizontales.forEach({s => s.addVisual()})
   	}
   	method activarSensores() {
-		sensores.forEach({s => s.activarDeteccion({ c => if(c.haceDanio()) self.perderVida()  })})
+		sensoresVerticales.forEach({s => s.activarDeteccion({ c => if(c.haceDanio()) self.perderVida()  })})
+		sensoresHorizontales.forEach({s => s.activarDeteccion({ c => if(c.haceDanio()) self.perderVida()  })})
   	}
   	
   	method ocultarSensores() {
-		sensores.forEach({s => s.removeVisual()})  		
+		sensoresVerticales.forEach({s => s.removeVisual()})  		
+		sensoresHorizontales.forEach({s => s.removeVisual()})  		
   	}
 
 	method actualizarSensores() {
-		(0..sensores.size()-1).forEach({ i => sensores.get(i).position().referencia(position)})
+		const x = self.position().x()
+		const y = self.position().y()
+		var i = 1
+		sensoresVerticales.forEach({s => s.positionXY(x, y+i*2); i++})
+		
+		i = 1
+		sensoresHorizontales.forEach({s => s.positionXY(x+i, y); i++})
 	}
 
   	
@@ -206,6 +224,19 @@ object felix inherits Animado( position=new MutablePosition(x = 30, y = 2),
   		}
   	}
 
+	
+	/*
+	 * establece la nueva posición de felix y de los sensores
+	 * ustilizando coordenadas x, y
+	 */
+	override method positionXY(x, y) {
+		super(x,y)
+		self.actualizarSensores()
+	}
+	
+	/*
+	 * establece la nueva posición de felix y de los sensores
+	 */
 	override method position(pos) {
 		super(pos)
 		self.actualizarSensores()
@@ -231,6 +262,7 @@ object felix inherits Animado( position=new MutablePosition(x = 30, y = 2),
   	}
   	
   	method reset() {
+  		self.positionXY(30, 2)
 		self.resetearAnimacion()
 		self.detenerMovimiento()
 		self.actualizarSensores()

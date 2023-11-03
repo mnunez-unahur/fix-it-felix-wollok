@@ -41,13 +41,13 @@ object juego {
 		vida.addVisual()
 		
 		// pongo un par de nubes
-//		const nube1 = new Nube(position = new MutablePosition(x=-20, y=40))
-//		nube1.addVisual()
-//		nube1.mover()
-//		
-//		const nube2 = new Nube(position = new MutablePosition(x=-20, y=20), velocidad=10)
-//		nube2.addVisual()
-//		nube2.mover()			
+		const nube1 = new Nube(position = new MutablePosition(x=-20, y=40))
+		nube1.addVisual()
+		nube1.mover()
+		
+		const nube2 = new Nube(position = new MutablePosition(x=-20, y=20), velocidad=10)
+		nube2.addVisual()
+		nube2.mover()			
 		
 		score.addVisual()
 	}
@@ -239,7 +239,9 @@ object juego {
 			const stage10 = new Stage(
 			dificultad = 10,
 			fondo = new Edificio(image="niveles/edificio-3.png"),
-			imgInicial = new Pantalla (image = "fondo/stage10.jpg")
+			imgInicial = new Pantalla (image = "fondo/stage10.jpg"),
+			turboTastic=true
+			
 		)
 		stage10.agregarMultiplesVentanas(2,[
 			[1,1], [2,1], [3,1], [4,1], [5,1],
@@ -555,6 +557,7 @@ class Stage {
 	const fondo
 	const imgInicial
 	const property dificultad
+	const turboTastic = false
 	
 	const tablero = new Tablero()
 	method celdaActiva() = tablero.celdaActiva()
@@ -659,12 +662,17 @@ class Stage {
 			felix.stage(self)
 			ralph.stage(self)
 			ralph.hacerRutina()
+			if(turboTastic) {
+				turbo.aparecer()				
+			}
 	  	})
 	}
 	
+	
+	
 	method finalizar() {
-		ralph.finalizarRutina()		
-		felix.position(tablero.celda(1,1).position())
+		ralph.reset()		
+//		felix.position(tablero.celda(1,1).position())
 		felix.reset()
 		self.ocultar()
 		game.clear()

@@ -32,7 +32,7 @@ describe "Caracteres Estaticos" {
 	}	
 }
 
-
+/*
 describe "Caracteres Inanimados" {
 	const caracter = new Inanimado( position=new Position(x=1,y=1), velocidad=100, image="nada.png")
 	method initialize() {
@@ -43,5 +43,6 @@ describe "Caracteres Inanimados" {
 //		caracter.agregarAlJuego()
 //	}	
 }
+ */
 
 
