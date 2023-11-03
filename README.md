@@ -7,8 +7,8 @@ Empieza cuando Ralph es despojado de su lugar de descanso y enviado hasta el ver
 
 ## Equipo de desarrollo
 
-- Manuel Nuñez
 - Alan Castelli
+- Manuel Nuñez
 
 ## Capturas
 
