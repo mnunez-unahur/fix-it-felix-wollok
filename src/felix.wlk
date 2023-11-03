@@ -6,7 +6,7 @@ import pantalla.*
 import wollok.game.*
 
 
-object felix inherits Animado( position=new Position(x = 30, y = 2),
+object felix inherits Animado( position=new MutablePosition(x = 30, y = 2),
   							   velocidad = 30 ){
 	
 	var mirandoAlaDerecha = true
@@ -82,9 +82,7 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
 
 	method initialize() {
 		animacion = animacionParadoDerecha
-		(1..4).forEach({ i => self.agregarSensor() })
-		self.actualizarSensores()
-		
+		self.agregarSensores()
 	}
 	
 
@@ -142,9 +140,17 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   		self.ocultarSensores()
   	}
 
+	method agregarSensores() {
+		(1..2).forEach({ i => self.agregarSensor(0, i*4) })		
+	}
+
+	method nuevaPosicionRelativa(deltaX, deltaY) {
+		return new RelativePosition(referencia = self.position(), deltaX=deltaX, deltaY=deltaY)
+	}
+
 	/* agrega un nuevo sendor a felix */
-	method agregarSensor() {
-		sensores.add(new Sensor(position = new MutablePosition(x=position.x(), y=position.y())))
+	method agregarSensor(x, y) {
+		sensores.add(new Sensor(position = self.nuevaPosicionRelativa(x, y)))
 	}
   	
   	method mostrarSensores() {
@@ -159,21 +165,10 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   	}
 
 	method actualizarSensores() {
-		// apila los sensores arriba de la celda de felix
-		(1..sensores.size()).forEach({ i => sensores.get(i-1).positionXY(position.x(), position.y()+i*2)	})
+		(0..sensores.size()-1).forEach({ i => sensores.get(i).position().referencia(position)})
 	}
 
   	
-  	override method position(pos) {
-  		super(pos)
-  		self.actualizarSensores()
-  	}
-
-  	override method positionXY(x, y) {
-  		super(x, y)
-  		self.actualizarSensores()
-  	}
-
   	
 	method perderVida() {
   		if(!inmune) {
@@ -211,6 +206,10 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
   		}
   	}
 
+	override method position(pos) {
+		super(pos)
+		self.actualizarSensores()
+	}
   	
   	override method moverAPosicionyHacerAccion(x,y, accion){
   		if(!saltando) {
@@ -218,7 +217,6 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
 	  		saltando = true
 			self.animar(self.animacionSaltando())
 	  		super(x,y, {
-	  			self.actualizarSensores()
 	  			self.animar(self.animacionCayendo())	  			
 	  			saltando = false
 	  			accion.apply()
@@ -239,5 +237,6 @@ object felix inherits Animado( position=new Position(x = 30, y = 2),
 		mirandoAlaDerecha = true
 		inmune = false 
 		reparando = false
+		invisible = false
   	}
 }

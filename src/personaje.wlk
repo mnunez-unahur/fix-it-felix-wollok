@@ -110,12 +110,12 @@ class Movil inherits Visual {
 		}
 		
 		enMovimiento = true
-		self.position(
-			new MutablePosition(
-				x= self.coordenadaActualX(), 
-				y=self.coordenadaActualY()
-			)
-		)
+//		self.position(
+//			new MutablePosition(
+//				x= self.coordenadaActualX(), 
+//				y=self.coordenadaActualY()
+//			)
+//		)
 		
 		game.onTick(1000 / self.ticksPorSegundo(), nombreEventoMovimiento , {
 			
@@ -129,15 +129,6 @@ class Movil inherits Visual {
 					self.coordenadaActualX() + self.deltaX(x),
 					self.coordenadaActualY() + self.deltaY(y)
 				)
-//				self.position().y(self.coordenadaActualY() + self.deltaY(y))
-//				self.position().y(self.coordenadaActualY() + self.deltaY(y))
-
-//				self.position(
-//					new Position(
-//						x= self.coordenadaActualX() + self.deltaX(x), 
-//						y=self.coordenadaActualY() + self.deltaY(y)
-//					)
-//				)				
 			}
 		})				
 		
@@ -232,6 +223,23 @@ class MutablePosition inherits Position {
 	override method y() = mutableY
 	method y(nuevaY) {
 		mutableY = nuevaY
+	}
+	
+}
+
+class RelativePosition inherits Position {
+	var property referencia
+	const deltaX = 0
+	const deltaY = 0
+	
+	override method x() {
+//		console.println(referencia.x() + deltaX)
+		return referencia.x() + deltaX
+	}
+	
+	override method y() {
+//		console.println(referencia.y() + deltaY)
+		return referencia.y() + deltaY
 	}
 	
 }

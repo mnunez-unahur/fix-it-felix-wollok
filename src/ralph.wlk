@@ -14,7 +14,7 @@ import juego.*
  */
  
  
-object ralph inherits Animado ( position=new Position(y=47, x=43),
+object ralph inherits Animado ( position=new MutablePosition(y=47, x=43),
   								velocidad = 20 ) {
   									
 	const fila = 47 // solo se mueve en la fila 47
@@ -72,7 +72,7 @@ object ralph inherits Animado ( position=new Position(y=47, x=43),
 	// crea un nuevo ladrillo que cae desde el techo
 	// la velocidad de caída del ladrillo depende de la dificultad del stage
 	method ladrilloSeCae(){ //ver como poner un objeto en la posicion x e y 
-		const ladrillo = new Ladrillo (position = new Position(x = self.coordenadaActualX() + 5,
+		const ladrillo = new Ladrillo (position = new MutablePosition(x = self.coordenadaActualX() + 5,
 															   y = self.coordenadaActualY() - 2),
 									   velocidad = 18 + self.dificultad(),
 									   haceDanio = true)
