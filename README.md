@@ -32,6 +32,6 @@ En cada nivel hay una distribucion diferente en los obstaculos, y tambien esto l
 
 ## Otros
 
-- Curso/Facultad
+- Programación con Objetos I / UNAHUR
 - Versión de wollok
-- Una vez terminado, no tenemos problemas en que el repositorio sea público / queremos manternerlo privado
+- Una vez terminado, no tenemos problemas en que el repositorio sea público
