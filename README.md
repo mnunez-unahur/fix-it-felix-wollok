@@ -33,8 +33,6 @@ En cada nivel hay una distribucion diferente en los obstaculos, y tambien esto l
 
 
 
-
-
 ## Otros
 
 - Programación con Objetos I / UNAHUR
