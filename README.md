@@ -1,16 +1,14 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/hUnPAC5R)
 # FIX-IT FELIX Jr.
 
-## Equipo de desarrollo
-
-- Manuel Nuñez
-- Alan Castelli
-
-## Introduccion
 FIX-IT FELIX Jr. Es el videojuego arcade de 8-bits de la película de Disney, Wreck-It Ralph. Al igual que en la introducción de la película Wreck-It Ralph, el juego está ambientado en Niceland.
 
 Empieza cuando Ralph es despojado de su lugar de descanso y enviado hasta el vertedero debido a la construcción del apartamento de los Nicelanders (cuidadanos de Niceland) y al terminar la construcción, los Nicelanders hacen residencia en el apartamento recién construido. Luego llega Ralph enfurecido y que está dispuesto a demoler el edificio, destrozando las ventanas mientras escala. Cuando Ralph llega al cuarto piso, los Nicelanders piden ayuda a Félix para reparar los destrozos causados por Ralph y a su vez poder rescatar a todos los habitantes del edificio.
 
+## Equipo de desarrollo
+
+- Manuel Nuñez
+- Alan Castelli
 
 ## Capturas
 
