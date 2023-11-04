@@ -127,7 +127,7 @@ object ralph inherits Animado ( velocidad = 20 ) {
 		}
 		
 		detenido = false 
-		game.schedule((1000 - (self.dificultad()*100).max(400)), { 
+		game.schedule((1000 - (self.dificultad()*100).max(500)), { 
 			
 			if(!detenido){
 				caminandoALaIzquierda = (not caminandoALaIzquierda and self.coordenadaActualX() >= 61) 
