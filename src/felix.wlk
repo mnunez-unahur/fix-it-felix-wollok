@@ -14,8 +14,7 @@ object felix inherits Animado( velocidad = 30 ){
 	
 	//mientras felix está inmune los objetos no le hacen daño
 	var inmune = false
-	const sensoresVerticales = []
-	const sensoresHorizontales = []
+	const sensores = []
 	
 	//referencia al stage actual
 	var property stage = nullStage
@@ -144,49 +143,40 @@ object felix inherits Animado( velocidad = 30 ){
 	method agregarSensores() {
 		const x = self.position().x()
 		const y = self.position().y()
-		(1..4).forEach({ i => self.agregarSensorVertical(x, y+i*2) })		
-		(1..3).forEach({ i => self.agregarSensorHorizontal(x+i, y) })		
+		(1..6).forEach({i => self.agregarSensor(x, y)})
 	}
-
-	/* agrega un nuevo sensor vertical a felix */
-	method agregarSensorVertical(x, y) {
-		const sensor = new Sensor()
-		sensor.positionXY(x, y)
-		sensoresVerticales.add(sensor)			
-	}
-
-	/* agrega un nuevo sensor horizontal a felix */
-	method agregarSensorHorizontal(x, y) {
-		const sensor = new Sensor()
-		sensor.positionXY(x, y)
-		sensoresHorizontales.add(sensor)			
-	}
-  	
-  	method mostrarSensores() {
-		sensoresVerticales.forEach({s => s.addVisual()})
-		sensoresHorizontales.forEach({s => s.addVisual()})
-  	}
-  	method activarSensores() {
-		sensoresVerticales.forEach({s => s.activarDeteccion({ c => if(c.haceDanio()) self.perderVida()  })})
-		sensoresHorizontales.forEach({s => s.activarDeteccion({ c => if(c.haceDanio()) self.perderVida()  })})
-  	}
-  	
-  	method ocultarSensores() {
-		sensoresVerticales.forEach({s => s.removeVisual()})  		
-		sensoresHorizontales.forEach({s => s.removeVisual()})  		
-  	}
-
 	method actualizarSensores() {
 		const x = self.position().x()
 		const y = self.position().y()
-		var i = 1
-		sensoresVerticales.forEach({s => s.positionXY(x, y+i*2); i++})
-		
-		i = 1
-		sensoresHorizontales.forEach({s => s.positionXY(x+i, y); i++})
+		var i=0
+		sensores.get(i).positionXY(x  , y+8) ; i++
+		sensores.get(i).positionXY(x  , y+4) ; i++
+		sensores.get(i).positionXY(x+2  , y+8) ; i++
+		sensores.get(i).positionXY(x+3  , y+8) ; i++
+		sensores.get(i).positionXY(x+2  , y) ; i++
+		sensores.get(i).positionXY(x+3  , y) ; i++
+	}
+	
+	
+
+	/* agrega un nuevo sensor vertical a felix */
+	method agregarSensor(x, y) {
+		const sensor = new Sensor()
+		sensor.positionXY(x, y)
+		sensores.add(sensor)			
 	}
 
+  	method mostrarSensores() {
+		sensores.forEach({s => s.addVisual()})
+  	}
+  	method activarSensores() {
+		sensores.forEach({s => s.activarDeteccion({ c => if(c.haceDanio()) self.perderVida()  })})
+  	}
   	
+  	method ocultarSensores() {
+		sensores.forEach({s => s.removeVisual()})  		
+  	}
+
   	
 	method perderVida() {
   		if(!inmune) {
