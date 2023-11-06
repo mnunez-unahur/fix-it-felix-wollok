@@ -61,7 +61,7 @@ object ralph inherits Animado ( velocidad = 20 ) {
 	method golpear() {
 		self.detenerMovimiento()
 		self.animar(animacionGolpeando)
-		golpe.reproducir()
+		new Sonido (sound = "Sonidos/ralphGolpe.mp3").reproducir()
 		self.ladrilloSeCae()
 		
 	}

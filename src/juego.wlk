@@ -26,7 +26,7 @@ object juego {
 	}
 	
 	method configurarSonido(){
-		var  sound = game.sound("Sonidos/juego.mp3")
+		var  sound = game.sound("Sonidos/juego2.mp3")
 		sound.shouldLoop(true)
 		game.schedule(500, { sound.play()} )
 		keyboard.enter().onPressDo({sound.stop()})
@@ -251,15 +251,15 @@ object juego {
 
 		
 
-		self.agregarStage(stage1)
-		self.agregarStage(stage2)
-		self.agregarStage(stage3)
-		self.agregarStage(stage4)
-		self.agregarStage(stage5)
-		self.agregarStage(stage6)
-		self.agregarStage(stage7)
-		self.agregarStage(stage8)
-		self.agregarStage(stage9)
+//		self.agregarStage(stage1)
+//		self.agregarStage(stage2)
+//		self.agregarStage(stage3)
+//		self.agregarStage(stage4)
+//		self.agregarStage(stage5)
+//		self.agregarStage(stage6)
+//		self.agregarStage(stage7)
+//		self.agregarStage(stage8)
+//		self.agregarStage(stage9)
 		self.agregarStage(stage10)
 		
 	}
@@ -290,7 +290,7 @@ object juego {
 			self.stageActual().iniciar()
 		}else{
 			congrats.addVisual()
-			sonidoFinal.reproducir()
+			new Sonido (sound = "Sonidos/winGame.mp3").reproducir()
 		}
 		//TODO: cuando se finaliza el ultimo nivel se termina el juego	
 	}

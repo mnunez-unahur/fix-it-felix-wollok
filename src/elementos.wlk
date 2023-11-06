@@ -107,21 +107,8 @@ class Sonido{
 	
 }
 // Sonidos
-object sonidoInicial inherits Sonido(sound = "Sonidos/juego.mp3" ){
-}
-object sonidoSalto inherits Sonido (sound = "Sonidos/salto.mp3"){
-}
-object arreglar inherits Sonido (sound = "Sonidos/repararVentana.mp3"){
-}
-object golpe inherits Sonido (sound = "Sonidos/ralphGolpe.mp3"){	
-}
-object restarVida inherits Sonido (sound = "Sonidos/perderVida2.mp3"){	
-}
-object sgameOver inherits Sonido (sound = "Sonidos/sinVidas.mp3"){
-}
+
 object sonidoStage inherits Sonido (sound = "Sonidos/juego2.mp3"){
-}
-object sonidoFinal inherits Sonido (sound = "Sonidos/winGame.mp3"){
 }
 
 
