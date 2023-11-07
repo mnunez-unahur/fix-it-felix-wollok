@@ -1,0 +1,56 @@
+import elementos.*
+
+//describe "ventanas" {
+//	const ventana = new Ventana()
+//
+//	test "Inicia rota" {
+//		assert.equals(0, ventana.salud())
+//
+//	}
+//	
+//	test "al reparar gana 1 salud" {
+//		ventana.reparar()
+//		assert.equals(1, ventana.salud())
+//	}
+//
+//	test "la salud máxima es 2" {
+//		ventana.reparar()
+//		ventana.reparar()
+//		ventana.reparar()
+//		ventana.reparar()
+//		ventana.reparar()
+//		assert.equals(2, ventana.salud())
+//	}
+//}
+
+describe "obstaculos" {
+	const postigo = new Postigo()
+	const maceta = new Maceta()
+	
+	test "el postigo obstaculiza a la izquierda y a la derecha" {
+		assert.that(postigo.izquierda())
+		assert.that(postigo.derecha())
+	}
+	
+	test "el postigo NO obstaculiza a la izquierda y a la derecha" {
+		assert.notThat(postigo.arriba())
+		assert.notThat(postigo.abajo())
+	}
+
+	test "la maceta obstaculiza abajo" {
+		assert.that(maceta.abajo())
+	}
+	
+	test "la maceta NO obstaculiza a la izquierda, a la derecha ni arriba" {
+		assert.notThat(maceta.arriba())
+		assert.notThat(maceta.izquierda())
+		assert.notThat(maceta.derecha())
+	}
+
+	
+}
+
+
+
+
+
