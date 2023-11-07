@@ -1,0 +1,42 @@
+import animacion.*
+
+
+describe "Animación" {
+	const animacion = new Animacion()
+	const fotograma1 = "felix/izquierda-parado"
+	const fotograma2 = "felix/izquierda-saltando-1"
+	const fotograma3 = "felix/izquierda-saltando-2"
+	
+	method initialize() {
+		animacion.agregarFotograma(fotograma1)
+		animacion.agregarFotograma(fotograma2)
+		animacion.agregarFotograma(fotograma3)
+	}
+
+	test "permite mover al siguiente fotograma" {
+		animacion.siguiente()
+
+		assert.equals(fotograma2, animacion.image())
+
+	}
+	
+	test "al resetear, muestra el primer fotograma" {
+		animacion.siguiente()
+		animacion.resetear()
+
+		assert.equals(fotograma1, animacion.image())
+
+	}
+	
+	test "al hacer siguiente() en el ultimo fotograma provoca que muestre el primer fotograma" {
+		animacion.siguiente()
+		assert.equals(fotograma2, animacion.image())
+		animacion.siguiente()
+		assert.equals(fotograma3, animacion.image())
+		animacion.siguiente()
+
+		assert.equals(fotograma1, animacion.image())
+
+	}
+	
+}

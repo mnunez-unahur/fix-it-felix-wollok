@@ -251,15 +251,15 @@ object juego {
 
 		
 
-//		self.agregarStage(stage1)
-//		self.agregarStage(stage2)
-//		self.agregarStage(stage3)
-//		self.agregarStage(stage4)
-//		self.agregarStage(stage5)
-//		self.agregarStage(stage6)
-//		self.agregarStage(stage7)
-//		self.agregarStage(stage8)
-//		self.agregarStage(stage9)
+		self.agregarStage(stage1)
+		self.agregarStage(stage2)
+		self.agregarStage(stage3)
+		self.agregarStage(stage4)
+		self.agregarStage(stage5)
+		self.agregarStage(stage6)
+		self.agregarStage(stage7)
+		self.agregarStage(stage8)
+		self.agregarStage(stage9)
 		self.agregarStage(stage10)
 		
 	}
