@@ -1,4 +1,3 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/hUnPAC5R)
 # FIX-IT FELIX Jr.
 
 FIX-IT FELIX Jr. Es el videojuego arcade de 8-bits de la película de Disney, Wreck-It Ralph. Al igual que en la introducción de la película Wreck-It Ralph, el juego está ambientado en Niceland.
@@ -32,9 +31,3 @@ En cada nivel hay una distribucion diferente en los obstaculos, y tambien esto l
 ![parado](https://github.com/obj1-unahur-2023s2/TPGameIntegrador-grupocoso/assets/99371942/2b50bf3e-a937-48ec-a899-5bd0c24e0052)
 
 
-
-## Otros
-
-- Programación con Objetos I / UNAHUR
-- Versión de wollok
-- Una vez terminado, no tenemos problemas en que el repositorio sea público
