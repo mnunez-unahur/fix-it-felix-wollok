@@ -6,6 +6,9 @@ import felix.*
 import pantalla.*
 import personaje.*
 
+/*
+ * representa al objeto global del juego
+ */
 object juego {
 	const stages = []
 	var stageActual = 0
@@ -18,23 +21,32 @@ object juego {
 	method tableroActual() = self.stageActual().tablero()
 	method dificultad() = dificultad
 	
-	
+	/*
+	 * inicializa e inicia el juego
+	 */
 	method iniciar() {
 		dificultad = 1
 		self.configurarVisual()
 		self.configurarStages()
 		self.mostrarImagenesIniciales()
-		self.configurarSonido()
+		self.reproducirSonidoInicial()
 		game.start()
 	}
 	
-	method configurarSonido(){
+	
+	/*
+	 * reproduce el sonido inicial del juego
+	 */
+	method reproducirSonidoInicial(){
 		var  sound = game.sound("sonidos/juego2.mp3")
 		sound.shouldLoop(true)
 		game.schedule(500, { sound.play()} )
 		keyboard.enter().onPressDo({sound.stop()})
 	}
 
+	/*
+	 * Inserta los elementos generales del juego
+	 */
 	method configurarVisual(){
 		game.title("Fix It Felix Jr!")
 		game.width(100)
@@ -55,6 +67,9 @@ object juego {
 		score.addVisual()
 	}
 	
+	/*
+	 * Configura los stages/niveles del juego
+	 */
 	method configurarStages() {
 		// stage 1
 		const stage1 = new Stage(
@@ -100,7 +115,6 @@ object juego {
 
 		// stage 3
 		const stage3 = new Stage(
-//			dificultad = 3,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage3.jpg")
 		)
@@ -213,8 +227,9 @@ object juego {
 		stage8.agregarMultiplesPostigos([
 			[1,3],[3,2],[5,1]
 		])
-			// stage 9
-			const stage9 = new Stage(
+		
+		// stage 9
+		const stage9 = new Stage(
 			fondo = new Edificio(image="niveles/edificio-3.png"),
 			imgInicial = new Pantalla (image = "fondo/stage9.jpg")
 		)
@@ -287,9 +302,10 @@ object juego {
 		}
 	}
 }
-
-// representa una celda del tablero
-// cada celda puede contener o no ventana
+/*
+ * representa una celda del tablero
+ * cada celda puede contener o no ventana
+ */
 class Celda{
 	var ventana = null
 	const obstaculos = []
@@ -357,18 +373,23 @@ class Tablero {
 	
 	var property celdaActiva = grilla.get(0)
 	
-	// cantidad de filas y de columnas del tablero
-	// se ponen como constantes para evitar ejecutar la misma búsqueda a cada rato
+	/*
+	 * cantidad de filas y de columnas del tablero
+	 */
 	const cantidadFilas = grilla.map({c => c.posicionRelativa().y()}).max()
 	const cantidadColumnas = grilla.map({c => c.posicionRelativa().x()}).max()
 	
-	
+	/*
+	 * Indica si la coordenada x, y especificada queda dentro del tablero
+	 */
 	method esCoordinadaValida(x, y) {
 		return grilla.any({c => c.posicionRelativa().x() == x && c.posicionRelativa().y() == y})
 	}
 	
-	// dada una coordenada válida del tablero, devuelve la celda de dicha coordenada
-	// x e y son las posiciones relativas de la celda
+	/*
+	 * dada una coordenada válida del tablero, devuelve la celda de dicha coordenada
+	 * Parametros: x e y son las posiciones relativas de la celda
+	 */
 	method celda(x, y) {
 		if(!self.esCoordinadaValida(x, y)) {
 			self.error("las coordenadas quedan fuera del tablero")
@@ -381,7 +402,9 @@ class Tablero {
 
 	method celdasConObstaculos() = grilla.filter({c => c.tieneObstaculos()})
 	
-	// devuelve la lista de ventanas del tablero
+	/*
+	 * devuelve la lista de ventanas del tablero
+	 */
 	method ventanas() {
 		return self.celdasConVentanas().map({v => v.ventana()})		
 	}
@@ -504,8 +527,9 @@ class Tablero {
 	}
 	
 	
-	// devuelve la celda a la izquierda de la actual
-	// si la celda actual es la primera, la devuelve
+	/* devuelve la celda a la izquierda de la actual
+	 * si la celda actual es la primera, devuelve la celda actual
+	 */
 	method left() {
 		if(self.puedeMoverALaIzquierda()) {
 			return self.celdaALaIzquierda()
@@ -514,8 +538,10 @@ class Tablero {
 		}
 	}
 
-	// devuelve la celda a la derecha de la actual
-	// si la celda actual es la ultima, la devuelve
+	/*
+	 * devuelve la celda a la derecha de la actual
+	 * si la celda actual es la ultima, la devuelve
+	 */
 	method right() {
 		if(self.puedeMoverALaDerecha()) {
 			return self.celdaALaDerecha()
@@ -524,8 +550,9 @@ class Tablero {
 		}
 	}
 
-	// devuelve la celda que esta arriba de la actual
-	// si la celda actual es la ultima, la devuelve
+	/*
+	 * devuelve la celda que esta arriba de la actual
+	 */
 	method up() {
 		if(self.puedeMoverArriba()) {
 			return self.celdaArriba()
@@ -534,8 +561,9 @@ class Tablero {
 		}
 	}
 
-	// devuelve la celda que esta abajo de la actual
-	// si la celda actual es la primera, la devuelve
+	/*
+	 * devuelve la celda que esta abajo de la actual
+	 */
 	method down() {
 		if(self.puedeMoverAbajo()) {
 			return self.celdaAbajo()
@@ -547,10 +575,12 @@ class Tablero {
 	
 }
 
+/*
+ * Representa un nivel del juego
+ */
 class Stage {
 	const fondo
 	const imgInicial
-//	const property dificultad
 	const turboTastic = false
 	
 	const tablero = new Tablero()
@@ -558,7 +588,9 @@ class Stage {
 	
 	method tablero() = tablero
 	
-	// agrega una ventana en la celda x y del tablero
+	/*
+	 * agrega una ventana en la celda x y del tablero
+	 */
 	method agregarVentanaEn(modelo, x,y) {
 		tablero.celda(x, y).agregarVentana(modelo)	
 	}
@@ -600,6 +632,9 @@ class Stage {
 		
 	}	
 
+	/*
+	 * repara una ventana si en la celda actual hay una ventana rota
+	 */
 	method repararVentanaSiHay() {
 		if(!felix.saltando() && !felix.reparando() && self.celdaActiva().tieneVentana()) {
 			felix.reparar(self.celdaActiva().ventana());
@@ -671,15 +706,6 @@ class Stage {
 	
 }
 
-//representa un stage nulo
-// se utiliza para inicializar los personajes que tienen un atributo stage
-object nullStage inherits Stage(
-			fondo = new Edificio(image="niveles/edificio-1.png"), 
-			imgInicial = new Pantalla (image ="nada.jpg")){
-	override method mostrar() {}
-	override method ocultar() {}
-}
-
 
 // Score
 object score inherits Visual(position = new Position(x=2, y=56)) { 
@@ -726,13 +752,18 @@ object score inherits Visual(position = new Position(x=2, y=56)) {
 }
 
 
-// representa un digito del 0 al 9 en la pantalla
+/*
+ * representa un digito del 0 al 9 en la pantalla
+ */
 class Digito inherits Visual {
 	var property valor = 0
 	
 	override method image() = "numeros/" + valor + ".png" 
 }
 
+/*
+ * representa el objeto que muestra la cantidad de vidas del juego
+ */
 object vida inherits Visual (position=new Position(y=55, x=80 )){ 
 	var property vidasActuales = 3
 	
