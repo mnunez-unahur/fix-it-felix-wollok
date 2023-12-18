@@ -20,7 +20,7 @@ object ralph inherits Animado ( velocidad = 20 ) {
 	const distanciaEntreVentana = 9
 	var caminandoALaIzquierda = true
 	var detenido = true
-	var property stage = nullStage
+//	var property stage = nullStage
 	
 	const  animacionParado = new Animacion( 
 				  						velocidad=0,
@@ -66,13 +66,13 @@ object ralph inherits Animado ( velocidad = 20 ) {
 		
 	}
 	
-	method dificultad() = stage.dificultad()
+	method dificultad() = juego.dificultad()
 	
 	// la velocidad de ralph varía con la dificultad del juego
 	override method velocidad() = super() + self.dificultad() * 1
 	
 	// crea un nuevo ladrillo que cae desde el techo
-	// la velocidad de caída del ladrillo depende de la dificultad del stage
+	// la velocidad de caída del ladrillo depende de la dificultad del juego
 	method ladrilloSeCae(){ //ver como poner un objeto en la posicion x e y 
 		const ladrillo = new Ladrillo (velocidad = 18 + self.dificultad(),
 									   haceDanio = true)

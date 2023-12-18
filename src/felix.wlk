@@ -16,8 +16,6 @@ object felix inherits Animado( velocidad = 30 ){
 	var inmune = false
 	const sensores = []
 	
-	//referencia al stage actual
-	var property stage = nullStage
 	
 	var invisible = false
 	
@@ -90,7 +88,7 @@ object felix inherits Animado( velocidad = 30 ){
 		return if(invisible) "nada.png" else super()
 	}
 
-	method dificultad() = stage.dificultad()
+	method dificultad() = juego.dificultad()
 
 	// la velocidad de felix depende el nivel
 	override method velocidad() {

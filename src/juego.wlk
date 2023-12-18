@@ -9,14 +9,18 @@ import personaje.*
 object juego {
 	const stages = []
 	var stageActual = 0
+	var dificultad = 1
 	
 	var property vidas = 3
 	var iniciado  = false
 	
 	method stageActual() = stages.get(stageActual)
 	method tableroActual() = self.stageActual().tablero()
-
+	method dificultad() = dificultad
+	
+	
 	method iniciar() {
+		dificultad = 1
 		self.configurarVisual()
 		self.configurarStages()
 		self.mostrarImagenesIniciales()
@@ -54,7 +58,6 @@ object juego {
 	method configurarStages() {
 		// stage 1
 		const stage1 = new Stage(
-			dificultad = 1,
 			fondo = new Edificio(image="niveles/edificio-1.png"), 
 			imgInicial = new Pantalla (image ="fondo/stage1.jpg"))
 		
@@ -76,7 +79,6 @@ object juego {
 		
 		// stage 2
 		const stage2 = new Stage(
-			dificultad = 2,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage2.jpg")
 		)
@@ -98,7 +100,7 @@ object juego {
 
 		// stage 3
 		const stage3 = new Stage(
-			dificultad = 3,
+//			dificultad = 3,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage3.jpg")
 		)
@@ -122,7 +124,6 @@ object juego {
 
 		// stage 4
 		const stage4 = new Stage(
-			dificultad = 4,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage4.jpg")
 		)
@@ -145,7 +146,6 @@ object juego {
 
 		// stage 5
 		const stage5 = new Stage(
-			dificultad = 5,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage5.jpg")
 		)
@@ -164,7 +164,6 @@ object juego {
 		
 		// stage 6
 			const stage6 = new Stage(
-			dificultad = 6,
 			fondo = new Edificio(image="niveles/edificio-3.png"),
 			imgInicial = new Pantalla (image = "fondo/stage6.jpg")
 		)
@@ -182,7 +181,6 @@ object juego {
 		])
 		// stage 7
 			const stage7 = new Stage(
-			dificultad = 7,
 			fondo = new Edificio(image="niveles/edificio-3.png"),
 			imgInicial = new Pantalla (image = "fondo/stage7.jpg")
 		)
@@ -201,7 +199,6 @@ object juego {
 		
 		// stage 8
 		const stage8 = new Stage(
-			dificultad = 8,
 			fondo = new Edificio(image="niveles/edificio-3.png"),
 			imgInicial = new Pantalla (image = "fondo/stage8.jpg")
 		)
@@ -218,7 +215,6 @@ object juego {
 		])
 			// stage 9
 			const stage9 = new Stage(
-			dificultad = 9,
 			fondo = new Edificio(image="niveles/edificio-3.png"),
 			imgInicial = new Pantalla (image = "fondo/stage9.jpg")
 		)
@@ -236,7 +232,6 @@ object juego {
 		])	
 			// stage 10
 			const stage10 = new Stage(
-			dificultad = 10,
 			fondo = new Edificio(image="niveles/edificio-3.png"),
 			imgInicial = new Pantalla (image = "fondo/stage10.jpg"),
 			turboTastic=true
@@ -247,8 +242,6 @@ object juego {
 			[1,2], [2,2], [3,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
-
-		
 
 		self.agregarStage(stage1)
 		self.agregarStage(stage2)
@@ -284,6 +277,7 @@ object juego {
 		self.stageActual().finalizar()
 		self.configurarVisual()
 		stageActual++
+		dificultad ++
 		if(stageActual < stages.size()){
 			vida.ganarVida()
 			self.stageActual().iniciar()
@@ -291,7 +285,6 @@ object juego {
 			congrats.addVisual()
 			new Sonido (sound = "sonidos/winGame.mp3").reproducir()
 		}
-		//TODO: cuando se finaliza el ultimo nivel se termina el juego	
 	}
 }
 
@@ -341,7 +334,9 @@ class Celda{
 }
 
 class Tablero {
-	// la grilla representa las posisiones válidas del tablero
+	/*
+	 * la grilla representa las posisiones válidas del tablero
+	 */
 	const grilla = [
 		new Celda(position = new Position(x = 30, y = 2), posicionRelativa = new Position(x=1, y=1)),
 		new Celda(position = new Position(x = 39, y = 2), posicionRelativa = new Position(x=2, y=1)),
@@ -555,7 +550,7 @@ class Tablero {
 class Stage {
 	const fondo
 	const imgInicial
-	const property dificultad
+//	const property dificultad
 	const turboTastic = false
 	
 	const tablero = new Tablero()
@@ -658,8 +653,6 @@ class Stage {
 	  	self.mostrar()
 	  	imgInicial.mostrarPorMilisegundosYLuegoEjecutar(2000, {
 			self.configurarTeclas()
-			felix.stage(self)
-			ralph.stage(self)
 			ralph.hacerRutina()
 			if(turboTastic) {
 				turbo.aparecer()				
@@ -671,7 +664,6 @@ class Stage {
 	
 	method finalizar() {
 		ralph.reset()		
-//		felix.position(tablero.celda(1,1).position())
 		felix.reset()
 		self.ocultar()
 		game.clear()
@@ -682,7 +674,6 @@ class Stage {
 //representa un stage nulo
 // se utiliza para inicializar los personajes que tienen un atributo stage
 object nullStage inherits Stage(
-			dificultad = 0,
 			fondo = new Edificio(image="niveles/edificio-1.png"), 
 			imgInicial = new Pantalla (image ="nada.jpg")){
 	override method mostrar() {}
