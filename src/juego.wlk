@@ -7,14 +7,13 @@ import pantalla.*
 import personaje.*
 
 object juego {
-//	var gameOver = false
 	const stages = []
-	var stage = 0
+	var stageActual = 0
 	
 	var property vidas = 3
 	var iniciado  = false
 	
-	method stageActual() = stages.get(stage)
+	method stageActual() = stages.get(stageActual)
 	method tableroActual() = self.stageActual().tablero()
 
 	method iniciar() {
@@ -26,7 +25,7 @@ object juego {
 	}
 	
 	method configurarSonido(){
-		var  sound = game.sound("Sonidos/juego2.mp3")
+		var  sound = game.sound("sonidos/juego2.mp3")
 		sound.shouldLoop(true)
 		game.schedule(500, { sound.play()} )
 		keyboard.enter().onPressDo({sound.stop()})
@@ -284,13 +283,13 @@ object juego {
 	method siguienteNivel() {
 		self.stageActual().finalizar()
 		self.configurarVisual()
-		stage++
-		if(stage < stages.size()){
+		stageActual++
+		if(stageActual < stages.size()){
 			vida.ganarVida()
 			self.stageActual().iniciar()
 		}else{
 			congrats.addVisual()
-			new Sonido (sound = "Sonidos/winGame.mp3").reproducir()
+			new Sonido (sound = "sonidos/winGame.mp3").reproducir()
 		}
 		//TODO: cuando se finaliza el ultimo nivel se termina el juego	
 	}

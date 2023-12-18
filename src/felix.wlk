@@ -113,7 +113,7 @@ object felix inherits Animado( velocidad = 30 ){
 				reparando = false
 				self.siguienteFotograma()
 			})	 
-			new Sonido (sound = "Sonidos/repararVentana.mp3").reproducir() 			
+			new Sonido (sound = "sonidos/repararVentana.mp3").reproducir() 			
   		}
   	}
   	
@@ -194,11 +194,11 @@ object felix inherits Animado( velocidad = 30 ){
   	method perderVida2(){ // cuando se queda sin vidas finaliza el juego. CAMBIARLO A JUEGO
   		if(vida.vidasActuales()>1){
 	  		vida.perderVida()
-	  		new Sonido (sound = "Sonidos/perderVida2.mp3").reproducir()
+	  		new Sonido (sound = "sonidos/perderVida2.mp3").reproducir()
   		} else {
   			juego.stageActual().finalizar()
   			gameOver.addVisual()
-  			new Sonido (sound = "Sonidos/sinVidas.mp3").reproducir()
+  			new Sonido (sound = "sonidos/sinVidas.mp3").reproducir()
   		}
   	}
   	
@@ -242,7 +242,7 @@ object felix inherits Animado( velocidad = 30 ){
 	  			saltando = false
 	  			accion.apply()
 	  		})  
-	  	  	new Sonido(sound = "Sonidos/salto.mp3").reproducir()
+	  	  	new Sonido(sound = "sonidos/salto.mp3").reproducir()
   		}
   	}
   	
