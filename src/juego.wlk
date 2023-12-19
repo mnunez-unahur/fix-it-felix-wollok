@@ -20,6 +20,8 @@ object juego {
 	method stageActual() = stages.get(stageActual)
 	method tableroActual() = self.stageActual().tablero()
 	method dificultad() = dificultad
+	method decrementarDificultad() { dificultad = 1.max(dificultad-1) }
+	method incrementarDificultad() { dificultad = 15.min(dificultad+1); }
 	
 	/*
 	 * inicializa e inicia el juego
@@ -292,7 +294,7 @@ object juego {
 		self.stageActual().finalizar()
 		self.configurarVisual()
 		stageActual++
-		dificultad ++
+		self.incrementarDificultad()
 		if(stageActual < stages.size()){
 			vida.ganarVida()
 			self.stageActual().iniciar()
@@ -629,6 +631,11 @@ class Stage {
 				})
 			}
 		})	
+		
+		
+		keyboard.z().onPressDo({ juego.decrementarDificultad() })	
+		keyboard.c().onPressDo({ juego.incrementarDificultad() })	
+		
 		
 	}	
 
