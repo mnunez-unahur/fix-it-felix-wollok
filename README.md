@@ -27,10 +27,13 @@ uhmm...Me olvide de comentarles un pequeño detalle... Ralph va a hacer lo impos
 En cada nivel hay una distribucion diferente en los obstaculos, y tambien esto le otorga a Raplh velocidad de movimiento y mucha mas fuerza, es decir, sus golpes hacen que los ladrillos caigan mas rapido.
 
 ## Controles
-	Reparar Ventana: x
-	Mover: &uarr; , &darr;, &larr; &rarr;
-	Disminuir Velocidad de Juego: z
-	Incrementar Velocidad de Juego: x
+Reparar Ventana: x
+
+Mover: &uarr; , &darr;, &larr; &rarr;
+
+Disminuir Velocidad de Juego: z
+
+Incrementar Velocidad de Juego: x
 	
 	
 
