@@ -35,8 +35,8 @@ Disminuir Velocidad de Juego: z
 
 Incrementar Velocidad de Juego: x
 	
-	
-
+## Presentación de Google
+https://docs.google.com/presentation/d/1xYPruJ61iGoa5Q370zsKhEhKylm-qDKUJghDWrilDL0/edit?usp=sharing
 
 ¡MUCHA SUERTE! La van a necesitar....
 
