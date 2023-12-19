@@ -108,7 +108,7 @@ class Sonido{
 }
 // Sonidos
 
-object sonidoStage inherits Sonido (sound = "Sonidos/juego2.mp3"){
+object sonidoStage inherits Sonido (sound = "sonidos/juego2.mp3"){
 }
 
 

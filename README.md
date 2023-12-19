@@ -26,6 +26,18 @@ uhmm...Me olvide de comentarles un pequeño detalle... Ralph va a hacer lo impos
 
 En cada nivel hay una distribucion diferente en los obstaculos, y tambien esto le otorga a Raplh velocidad de movimiento y mucha mas fuerza, es decir, sus golpes hacen que los ladrillos caigan mas rapido.
 
+## Controles
+Reparar Ventana: x
+
+Mover: &uarr; , &darr;, &larr; &rarr;
+
+Disminuir Velocidad de Juego: z
+
+Incrementar Velocidad de Juego: x
+	
+## Presentación de Google
+https://docs.google.com/presentation/d/1xYPruJ61iGoa5Q370zsKhEhKylm-qDKUJghDWrilDL0/edit?usp=sharing
+
 ¡MUCHA SUERTE! La van a necesitar....
 
 ![parado](https://github.com/obj1-unahur-2023s2/TPGameIntegrador-grupocoso/assets/99371942/2b50bf3e-a937-48ec-a899-5bd0c24e0052)

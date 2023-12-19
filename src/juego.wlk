@@ -6,32 +6,49 @@ import felix.*
 import pantalla.*
 import personaje.*
 
+/*
+ * representa al objeto global del juego
+ */
 object juego {
-//	var gameOver = false
 	const stages = []
-	var stage = 0
+	var stageActual = 0
+	var dificultad = 1
 	
 	var property vidas = 3
 	var iniciado  = false
 	
-	method stageActual() = stages.get(stage)
+	method stageActual() = stages.get(stageActual)
 	method tableroActual() = self.stageActual().tablero()
-
+	method dificultad() = dificultad
+	method decrementarDificultad() { dificultad = 1.max(dificultad-1) }
+	method incrementarDificultad() { dificultad = 15.min(dificultad+1); }
+	
+	/*
+	 * inicializa e inicia el juego
+	 */
 	method iniciar() {
+		dificultad = 1
 		self.configurarVisual()
 		self.configurarStages()
 		self.mostrarImagenesIniciales()
-		self.configurarSonido()
+		self.reproducirSonidoInicial()
 		game.start()
 	}
 	
-	method configurarSonido(){
-		var  sound = game.sound("Sonidos/juego2.mp3")
+	
+	/*
+	 * reproduce el sonido inicial del juego
+	 */
+	method reproducirSonidoInicial(){
+		var  sound = game.sound("sonidos/juego2.mp3")
 		sound.shouldLoop(true)
 		game.schedule(500, { sound.play()} )
 		keyboard.enter().onPressDo({sound.stop()})
 	}
 
+	/*
+	 * Inserta los elementos generales del juego
+	 */
 	method configurarVisual(){
 		game.title("Fix It Felix Jr!")
 		game.width(100)
@@ -52,10 +69,12 @@ object juego {
 		score.addVisual()
 	}
 	
+	/*
+	 * Configura los stages/niveles del juego
+	 */
 	method configurarStages() {
 		// stage 1
 		const stage1 = new Stage(
-			dificultad = 1,
 			fondo = new Edificio(image="niveles/edificio-1.png"), 
 			imgInicial = new Pantalla (image ="fondo/stage1.jpg"))
 		
@@ -77,7 +96,6 @@ object juego {
 		
 		// stage 2
 		const stage2 = new Stage(
-			dificultad = 2,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage2.jpg")
 		)
@@ -99,7 +117,6 @@ object juego {
 
 		// stage 3
 		const stage3 = new Stage(
-			dificultad = 3,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage3.jpg")
 		)
@@ -123,7 +140,6 @@ object juego {
 
 		// stage 4
 		const stage4 = new Stage(
-			dificultad = 4,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage4.jpg")
 		)
@@ -146,7 +162,6 @@ object juego {
 
 		// stage 5
 		const stage5 = new Stage(
-			dificultad = 5,
 			fondo = new Edificio(image="niveles/edificio-2.png"),
 			imgInicial = new Pantalla (image = "fondo/stage5.jpg")
 		)
@@ -165,7 +180,6 @@ object juego {
 		
 		// stage 6
 			const stage6 = new Stage(
-			dificultad = 6,
 			fondo = new Edificio(image="niveles/edificio-3.png"),
 			imgInicial = new Pantalla (image = "fondo/stage6.jpg")
 		)
@@ -183,7 +197,6 @@ object juego {
 		])
 		// stage 7
 			const stage7 = new Stage(
-			dificultad = 7,
 			fondo = new Edificio(image="niveles/edificio-3.png"),
 			imgInicial = new Pantalla (image = "fondo/stage7.jpg")
 		)
@@ -202,7 +215,6 @@ object juego {
 		
 		// stage 8
 		const stage8 = new Stage(
-			dificultad = 8,
 			fondo = new Edificio(image="niveles/edificio-3.png"),
 			imgInicial = new Pantalla (image = "fondo/stage8.jpg")
 		)
@@ -217,9 +229,9 @@ object juego {
 		stage8.agregarMultiplesPostigos([
 			[1,3],[3,2],[5,1]
 		])
-			// stage 9
-			const stage9 = new Stage(
-			dificultad = 9,
+		
+		// stage 9
+		const stage9 = new Stage(
 			fondo = new Edificio(image="niveles/edificio-3.png"),
 			imgInicial = new Pantalla (image = "fondo/stage9.jpg")
 		)
@@ -237,7 +249,6 @@ object juego {
 		])	
 			// stage 10
 			const stage10 = new Stage(
-			dificultad = 10,
 			fondo = new Edificio(image="niveles/edificio-3.png"),
 			imgInicial = new Pantalla (image = "fondo/stage10.jpg"),
 			turboTastic=true
@@ -248,8 +259,6 @@ object juego {
 			[1,2], [2,2], [3,2], [4,2], [5,2],
 			[1,3], [2,3], [3,3], [4,3], [5,3]
 		])
-
-		
 
 		self.agregarStage(stage1)
 		self.agregarStage(stage2)
@@ -284,20 +293,21 @@ object juego {
 	method siguienteNivel() {
 		self.stageActual().finalizar()
 		self.configurarVisual()
-		stage++
-		if(stage < stages.size()){
+		stageActual++
+		self.incrementarDificultad()
+		if(stageActual < stages.size()){
 			vida.ganarVida()
 			self.stageActual().iniciar()
 		}else{
 			congrats.addVisual()
-			new Sonido (sound = "Sonidos/winGame.mp3").reproducir()
+			new Sonido (sound = "sonidos/winGame.mp3").reproducir()
 		}
-		//TODO: cuando se finaliza el ultimo nivel se termina el juego	
 	}
 }
-
-// representa una celda del tablero
-// cada celda puede contener o no ventana
+/*
+ * representa una celda del tablero
+ * cada celda puede contener o no ventana
+ */
 class Celda{
 	var ventana = null
 	const obstaculos = []
@@ -342,7 +352,9 @@ class Celda{
 }
 
 class Tablero {
-	// la grilla representa las posisiones válidas del tablero
+	/*
+	 * la grilla representa las posisiones válidas del tablero
+	 */
 	const grilla = [
 		new Celda(position = new Position(x = 30, y = 2), posicionRelativa = new Position(x=1, y=1)),
 		new Celda(position = new Position(x = 39, y = 2), posicionRelativa = new Position(x=2, y=1)),
@@ -363,18 +375,23 @@ class Tablero {
 	
 	var property celdaActiva = grilla.get(0)
 	
-	// cantidad de filas y de columnas del tablero
-	// se ponen como constantes para evitar ejecutar la misma búsqueda a cada rato
+	/*
+	 * cantidad de filas y de columnas del tablero
+	 */
 	const cantidadFilas = grilla.map({c => c.posicionRelativa().y()}).max()
 	const cantidadColumnas = grilla.map({c => c.posicionRelativa().x()}).max()
 	
-	
+	/*
+	 * Indica si la coordenada x, y especificada queda dentro del tablero
+	 */
 	method esCoordinadaValida(x, y) {
 		return grilla.any({c => c.posicionRelativa().x() == x && c.posicionRelativa().y() == y})
 	}
 	
-	// dada una coordenada válida del tablero, devuelve la celda de dicha coordenada
-	// x e y son las posiciones relativas de la celda
+	/*
+	 * dada una coordenada válida del tablero, devuelve la celda de dicha coordenada
+	 * Parametros: x e y son las posiciones relativas de la celda
+	 */
 	method celda(x, y) {
 		if(!self.esCoordinadaValida(x, y)) {
 			self.error("las coordenadas quedan fuera del tablero")
@@ -387,7 +404,9 @@ class Tablero {
 
 	method celdasConObstaculos() = grilla.filter({c => c.tieneObstaculos()})
 	
-	// devuelve la lista de ventanas del tablero
+	/*
+	 * devuelve la lista de ventanas del tablero
+	 */
 	method ventanas() {
 		return self.celdasConVentanas().map({v => v.ventana()})		
 	}
@@ -510,8 +529,9 @@ class Tablero {
 	}
 	
 	
-	// devuelve la celda a la izquierda de la actual
-	// si la celda actual es la primera, la devuelve
+	/* devuelve la celda a la izquierda de la actual
+	 * si la celda actual es la primera, devuelve la celda actual
+	 */
 	method left() {
 		if(self.puedeMoverALaIzquierda()) {
 			return self.celdaALaIzquierda()
@@ -520,8 +540,10 @@ class Tablero {
 		}
 	}
 
-	// devuelve la celda a la derecha de la actual
-	// si la celda actual es la ultima, la devuelve
+	/*
+	 * devuelve la celda a la derecha de la actual
+	 * si la celda actual es la ultima, la devuelve
+	 */
 	method right() {
 		if(self.puedeMoverALaDerecha()) {
 			return self.celdaALaDerecha()
@@ -530,8 +552,9 @@ class Tablero {
 		}
 	}
 
-	// devuelve la celda que esta arriba de la actual
-	// si la celda actual es la ultima, la devuelve
+	/*
+	 * devuelve la celda que esta arriba de la actual
+	 */
 	method up() {
 		if(self.puedeMoverArriba()) {
 			return self.celdaArriba()
@@ -540,8 +563,9 @@ class Tablero {
 		}
 	}
 
-	// devuelve la celda que esta abajo de la actual
-	// si la celda actual es la primera, la devuelve
+	/*
+	 * devuelve la celda que esta abajo de la actual
+	 */
 	method down() {
 		if(self.puedeMoverAbajo()) {
 			return self.celdaAbajo()
@@ -553,10 +577,12 @@ class Tablero {
 	
 }
 
+/*
+ * Representa un nivel del juego
+ */
 class Stage {
 	const fondo
 	const imgInicial
-	const property dificultad
 	const turboTastic = false
 	
 	const tablero = new Tablero()
@@ -564,7 +590,9 @@ class Stage {
 	
 	method tablero() = tablero
 	
-	// agrega una ventana en la celda x y del tablero
+	/*
+	 * agrega una ventana en la celda x y del tablero
+	 */
 	method agregarVentanaEn(modelo, x,y) {
 		tablero.celda(x, y).agregarVentana(modelo)	
 	}
@@ -604,8 +632,16 @@ class Stage {
 			}
 		})	
 		
+		
+		keyboard.z().onPressDo({ juego.decrementarDificultad() })	
+		keyboard.c().onPressDo({ juego.incrementarDificultad() })	
+		
+		
 	}	
 
+	/*
+	 * repara una ventana si en la celda actual hay una ventana rota
+	 */
 	method repararVentanaSiHay() {
 		if(!felix.saltando() && !felix.reparando() && self.celdaActiva().tieneVentana()) {
 			felix.reparar(self.celdaActiva().ventana());
@@ -659,8 +695,6 @@ class Stage {
 	  	self.mostrar()
 	  	imgInicial.mostrarPorMilisegundosYLuegoEjecutar(2000, {
 			self.configurarTeclas()
-			felix.stage(self)
-			ralph.stage(self)
 			ralph.hacerRutina()
 			if(turboTastic) {
 				turbo.aparecer()				
@@ -672,22 +706,11 @@ class Stage {
 	
 	method finalizar() {
 		ralph.reset()		
-//		felix.position(tablero.celda(1,1).position())
 		felix.reset()
 		self.ocultar()
 		game.clear()
 	}
 	
-}
-
-//representa un stage nulo
-// se utiliza para inicializar los personajes que tienen un atributo stage
-object nullStage inherits Stage(
-			dificultad = 0,
-			fondo = new Edificio(image="niveles/edificio-1.png"), 
-			imgInicial = new Pantalla (image ="nada.jpg")){
-	override method mostrar() {}
-	override method ocultar() {}
 }
 
 
@@ -736,13 +759,18 @@ object score inherits Visual(position = new Position(x=2, y=56)) {
 }
 
 
-// representa un digito del 0 al 9 en la pantalla
+/*
+ * representa un digito del 0 al 9 en la pantalla
+ */
 class Digito inherits Visual {
 	var property valor = 0
 	
 	override method image() = "numeros/" + valor + ".png" 
 }
 
+/*
+ * representa el objeto que muestra la cantidad de vidas del juego
+ */
 object vida inherits Visual (position=new Position(y=55, x=80 )){ 
 	var property vidasActuales = 3
 	
